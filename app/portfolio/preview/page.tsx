@@ -127,7 +127,13 @@ export default function PortfolioPreview() {
                 <p className="text-zinc-500 text-xl leading-relaxed max-w-2xl">{gV('bio', data.bio)}</p>
               </div>
               <div className="md:col-span-4 flex justify-start md:justify-end gap-4">
-                <button onClick={() => window.open(fileUrl, "_blank")} className="p-5 rounded-full bg-white text-black hover:scale-110 transition"><Download size={24} /></button>
+                {/* 🟢 FIXED: Added || "" to handle potential null fileUrl for TypeScript */}
+                <button 
+                  onClick={() => window.open(fileUrl || "", "_blank")} 
+                  className="p-5 rounded-full bg-white text-black hover:scale-110 transition"
+                >
+                  <Download size={24} />
+                </button>
                 <button onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }} className="p-5 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition"><Share2 size={24} /></button>
               </div>
             </div>
