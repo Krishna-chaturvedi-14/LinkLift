@@ -8,7 +8,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Download, 
   Share2, 
-  Briefcase, 
   Check, 
   ArrowLeft, 
   SlidersHorizontal, 
@@ -63,17 +62,32 @@ export default function PortfolioPreview() {
     setIsSaving(true);
     const updatedData = { ...data, ...overrides };
     const { error } = await supabase.from("resumes").update({ parsed_json: updatedData }).eq("id", resumeId);
-    if (!error) { setData(updatedData); setOverrides({}); alert("Synced Successfully!"); }
+    if (!error) { setData(updatedData); setOverrides({}); alert("Synced to Database!"); }
     setIsSaving(false);
+  };
+
+  const handleDeploy = async () => {
+    setIsDeploying(true);
+    try {
+      // 🟢 IMPORTANT: Paste your Vercel Build Hook URL here after creating it in Vercel Settings
+      const VERCEL_HOOK_URL = "YOUR_VERCEL_BUILD_HOOK_URL_HERE";
+      const response = await fetch(VERCEL_HOOK_URL, { method: "POST" });
+      if (response.ok) alert("Deployment Triggered! Live in 1-2 mins.");
+      else throw new Error();
+    } catch (err) {
+      alert("Please ensure your Vercel Build Hook URL is pasted in the code.");
+    } finally {
+      setIsDeploying(false);
+    }
   };
 
   if (loading) return <div className="min-h-screen bg-black flex items-center justify-center"><Loader2 className="animate-spin text-indigo-500" size={48} /></div>;
   if (!data) return <div className="min-h-screen bg-black text-white flex items-center justify-center">No resume data found.</div>;
 
   return (
-    <div className="min-h-screen bg-[#030303] text-white font-sans selection:bg-indigo-500/30 overflow-x-hidden">
+    <div className="min-h-screen bg-[#030303] text-white selection:bg-indigo-500/30 overflow-x-hidden">
       
-      {/* MESH BACKGROUND */}
+      {/* AMBIENT BACKGROUND */}
       <div className="fixed inset-0 -z-10 bg-[#030303]">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
         <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[30%] bg-purple-500/10 blur-[120px] rounded-full" />
@@ -86,47 +100,41 @@ export default function PortfolioPreview() {
             {gV('name', data.name)}
           </div>
         </div>
-        <button className="px-6 py-2 bg-indigo-600 rounded-full text-sm font-bold shadow-lg shadow-indigo-500/20 hover:scale-105 transition">
-          <Rocket size={16} /> Deploy Live
+        <button onClick={handleDeploy} disabled={isDeploying} className="px-6 py-2 bg-indigo-600 rounded-full text-sm font-bold shadow-lg shadow-indigo-500/20 hover:scale-105 transition flex items-center gap-2">
+          {isDeploying ? <Loader2 size={14} className="animate-spin" /> : <Rocket size={14} />}
+          {isDeploying ? "Deploying..." : "Deploy Live"}
         </button>
       </nav>
 
       <main className="max-w-7xl mx-auto px-6 pt-56 pb-32 space-y-64">
         
-        {/* 🟢 HERO SECTION: NAME-FIRST HIERARCHY */}
-        <section className="space-y-12 relative text-center md:text-left">
+        {/* HERO: NAME-FIRST */}
+        <section className="space-y-12 text-center md:text-left">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-[10px] font-bold tracking-[0.3em] uppercase">
                AVAILABLE FOR NEW OPPORTUNITIES
             </div>
-            
-            {/* Monumental Name Headline */}
             <h1 className="text-7xl md:text-9xl font-bold tracking-tighter leading-[0.85] mb-10">
-              <span className="bg-gradient-to-r from-white via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-white via-indigo-400 to-purple-400 bg-clip-text text-transparent uppercase">
                 {gV('name', data.name)}
               </span>
             </h1>
-
             <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
               <div className="md:col-span-8 space-y-6">
                 <p className="text-3xl font-medium text-white italic">
                    I build digital value as an <span className="text-indigo-400">{gV('role', data.role)}</span>
                 </p>
-                <p className="text-zinc-500 text-xl leading-relaxed max-w-2xl">
-                  {gV('bio', data.bio || `Specializing in high-impact AI/ML solutions.`)}
-                </p>
+                <p className="text-zinc-500 text-xl leading-relaxed max-w-2xl">{gV('bio', data.bio)}</p>
               </div>
               <div className="md:col-span-4 flex justify-start md:justify-end gap-4">
-                <button className="p-5 rounded-full bg-white text-black hover:scale-110 transition"><Download size={24} /></button>
-                <button onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }} className="p-5 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition">
-                  {copied ? <Check size={24} className="text-green-400" /> : <Share2 size={24} />}
-                </button>
+                <button onClick={() => window.open(fileUrl, "_blank")} className="p-5 rounded-full bg-white text-black hover:scale-110 transition"><Download size={24} /></button>
+                <button onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }} className="p-5 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition"><Share2 size={24} /></button>
               </div>
             </div>
           </motion.div>
         </section>
 
-        {/* --- 01 / EXPERIENCE --- */}
+        {/* 01 / EXPERIENCE */}
         <section className="space-y-24">
           <div className="flex flex-col gap-6">
             <span className="text-indigo-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 01 EXPERIENCE</span>
@@ -135,30 +143,25 @@ export default function PortfolioPreview() {
           <div className="divide-y divide-white/5 border-t border-white/5">
             {gV('experience', data.experience)?.map((exp: any, i: number) => (
               <motion.div key={i} className="grid grid-cols-1 md:grid-cols-12 gap-12 py-20 group relative">
-                <div className="md:col-span-3 space-y-4">
-                  <p className="text-zinc-500 font-mono text-xs tracking-widest uppercase">{exp.duration || exp.period}</p>
-                  <span className="px-2 py-1 rounded bg-white/5 text-[10px] text-zinc-500 border border-white/5">FULL-TIME</span>
-                </div>
+                <div className="md:col-span-3 text-zinc-500 font-mono text-xs uppercase tracking-widest">{exp.duration || exp.period}</div>
                 <div className="md:col-span-7 space-y-6">
                   <h3 className="text-4xl font-bold text-white group-hover:text-indigo-400 transition-colors italic leading-none">{exp.company}</h3>
-                  <p className="text-xl text-zinc-400 font-medium tracking-tight italic">{exp.role || exp.title}</p>
+                  <p className="text-xl text-zinc-400 font-medium italic">{exp.role || exp.title}</p>
                   <p className="text-zinc-500 leading-relaxed text-lg max-w-2xl">{exp.description}</p>
                 </div>
-                <div className="md:col-span-2 hidden md:flex justify-end items-start pt-2">
-                  <span className="text-white/5 font-black text-6xl group-hover:text-indigo-500/10 transition-colors">0{i+1}</span>
-                </div>
+                <div className="md:col-span-2 hidden md:flex justify-end items-start pt-2"><span className="text-white/5 font-black text-6xl group-hover:text-indigo-500/10 transition-colors">0{i+1}</span></div>
               </motion.div>
             ))}
           </div>
         </section>
 
-        {/* --- 02 / SELECTED WORKS --- */}
+        {/* 02 / PROJECTS */}
         <section className="space-y-24">
           <div className="flex flex-col gap-6">
             <span className="text-purple-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 02 SELECTED WORKS</span>
             <h2 className="text-6xl md:text-8xl font-bold tracking-tighter text-white">Projects</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {gV('projects', data.projects)?.map((proj: any, i: number) => (
               <motion.div key={i} whileHover={{ y: -15 }} className="relative group aspect-[4/5] overflow-hidden rounded-[48px] bg-white/[0.02] border border-white/5 p-12 flex flex-col justify-end gap-8 transition-all duration-700">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 group-hover:via-indigo-500/10 transition-all duration-700" />
@@ -173,37 +176,16 @@ export default function PortfolioPreview() {
           </div>
         </section>
 
-        {/* --- 03 / CAPABILITIES --- */}
-        <section className="space-y-24">
-          <div className="flex flex-col gap-6">
-            <span className="text-cyan-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 03 CAPABILITIES</span>
-            <h2 className="text-6xl md:text-8xl font-bold tracking-tighter text-white">Expertise</h2>
-          </div>
-          <div className="flex flex-wrap gap-6">
-            {gV('skills', data.skills)?.map((skill: string, i: number) => (
-              <motion.div key={i} whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.05)" }} className="px-12 py-6 rounded-3xl bg-white/[0.02] border border-white/5 text-zinc-400 font-medium text-xl transition-all cursor-default">
-                {skill}
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* --- 04 / INTERACTIVE TERMINAL --- */}
+        {/* 04 / TERMINAL */}
         <section className="space-y-24 pb-48">
-          <div className="flex flex-col gap-6">
-            <span className="text-emerald-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 04 SYSTEM_CORE</span>
-            <h2 className="text-6xl md:text-8xl font-bold tracking-tighter text-white">Terminal</h2>
-          </div>
+          <div className="flex flex-col gap-6"><span className="text-emerald-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 04 SYSTEM_CORE</span><h2 className="text-6xl md:text-8xl font-bold tracking-tighter text-white">Terminal</h2></div>
           <div className="w-full max-w-4xl mx-auto rounded-3xl bg-black border border-white/10 shadow-2xl overflow-hidden font-mono text-sm">
-            <div className="bg-white/5 px-6 py-4 border-b border-white/10 flex items-center justify-between">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500/50" /><div className="w-3 h-3 rounded-full bg-amber-500/50" /><div className="w-3 h-3 rounded-full bg-emerald-500/50" />
-              </div>
-              <div className="text-zinc-500 text-[10px] uppercase tracking-widest">guest@linklift: ~</div>
+            <div className="bg-white/5 px-6 py-4 border-b border-white/10 flex items-center justify-between text-zinc-500 text-[10px] uppercase tracking-widest">
+              <div className="flex gap-2"><div className="w-3 h-3 rounded-full bg-red-500/50" /><div className="w-3 h-3 rounded-full bg-amber-500/50" /><div className="w-3 h-3 rounded-full bg-emerald-500/50" /></div>
+              guest@linklift: ~
             </div>
             <div className="p-8 space-y-4 min-h-[300px] text-emerald-500/80">
-              <p className="text-zinc-500 tracking-tight">Last login: {new Date().toLocaleDateString()} on ttys001</p>
-              <p>LinkLift OS v2.0.4-stable loaded...</p>
+              <p className="text-zinc-500">Last login: {new Date().toLocaleDateString()} on ttys001</p>
               <div className="space-y-2 pt-4">
                 <p className="text-white flex gap-3"><span className="text-emerald-500">➜</span><span>ls expertise/</span></p>
                 <p className="flex flex-wrap gap-x-6 gap-y-1 text-zinc-400">{data.skills?.slice(0, 8).map((s: string) => <span key={s}>{s.toLowerCase()}.sh</span>)}</p>
@@ -218,12 +200,12 @@ export default function PortfolioPreview() {
         </section>
       </main>
 
-      <footer className="border-t border-white/5 py-24 text-center">
-        <p className="text-zinc-600 font-mono text-xs tracking-widest uppercase italic">Designed for Impact — © 2026 {gV('name', data.name)}</p>
+      <footer className="border-t border-white/5 py-24 text-center text-zinc-600 font-mono text-xs tracking-widest uppercase italic">
+        Designed for Impact — © 2026 {gV('name', data.name)}
       </footer>
 
-      {/* CMS SIDEBAR */}
-      <button onClick={() => setCustomizeOpen(true)} className="fixed bottom-12 left-12 flex items-center gap-3 rounded-full border border-indigo-500/30 bg-black/90 backdrop-blur-3xl px-10 py-5 text-sm font-bold text-white z-50 hover:scale-105 transition">
+      {/* CONTENT EDITOR SIDEBAR */}
+      <button onClick={() => setCustomizeOpen(true)} className="fixed bottom-12 left-12 flex items-center gap-3 rounded-full border border-indigo-500/30 bg-black/90 backdrop-blur-3xl px-10 py-5 text-sm font-bold text-white z-50 hover:scale-105 transition shadow-2xl">
         <SlidersHorizontal size={20} className="text-indigo-400" /> Content Editor
       </button>
 
@@ -231,8 +213,8 @@ export default function PortfolioPreview() {
         {customizeOpen && (
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setCustomizeOpen(false)} className="fixed inset-0 bg-black/70 backdrop-blur-md z-[60]" />
-            <motion.aside initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} className="fixed right-0 top-0 h-full w-full max-w-lg bg-[#0a0a0f] border-l border-white/10 z-[70] p-12 overflow-y-auto flex flex-col">
-              <div className="flex justify-between items-center mb-12 text-white"><h3 className="text-2xl font-bold">Portfolio CMS</h3><button onClick={() => setCustomizeOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition"><X size={28}/></button></div>
+            <motion.aside initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} className="fixed right-0 top-0 h-full w-full max-w-lg bg-[#0a0a0f] border-l border-white/10 z-[70] p-12 overflow-y-auto flex flex-col shadow-2xl">
+              <div className="flex justify-between items-center mb-12 text-white"><div><h3 className="text-2xl font-bold">Portfolio CMS</h3><p className="text-xs text-zinc-500">Manual edits overwrite AI data.</p></div><button onClick={() => setCustomizeOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition"><X size={28}/></button></div>
               <div className="space-y-12 flex-1">
                 <div className="space-y-6">
                   <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Hero & Identity</h4>
@@ -253,7 +235,7 @@ export default function PortfolioPreview() {
               <div className="sticky bottom-0 bg-[#0a0a0f] pt-8 mt-12 pb-4">
                 <button onClick={handleSave} disabled={isSaving || Object.keys(overrides).length === 0} className="w-full flex items-center justify-center gap-3 py-5 bg-indigo-600 rounded-[24px] font-bold text-white shadow-xl shadow-indigo-500/20 disabled:opacity-40 hover:bg-indigo-500 transition">
                   {isSaving ? <Loader2 className="animate-spin" size={24} /> : <Check size={24} />}
-                  {isSaving ? "Syncing..." : "Save All Changes"}
+                  Save All Changes
                 </button>
               </div>
             </motion.aside>
