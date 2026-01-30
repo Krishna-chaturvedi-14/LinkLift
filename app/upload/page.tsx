@@ -36,7 +36,6 @@ export default function UploadPage() {
   };
 
   const handleUpload = async () => {
-    // Step 1: Check if a file is selected
     if (!file) {
       setMessage({ type: "error", text: "Please select a file first." });
       return;
@@ -50,11 +49,10 @@ export default function UploadPage() {
     setIsUploading(true);
     setMessage(null);
 
-    // Step 2: Generate a truly unique path (prevents duplicates)
     const filePath = `${user.id}/${Date.now()}-${file.name}`;
 
     try {
-      // Step 3: Upload to Supabase Storage bucket 'resumes'
+      // Step 3: Upload to Supabase Storage
       const { error: storageError } = await supabase.storage
         .from("resumes")
         .upload(filePath, file, {
@@ -64,15 +62,14 @@ export default function UploadPage() {
 
       if (storageError) throw storageError;
 
-      // Step 4: Get the public URL and insert into resumes table
       const { data: urlData } = supabase.storage
         .from("resumes")
         .getPublicUrl(filePath);
 
       const fileUrl = urlData.publicUrl;
 
-      // 🟢 Generate a temporary slug to fulfill the DB constraint
-      const tempSlug = `${slugify(user.fullName || "user")}-${Math.floor(1000 + Math.random() * 9000)}`;
+      // 🟢 1. Create a guaranteed temporary slug so the initial insert never fails
+      const tempSlug = `user-${Math.floor(100000 + Math.random() * 900000)}`;
 
       const { data: insertedResume, error: dbError } = await supabase
         .from("resumes")
@@ -81,7 +78,7 @@ export default function UploadPage() {
           file_path: filePath,
           file_url: fileUrl,
           parsed_json: null,
-          slug: tempSlug, // 🟢 Added slug to the initial insert
+          slug: tempSlug, 
         })
         .select("id")
         .single();
@@ -110,19 +107,25 @@ export default function UploadPage() {
         throw new Error(analyzeData.error ?? "Analysis failed");
       }
 
-      // 🟢 Step 6: Create the final slug from AI data and update DB
-      // We use the name returned by the AI for a professional URL
-      const finalName = analyzeData.data?.name || user.fullName || "portfolio";
+      // 🟢 2. Safety Check: If AI failed to find a name, use the Clerk user name
+      const aiParsedData = analyzeData.data;
+      const finalName = aiParsedData?.name || user.fullName || "portfolio";
       const finalSlug = `${slugify(finalName)}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-      await supabase
+      // 🟢 3. Final Database Sync: Update both the JSON data AND the final slug
+      const { error: updateError } = await supabase
         .from("resumes")
-        .update({ slug: finalSlug })
+        .update({ 
+          parsed_json: aiParsedData,
+          slug: finalSlug 
+        })
         .eq("id", resumeId);
+
+      if (updateError) throw updateError;
 
       setMessage({ type: "success", text: "Analysis complete! Redirecting..." });
 
-      // 🟢 Step 7: Redirect to the user's new dynamic portfolio link
+      // Step 7: Redirect to the live link
       router.push(`/${finalSlug}`);
 
     } catch (error) {
@@ -154,6 +157,7 @@ export default function UploadPage() {
 
   return (
     <div className="relative mx-auto max-w-2xl px-6 py-24">
+      {/* ... UI code remains same ... */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-500/10 blur-[150px]" />
       </div>
