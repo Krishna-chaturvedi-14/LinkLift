@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; // 🟢 Added for redirecting to public link
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Download, 
@@ -24,9 +25,11 @@ const supabase = createClient(
 
 export default function PortfolioPreview() {
   const { user } = useUser();
+  const router = useRouter(); // 🟢 Initialize router
   const [data, setData] = useState<any>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [resumeId, setResumeId] = useState<string | null>(null);
+  const [userSlug, setUserSlug] = useState<string | null>(null); // 🟢 State to track the URL slug
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [isDeploying, setIsDeploying] = useState(false);
@@ -37,9 +40,10 @@ export default function PortfolioPreview() {
   useEffect(() => {
     const fetchData = async () => {
       if (!user?.id) return;
+      // 🟢 Updated query to include 'slug' column
       const { data: resumes } = await supabase
         .from("resumes")
-        .select("id, parsed_json, file_url")
+        .select("id, parsed_json, file_url, slug")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(1);
@@ -48,6 +52,7 @@ export default function PortfolioPreview() {
         setData(resumes[0].parsed_json);
         setFileUrl(resumes[0].file_url);
         setResumeId(resumes[0].id);
+        setUserSlug(resumes[0].slug); // 🟢 Store slug locally
       }
       setLoading(false);
     };
@@ -67,15 +72,26 @@ export default function PortfolioPreview() {
   };
 
   const handleDeploy = async () => {
+    if (!userSlug) {
+      alert("No portfolio link found. Please try uploading your resume again.");
+      return;
+    }
+
     setIsDeploying(true);
     try {
-      // 🟢 IMPORTANT: Paste your Vercel Build Hook URL here after creating it in Vercel Settings
-      const VERCEL_HOOK_URL = "YOUR_VERCEL_BUILD_HOOK_URL_HERE";
+      // 🟢 Replace this with your actual Vercel Deploy Hook URL
+      const VERCEL_HOOK_URL = "Yhttps://api.vercel.com/v1/integrations/deploy/prj_YmpASJXnZPrYUuFNGciyxFmeeWH4/cDnQ1pdpe9";
       const response = await fetch(VERCEL_HOOK_URL, { method: "POST" });
-      if (response.ok) alert("Deployment Triggered! Live in 1-2 mins.");
-      else throw new Error();
+      
+      if (response.ok) {
+        alert("Launch Successful! Taking you to your live site...");
+        // 🟢 Redirect to the public dynamic route: linklift.vercel.app/[slug]
+        router.push(`/${userSlug}`);
+      } else {
+        throw new Error();
+      }
     } catch (err) {
-      alert("Please ensure your Vercel Build Hook URL is pasted in the code.");
+      alert("Deployment failed. Please verify your Vercel Build Hook URL is pasted in the code.");
     } finally {
       setIsDeploying(false);
     }
@@ -100,6 +116,7 @@ export default function PortfolioPreview() {
             {gV('name', data.name)}
           </div>
         </div>
+        {/* SMALL NAV DEPLOY BUTTON */}
         <button onClick={handleDeploy} disabled={isDeploying} className="px-6 py-2 bg-indigo-600 rounded-full text-sm font-bold shadow-lg shadow-indigo-500/20 hover:scale-105 transition flex items-center gap-2">
           {isDeploying ? <Loader2 size={14} className="animate-spin" /> : <Rocket size={14} />}
           {isDeploying ? "Deploying..." : "Deploy Live"}
@@ -126,15 +143,34 @@ export default function PortfolioPreview() {
                 </p>
                 <p className="text-zinc-500 text-xl leading-relaxed max-w-2xl">{gV('bio', data.bio)}</p>
               </div>
-              <div className="md:col-span-4 flex justify-start md:justify-end gap-4">
-                {/* 🟢 FIXED: Added || "" to handle potential null fileUrl for TypeScript */}
-                <button 
-                  onClick={() => window.open(fileUrl || "", "_blank")} 
-                  className="p-5 rounded-full bg-white text-black hover:scale-110 transition"
+              
+              <div className="md:col-span-4 flex flex-col md:items-end gap-6">
+                <div className="flex gap-4">
+                  <button 
+                    onClick={() => window.open(fileUrl || "", "_blank")} 
+                    className="p-5 rounded-full bg-white text-black hover:scale-110 transition"
+                  >
+                    <Download size={24} />
+                  </button>
+                  <button onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }} className="p-5 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition"><Share2 size={24} /></button>
+                </div>
+
+                {/* 🟢 THE MAIN EMERALD DEPLOY BUTTON */}
+                <button
+                  onClick={handleDeploy}
+                  disabled={isDeploying}
+                  className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full font-bold hover:scale-105 transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50 text-white"
                 >
-                  <Download size={24} />
+                  {isDeploying ? (
+                    <span className="flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" /> Deploying...
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-2 justify-center">
+                      <Rocket size={18} /> Deploy Live
+                    </span>
+                  )}
                 </button>
-                <button onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }} className="p-5 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition"><Share2 size={24} /></button>
               </div>
             </div>
           </motion.div>

@@ -7,6 +7,13 @@ import { Upload, FileText, Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 
+// 🟢 Helper function to turn "Krishna Chaturvedi" into "krishna-chaturvedi"
+const slugify = (text: string) => 
+  text.toLowerCase()
+    .trim()
+    .replace(/[^\w ]+/g, '')
+    .replace(/ +/g, '-');
+
 export default function UploadPage() {
   const { user } = useUser();
   const router = useRouter();
@@ -64,6 +71,9 @@ export default function UploadPage() {
 
       const fileUrl = urlData.publicUrl;
 
+      // 🟢 Generate a temporary slug to fulfill the DB constraint
+      const tempSlug = `${slugify(user.fullName || "user")}-${Math.floor(1000 + Math.random() * 9000)}`;
+
       const { data: insertedResume, error: dbError } = await supabase
         .from("resumes")
         .insert({
@@ -71,6 +81,7 @@ export default function UploadPage() {
           file_path: filePath,
           file_url: fileUrl,
           parsed_json: null,
+          slug: tempSlug, // 🟢 Added slug to the initial insert
         })
         .select("id")
         .single();
@@ -99,12 +110,22 @@ export default function UploadPage() {
         throw new Error(analyzeData.error ?? "Analysis failed");
       }
 
+      // 🟢 Step 6: Create the final slug from AI data and update DB
+      // We use the name returned by the AI for a professional URL
+      const finalName = analyzeData.data?.name || user.fullName || "portfolio";
+      const finalSlug = `${slugify(finalName)}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+      await supabase
+        .from("resumes")
+        .update({ slug: finalSlug })
+        .eq("id", resumeId);
+
       setMessage({ type: "success", text: "Analysis complete! Redirecting..." });
 
-      // Step 6: Redirect to dashboard after analysis is done
-      router.push("/dashboard");
+      // 🟢 Step 7: Redirect to the user's new dynamic portfolio link
+      router.push(`/${finalSlug}`);
+
     } catch (error) {
-      // Log error for debugging
       console.error(error);
       setMessage({
         type: "error",
