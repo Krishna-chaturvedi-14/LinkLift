@@ -32,15 +32,14 @@ export async function POST(req: NextRequest) {
 
     let parsedData: any = null;
     
-    // 2. Model Loop (Gemini 2.0 Flash)
-    const modelsToTry = ["gemini-2.0-flash", "gemini-2.0-flash-lite", "gemini-flash-latest"];
+    // 🟢 2. UPDATED Model Loop: Using gemini-1.5-flash for stability
+    const modelsToTry = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-flash-latest"];
     
     for (const modelName of modelsToTry) {
       try {
         console.log(`🤖 Analyzing with ${modelName}...`);
         const model = genAI.getGenerativeModel({ model: modelName, safetySettings });
 
-        // Expert recruiter + career coach prompt
         const prompt = `
 You are an expert recruiter. Extract structured data from the resume and also evaluate it against industry standards.
 
@@ -73,14 +72,15 @@ ${resumeText}
         const result = await model.generateContent(prompt);
         const text = result.response.text().replace(/```json|```/g, "").trim();
         parsedData = JSON.parse(text);
-        break; 
+        
+        if (parsedData) break; 
 
       } catch (e: any) {
         console.warn(`⚠️ ${modelName} failed:`, e.message);
       }
     }
 
-    if (!parsedData) throw new Error("AI Processing Failed.");
+    if (!parsedData) throw new Error("AI Processing Failed. All models returned errors.");
 
     // Ensure suggestions array is present and at most 3 items
     if (!Array.isArray(parsedData.suggestions)) {
@@ -92,29 +92,28 @@ ${resumeText}
     // 3. THE FORCE FIX: Calculate Score Manually if AI fails
     let calculatedScore = Number(parsedData.score ?? parsedData.ats_score);
 
-    // If score is invalid/missing, calculate it from skills
     if (isNaN(calculatedScore) || calculatedScore === 0) {
       const skillCount = Array.isArray(parsedData.skills) ? parsedData.skills.length : 0;
-      calculatedScore = 70 + (skillCount * 2); // Base 70 + 2 per skill
+      calculatedScore = 70 + (skillCount * 2); 
       if (calculatedScore > 95) calculatedScore = 95;
     }
 
-    // Force it to be an integer
     const finalScore = Math.round(calculatedScore);
 
-    // 4. SAVE IN ALL FORMATS (To catch whatever the frontend is looking for)
-    parsedData.ats_score = finalScore;   // standard
-    parsedData.atsScore = finalScore;    // camelCase
-    parsedData.score = finalScore;       // simple
-    parsedData.Score = finalScore;       // Capitalized
+    // 4. SAVE IN ALL FORMATS 
+    parsedData.ats_score = finalScore;   
+    parsedData.atsScore = finalScore;    
+    parsedData.score = finalScore;       
+    parsedData.Score = finalScore;       
 
     console.log("✅ FINAL SCORE SAVED TO DB:", finalScore);
 
     // 5. Update DB
     await supabase.from("resumes").update({ parsed_json: parsedData }).eq("id", resumeId);
-    return NextResponse.json({ success: true, parsed_json: parsedData });
+    return NextResponse.json({ success: true, data: parsedData }); // 🟢 Match the frontend 'data' property
 
   } catch (error: any) {
+    console.error("Critical Failure:", error.message);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
