@@ -1,3 +1,6 @@
+// Add this to ensure the page always fetches fresh data from Supabase
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import { createClient } from "@supabase/supabase-js";
 import { notFound } from "next/navigation";
 
