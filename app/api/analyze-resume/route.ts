@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
 // @ts-ignore
-import pdf from "pdf-parse"; // 🟢 This ignores the type error for Vercel builds
+import pdf from "pdf-parse";
 
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 
