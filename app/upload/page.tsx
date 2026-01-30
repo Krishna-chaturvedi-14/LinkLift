@@ -123,6 +123,9 @@ export default function UploadPage() {
 
       if (updateError) throw updateError;
 
+      // 🟢 4. DELAY: Wait 2 seconds for the database to commit changes before redirecting
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       setMessage({ type: "success", text: "Analysis complete! Redirecting..." });
 
       // Step 7: Redirect to the live link
@@ -157,7 +160,6 @@ export default function UploadPage() {
 
   return (
     <div className="relative mx-auto max-w-2xl px-6 py-24">
-      {/* ... UI code remains same ... */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-500/10 blur-[150px]" />
       </div>
