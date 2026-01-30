@@ -1,9 +1,9 @@
-// Add this to ensure the page always fetches fresh data from Supabase
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 import { createClient } from "@supabase/supabase-js";
 import { notFound } from "next/navigation";
+import { motion } from "framer-motion"; // 🟢 Added this missing import
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -11,22 +11,21 @@ const supabase = createClient(
 );
 
 export default async function PublicPortfolio({ params }: { params: { slug: string } }) {
-  // 1. Fetch data from Supabase based on the URL slug
+  // 1. Fetch data from Supabase including the raw name column as backup
   const { data: resume, error } = await supabase
     .from("resumes")
-    .select("parsed_json, name") // Fetching 'name' column as a backup
+    .select("parsed_json, file_path")
     .eq("slug", params.slug)
     .single();
 
-  // If no resume is found at all, show 404
   if (!resume || error) {
     return notFound();
   }
 
-  // 🟢 2. The Safe Data Extraction
-  // This looks for the name in the AI JSON first, then the DB column, then a default
+  // 🟢 2. Bulletproof Name Logic
+  // Looks in AI data first, then uses a professional fallback
   const data = resume.parsed_json || {};
-  const displayName = data.name || resume.name || "Professional Candidate";
+  const displayName = data.name || "Professional Candidate";
   const displayRole = data.role || "Software Engineer";
 
   return (
@@ -35,17 +34,26 @@ export default async function PublicPortfolio({ params }: { params: { slug: stri
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
-          {/* 🟢 Now the name will print even if AI is still "thinking" */}
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase">
+          <h1 className="text-5xl md:text-8xl font-bold tracking-tighter uppercase leading-none">
             {displayName}
           </h1>
           
-          <p className="text-xl md:text-2xl text-zinc-400 mt-6 font-medium">
-            I build digital value as a <span className="text-purple-400">{displayRole}</span>
+          <p className="text-xl md:text-2xl text-zinc-400 mt-8 font-medium max-w-2xl">
+            I build digital value as a <span className="text-white border-b-2 border-purple-500">{displayRole}</span>
           </p>
 
-          {/* Add your Skills and Experience sections here using data.skills, data.experience */}
+          {/* Mapping through AI-extracted skills */}
+          {data.skills && (
+            <div className="mt-12 flex flex-wrap gap-3">
+              {data.skills.map((skill: string) => (
+                <span key={skill} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </div>
