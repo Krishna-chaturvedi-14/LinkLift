@@ -1,7 +1,9 @@
 export const dynamic = 'force-dynamic';
+export const dynamicParams = true; 
 export const revalidate = 0;
 
 import { createClient } from "@supabase/supabase-js";
+// ... the rest of your imports
 import { notFound } from "next/navigation";
 import { motion } from "framer-motion"; 
 
