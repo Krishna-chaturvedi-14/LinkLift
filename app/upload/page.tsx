@@ -52,7 +52,7 @@ export default function UploadPage() {
     const filePath = `${user.id}/${Date.now()}-${file.name}`;
 
     try {
-      // Step 3: Upload to Supabase Storage
+      // 1. Upload to Supabase Storage
       const { error: storageError } = await supabase.storage
         .from("resumes")
         .upload(filePath, file, {
@@ -68,7 +68,7 @@ export default function UploadPage() {
 
       const fileUrl = urlData.publicUrl;
 
-      // 🟢 1. Create a guaranteed temporary slug so the initial insert never fails
+      // 🟢 Create a temporary slug so the initial insert succeeds
       const tempSlug = `user-${Math.floor(100000 + Math.random() * 900000)}`;
 
       const { data: insertedResume, error: dbError } = await supabase
@@ -94,7 +94,7 @@ export default function UploadPage() {
       setIsUploading(false);
       setIsAnalyzing(true);
 
-      // Step 5: Call the analyze API
+      // 2. Call the analyze API
       const analyzeResponse = await fetch("/api/analyze-resume", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -107,12 +107,12 @@ export default function UploadPage() {
         throw new Error(analyzeData.error ?? "Analysis failed");
       }
 
-      // 🟢 2. Safety Check: If AI failed to find a name, use the Clerk user name
+      // 🟢 2. Safety Check: If AI failed to find a name, use the Clerk user name as backup
       const aiParsedData = analyzeData.data;
       const finalName = aiParsedData?.name || user.fullName || "portfolio";
       const finalSlug = `${slugify(finalName)}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-      // 🟢 3. Final Database Sync: Update both the JSON data AND the final slug
+      // 🟢 3. Final Database Sync: Update both the JSON data AND the final unique slug
       const { error: updateError } = await supabase
         .from("resumes")
         .update({ 
@@ -123,12 +123,11 @@ export default function UploadPage() {
 
       if (updateError) throw updateError;
 
-      // 🟢 4. DELAY: Wait 2 seconds for the database to commit changes before redirecting
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // 🟢 4. THE DELAY FIX: Wait 2.5 seconds for the database and Vercel to sync before redirecting
+      setMessage({ type: "success", text: "Analysis complete! Generating your portfolio..." });
+      await new Promise((resolve) => setTimeout(resolve, 2500));
 
-      setMessage({ type: "success", text: "Analysis complete! Redirecting..." });
-
-      // Step 7: Redirect to the live link
+      // 3. Final Redirect to the live dynamic link
       router.push(`/${finalSlug}`);
 
     } catch (error) {
@@ -168,14 +167,13 @@ export default function UploadPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-lg md:p-12 hover:scale-[1.02] transition-transform"
+        className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-lg md:p-12"
       >
         <h1 className="mb-2 text-2xl font-bold text-white md:text-3xl">
-          Upload Your Resume
+          Generate Portfolio
         </h1>
         <p className="mb-8 text-zinc-400">
-          Drop your PDF resume below. We&apos;ll analyze it and generate your
-          portfolio.
+          Upload your PDF. Our AI will extract your skills and build your live site instantly.
         </p>
 
         <div
@@ -192,75 +190,30 @@ export default function UploadPage() {
             className="hidden"
           />
           {file ? (
-            <div className="flex flex-col items-center gap-2">
-              <FileText className="h-12 w-12 text-zinc-400" />
-              <p className="font-medium text-white">{file.name}</p>
-              <p className="text-sm text-zinc-500">
-                {(file.size / 1024).toFixed(1)} KB
-              </p>
+            <div className="flex flex-col items-center gap-2 text-center">
+              <FileText className="h-12 w-12 text-indigo-400" />
+              <p className="font-medium text-white max-w-[200px] truncate">{file.name}</p>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleUpload();
                 }}
                 disabled={isLoading}
-                className="mt-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 font-semibold text-white shadow-lg shadow-purple-500/25 transition-all hover:shadow-purple-500/40 disabled:opacity-50"
+                className="mt-6 rounded-full bg-indigo-600 px-8 py-3 font-bold text-white hover:bg-indigo-500 transition-all disabled:opacity-50"
               >
-                {isUploading ? (
-                  <span className="flex items-center gap-2">
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    Uploading...
-                  </span>
-                ) : isAnalyzing ? (
-                  <span className="flex items-center gap-2">
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    Analyzing...
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <Upload className="h-5 w-5" />
-                    Upload Now
-                  </span>
-                )}
+                {isUploading ? "Uploading..." : isAnalyzing ? "Analyzing..." : "Analyze Now"}
               </button>
             </div>
           ) : (
             <>
-              <Upload className="mb-4 h-14 w-14 text-zinc-500" />
-              <p className="mb-1 font-medium text-white">
-                Drop your PDF here or click to browse
-              </p>
-              <p className="text-sm text-zinc-500">
-                Only PDF files are supported
-              </p>
+              <Upload className="mb-4 h-12 w-12 text-zinc-500" />
+              <p className="text-white">Click or drag PDF here</p>
             </>
           )}
         </div>
 
-        {isLoading && (
-          <div className="mt-6">
-            <div className="mb-2 h-2 overflow-hidden rounded-full bg-white/10">
-              <div className="h-full w-full animate-pulse rounded-full bg-gradient-to-r from-blue-500 to-purple-600" />
-            </div>
-            <p className="text-center text-sm text-zinc-400">
-              {isUploading ? "Uploading..." : "Analyzing..."}
-            </p>
-          </div>
-        )}
-
         {message && (
-          <div
-            className={`mt-6 flex items-center gap-3 rounded-xl px-4 py-3 ${
-              message.type === "success"
-                ? "bg-emerald-500/10 text-emerald-400"
-                : "bg-red-500/10 text-red-400"
-            }`}
-          >
-            {message.type === "success" ? (
-              <CheckCircle2 className="h-5 w-5 shrink-0" />
-            ) : (
-              <XCircle className="h-5 w-5 shrink-0" />
-            )}
+          <div className={`mt-6 flex items-center gap-3 rounded-xl px-4 py-3 ${message.type === "success" ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"}`}>
             <p className="text-sm font-medium">{message.text}</p>
           </div>
         )}
