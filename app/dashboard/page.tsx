@@ -1,8 +1,5 @@
 "use client";
 
-// 🟢 STEP 3: Ensure the page always fetches fresh data from Supabase
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
