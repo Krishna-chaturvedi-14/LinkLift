@@ -2,30 +2,30 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 export const revalidate = 0;
 
-import { createClient } from "@supabase/supabase-js";
-// ... the rest of your imports
 import { notFound } from "next/navigation";
-import { motion } from "framer-motion"; 
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { motion } from "framer-motion";
 
 export default async function PublicPortfolio({ params }: { params: { slug: string } }) {
-  // 1. Fetch the resume data based on the unique slug
-  const { data: resume, error } = await supabase
-    .from("resumes")
-    .select("parsed_json, slug")
-    .eq("slug", params.slug)
-    .single();
+  // 🟢 FORCE FETCH FROM SUPABASE REST API TO BYPASS CACHE
+  // This bypasses the standard Supabase client and hits the DB directly
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/resumes?slug=eq.${params.slug}&select=parsed_json`,
+    {
+      headers: {
+        apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+      },
+      cache: 'no-store', // 🟢 CRITICAL: Never cache this request
+    }
+  );
 
-  if (!resume || error) {
+  const resumes = await res.json();
+  const resume = resumes[0];
+
+  if (!resume) {
     return notFound();
   }
 
-  // 🟢 STEP 1: Mapping AI Data to the Portfolio
-  // We extract all the structured data saved by the backend 'Safety Net' or Gemini
   const data = resume.parsed_json || {};
   const displayName = data.name || "Professional Candidate";
   const displayRole = data.role || "Software Engineer";
