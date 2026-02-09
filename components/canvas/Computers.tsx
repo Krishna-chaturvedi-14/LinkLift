@@ -35,7 +35,7 @@ const Computers = ({ isMobile }: { isMobile: boolean }) => {
             <group
                 position={[0, isMobile ? -2.5 : -3.25, -1.5]}
                 scale={isMobile ? 0.5 : 0.6}
-                rotation={[0, -0.2, 0]}
+                rotation={[0, 1.3, 0]}
             >
 
                 {/* --- DESK --- */}
