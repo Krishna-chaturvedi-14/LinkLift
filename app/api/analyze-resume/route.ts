@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     let parsedData: any = null;
 
     // 2. Model Loop
-    const modelsToTry = ["gemini-1.5-flash", "gemini-2.0-flash"];
+    const modelsToTry = ["gemini-1.5-flash", "gemini-pro"];
 
     for (const modelName of modelsToTry) {
       try {
