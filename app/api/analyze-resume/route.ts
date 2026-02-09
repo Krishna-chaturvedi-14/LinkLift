@@ -54,7 +54,8 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Model Loop
-    const modelsToTry = ["gemini-1.5-flash", "gemini-pro", "gemini-1.5-pro-latest"];
+    // Verified available models for this key: gemini-2.0-flash, gemini-flash-latest
+    const modelsToTry = ["gemini-2.0-flash", "gemini-flash-latest"];
 
     for (const modelName of modelsToTry) {
       try {
