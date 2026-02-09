@@ -115,33 +115,37 @@ export async function POST(req: NextRequest) {
     ${JSON.stringify(ex.output)}
     `).join("\n\n");
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+    // 🟢 MULTI-KEY ROTATION & MULTI-PROVIDER FALLBACK
+    const geminiKeys = (process.env.GEMINI_API_KEY || "").split(",").map(k => k.trim()).filter(Boolean);
+    const groqKey = process.env.GROQ_API_KEY;
 
-    for (const config of configsToTry) {
+    // --- PHASE 1: GOOGLE GEMINI (Multi-Key Rotation) ---
+    for (const apiKey of geminiKeys) {
       if (parsedData) break;
+      const genAI = new GoogleGenerativeAI(apiKey);
 
-      const modelName = config.name;
-      const apiVer = config.version;
+      for (const config of configsToTry) {
+        if (parsedData) break;
 
-      try {
-        console.log(`[AI] Attempting ${modelName} on ${apiVer} (Schema: ${config.useSchema}, JSON: ${config.jsonMode})...`);
+        const modelName = config.name;
+        const apiVer = config.version;
 
-        const genConfig: any = {};
-        if (config.jsonMode) {
-          genConfig.responseMimeType = "application/json";
-        }
-        if (config.useSchema) {
-          // @ts-ignore
-          genConfig.responseSchema = schema;
-        }
+        try {
+          console.log(`[AI] Attempting ${modelName} on ${apiVer} (Key: ...${apiKey.slice(-4)})...`);
 
-        // Pass apiVersion as the second argument (requestOptions)
-        const model = genAI.getGenerativeModel(
-          { model: modelName, safetySettings, generationConfig: genConfig },
-          { apiVersion: apiVer as any }
-        );
+          const genConfig: any = {};
+          if (config.jsonMode) genConfig.responseMimeType = "application/json";
+          if (config.useSchema) {
+            // @ts-ignore
+            genConfig.responseSchema = schema;
+          }
 
-        const prompt = `
+          const model = genAI.getGenerativeModel(
+            { model: modelName, safetySettings, generationConfig: genConfig },
+            { apiVersion: apiVer as any }
+          );
+
+          const prompt = `
           Analyze this resume and return strictly valid JSON. 
           You MUST include a "projects" array. If no projects exist, return [].
           
@@ -164,60 +168,109 @@ export async function POST(req: NextRequest) {
           ${examplesText}
         `;
 
-        const result = await model.generateContent(prompt);
-        const text = result.response.text();
-        const cleanedText = text.replace(/```json|```/g, "").trim();
+          const result = await model.generateContent(prompt);
+          const text = result.response.text();
+          const cleanedText = text.replace(/```json|```/g, "").trim();
 
-        try {
-          parsedData = JSON.parse(cleanedText);
-        } catch (parseErr) {
-          console.warn(`[AI] Parse error on ${modelName} (${apiVer}):`, cleanedText.slice(0, 300));
-          throw new Error("JSON Parse Error");
-        }
+          try {
+            parsedData = JSON.parse(cleanedText);
+          } catch (parseErr) {
+            console.warn(`[AI] Parse error on ${modelName} (${apiVer}):`, cleanedText.slice(0, 300));
+            throw new Error("JSON Parse Error");
+          }
 
-        if (parsedData) {
-          console.log(`[AI] Success with ${modelName} (${apiVer})!`);
-          break;
-        }
-      } catch (e: any) {
-        const errorMsg = e.message || "";
+          if (parsedData) {
+            console.log(`[AI] Success with Gemini ${modelName}!`);
+            break;
+          }
+        } catch (e: any) {
+          const errorMsg = e.message || "";
 
-        if (errorMsg.includes("429") || errorMsg.includes("Quota")) {
-          console.warn(`🚨 ${modelName} (${apiVer}) Quota Exceeded. Trying next config...`);
-          continue;
-        }
+          if (errorMsg.includes("429") || errorMsg.includes("Quota")) {
+            console.warn(`🚨 ${modelName} (${apiVer}) Quota Exceeded. Trying next config...`);
+            continue;
+          }
 
-        if (errorMsg.includes("404") || errorMsg.includes("not found")) {
-          console.warn(`❌ ${modelName} (${apiVer}) Not Found. Skipping...`);
-          continue;
-        }
+          if (errorMsg.includes("404") || errorMsg.includes("not found")) {
+            console.warn(`❌ ${modelName} (${apiVer}) Not Found. Skipping...`);
+            continue;
+          }
 
-        try {
-          console.warn(`[AI] ${modelName} (${apiVer}) config/parse error. Trying desperation mode...`);
-          const simpleModel = genAI.getGenerativeModel(
-            { model: modelName },
-            { apiVersion: apiVer as any }
-          );
-          const plainResult = await simpleModel.generateContent(`Return resume data as JSON. No markdown. Resume: ${resumeText.slice(0, 4000)}`);
-          const plainText = plainResult.response.text();
-          const cleanedPlain = plainText.replace(/```json|```/g, "").trim();
-          parsedData = JSON.parse(cleanedPlain);
-          if (parsedData) break;
-        } catch (innerE) {
-          console.warn(`[AI] ${modelName} (${apiVer}) complete failure.`);
+          try {
+            console.warn(`[AI] ${modelName} (${apiVer}) config/parse error. Trying desperation mode...`);
+            const simpleModel = genAI.getGenerativeModel(
+              { model: modelName },
+              { apiVersion: apiVer as any }
+            );
+            const plainResult = await simpleModel.generateContent(`Return resume data as JSON. No markdown. Resume: ${resumeText.slice(0, 4000)}`);
+            const plainText = plainResult.response.text();
+            const cleanedPlain = plainText.replace(/```json|```/g, "").trim();
+            parsedData = JSON.parse(cleanedPlain);
+            if (parsedData) break;
+          } catch (innerE) {
+            console.warn(`[AI] ${modelName} (${apiVer}) complete failure.`);
+          }
         }
       }
     }
 
-    // 3. THE SAFETY NET
+    // --- PHASE 2: GROQ FALLBACK (Llama 3.1 70B) ---
+    if (!parsedData && groqKey) {
+      try {
+        console.log("🚀 Gemini exhausted. Attempting Groq (Llama 3.1 70B)...");
+        const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${groqKey}`
+          },
+          body: JSON.stringify({
+            model: "llama-3.1-70b-versatile",
+            messages: [
+              { role: "system", content: "Extract resume data into JSON format." },
+              { role: "user", content: `Resume Text: ${resumeText.slice(0, 8000)}\n\nSchema: ${JSON.stringify(schema)}` }
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.1
+          })
+        });
+
+        const groqJson = await groqResponse.json();
+        const content = groqJson.choices?.[0]?.message?.content;
+        if (content) {
+          parsedData = JSON.parse(content);
+          console.log("✅ Success with Groq (Llama 3)!");
+        }
+      } catch (groqErr) {
+        console.error("❌ Groq fallback failed:", groqErr);
+      }
+    }
+
+    // --- PHASE 3: SMART REGEX FALLBACK (Local Identity Extraction) ---
+    let regexInfo: any = {};
     if (!parsedData) {
-      console.log("🚀 All AI models failed/quota-limited. Using High-Fidelity Safety Net.");
+      console.log("🕵️ AI exhausted. Attempting Regex extraction for personalization...");
+      const nameMatch = resumeText.match(/([A-Z][a-z]+ [A-Z][a-z]+)/);
+      const emailMatch = resumeText.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/);
+      const commonSkills = ["React", "JavaScript", "TypeScript", "Node", "Tailwind", "Python", "Java", "Next", "SQL"];
+      const foundSkills = commonSkills.filter(s => new RegExp(`\\b${s}\\b`, "i").test(resumeText));
+
+      regexInfo = {
+        name: nameMatch?.[0],
+        email: emailMatch?.[0],
+        skills: foundSkills.length > 0 ? foundSkills : null
+      };
+    }
+
+    // 3. THE SAFETY NET (Hydrated with Regex)
+    if (!parsedData) {
+      console.log("🚀 All AI models failed/quota-limited. Using Personalized Safety Net.");
       parsedData = {
-        name: "Professional Candidate",
+        name: regexInfo.name || "Professional Candidate",
         role: "Software Professional",
-        email: "hello@example.com",
+        email: regexInfo.email || "hello@example.com",
         bio: "Experienced developer focused on building scalable, user-centric digital solutions with modern technologies.",
-        skills: ["React", "TypeScript", "Node.js", "Tailwind", "Git"],
+        skills: regexInfo.skills || ["React", "TypeScript", "Node.js", "Tailwind", "Git"],
         experience: [
           {
             role: "Developer",
