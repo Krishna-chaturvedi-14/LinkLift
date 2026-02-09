@@ -14,6 +14,14 @@ import {
 import { ResumeData } from "@/lib/types";
 
 export default function TerminalPortfolio({ data }: { data: ResumeData }) {
+    const [mounted, setMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return <div className="min-h-screen bg-[#030303]" />;
+
     return (
         <div className="min-h-screen bg-[#030303] text-white selection:bg-indigo-500/30 overflow-x-hidden">
             {/* AMBIENT BACKGROUND */}

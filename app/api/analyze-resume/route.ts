@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     const response = await fetch(fileUrl);
     const buffer = Buffer.from(await response.arrayBuffer());
     const pdfData = await pdf(buffer);
-    const resumeText = pdfData.text.slice(0, 8000); // Increased to 8k to catch projects at the end
+    const resumeText = pdfData.text.slice(0, 10000); // Further increased to 10k to catch everything
 
     const safetySettings = [
       { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
@@ -95,12 +95,10 @@ export async function POST(req: NextRequest) {
     let parsedData: any = null;
 
     // 2. Model Loop
-    // 🟢 DIVERSE MODELS TO BEAT QUOTAS (Fixed 404 identifiers)
+    // 🟢 DIVERSE MODELS TO BEAT QUOTAS
     const modelsToTry = [
       "gemini-2.0-flash",
-      "gemini-1.5-flash-latest",
       "gemini-1.5-flash",
-      "gemini-1.5-pro-latest",
       "gemini-1.5-pro"
     ];
 
@@ -114,50 +112,71 @@ export async function POST(req: NextRequest) {
     `).join("\n\n");
 
     for (const modelName of modelsToTry) {
+      if (parsedData) break;
+
       try {
         console.log(`🤖 Attempting analysis with ${modelName}...`);
-        const model = genAI.getGenerativeModel({
-          model: modelName,
-          safetySettings,
-          generationConfig: {
-            // @ts-ignore
-            responseMimeType: "application/json",
-            // @ts-ignore
-            responseSchema: schema
+
+        // 🧪 PHASE 1: Try with strict schema (Mandatory projects)
+        try {
+          const model = genAI.getGenerativeModel({
+            model: modelName,
+            safetySettings,
+            generationConfig: {
+              responseMimeType: "application/json",
+              // @ts-ignore
+              responseSchema: schema
+            }
+          });
+
+          const result = await model.generateContent(`Analyze this resume: ${resumeText}. Help: ${examplesText}`);
+          const text = result.response.text();
+          parsedData = JSON.parse(text);
+          if (parsedData) {
+            console.log(`✅ Success with ${modelName} (Strict Schema)!`);
+            break;
           }
-        });
+        } catch (schemaErr: any) {
+          console.warn(`⚙️ Schema failed for ${modelName}, falling back to plain JSON mode...`);
 
-        const prompt = `
-          You are an expert AI Recruiter and Resume parser.
-          Your goal is to extract structured data from a resume text.
+          // 🧪 PHASE 2: Fallback to plain JSON mode (No schema)
+          const model = genAI.getGenerativeModel({
+            model: modelName,
+            safetySettings,
+            generationConfig: { responseMimeType: "application/json" }
+          });
 
-          CRITICAL: You MUST find the "Projects" section. If a person has built anything (even academic or personal), list it in "projects".
-          Do NOT confuse work experience with projects. Work experience goes in "experience". Side projects, Github repos, and personal work go in "projects".
+          const prompt = `
+            Analyze this resume and return a JSON object.
 
-          Here are some examples of perfect extraction:
-          ${examplesText}
+            STRUCTURE:
+            {
+              "name": "...",
+              "role": "...",
+              "skills": [...],
+              "experience": [{"role": "...", "company": "...", "description": "..."}],
+              "projects": [{"title": "...", "description": "...", "technologies": [...]}],
+              "score": 85
+            }
 
-          Now, analyze the following resume:
+            MUST extract projects if they exist.
 
-          Resume Text:
-          "${resumeText}"
-        `;
+            Resume:
+            "${resumeText}"
+          `;
 
-        const result = await model.generateContent(prompt);
-        const text = result.response.text();
-        parsedData = JSON.parse(text);
+          const result = await model.generateContent(prompt);
+          const text = result.response.text();
+          parsedData = JSON.parse(text.replace(/```json|```/g, "").trim());
 
-        if (parsedData) {
-          console.log(`✅ Success with ${modelName}!`);
-          break;
+          if (parsedData) {
+            console.log(`✅ Success with ${modelName} (Plain JSON)!`);
+            break;
+          }
         }
       } catch (e: any) {
         if (e.message?.includes("429") || e.message?.includes("Quota")) {
-          console.warn(`🚨 ${modelName} Quota Exceeded. Trying next model...`);
-          continue;
-        }
-        if (e.message?.includes("404") || e.message?.includes("not found")) {
-          console.warn(`❌ ${modelName} Not Found (404). Trying next model...`);
+          console.warn(`🚨 ${modelName} Quota Exceeded.`);
           continue;
         }
         console.warn(`⚠️ ${modelName} failed:`, e.message);
