@@ -31,15 +31,15 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                         </div>
                         <h1 className="text-7xl md:text-9xl font-bold tracking-tighter leading-[0.85] mb-10">
                             <span className="bg-gradient-to-r from-white via-indigo-400 to-purple-400 bg-clip-text text-transparent uppercase">
-                                {data.name}
+                                {data.name || "Creative Candidate"}
                             </span>
                         </h1>
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
                             <div className="md:col-span-8 space-y-6">
                                 <p className="text-3xl font-medium text-white italic">
-                                    I build digital value as an <span className="text-indigo-400">{data.role}</span>
+                                    I build digital value as an <span className="text-indigo-400">{data.role || "Professional"}</span>
                                 </p>
-                                <p className="text-zinc-500 text-xl leading-relaxed max-w-2xl">{data.bio}</p>
+                                <p className="text-zinc-500 text-xl leading-relaxed max-w-2xl">{data.bio || "Crafting digital experiences with precision and passion."}</p>
                             </div>
                         </div>
                     </motion.div>
@@ -112,7 +112,7 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
             </main>
 
             <footer className="border-t border-white/5 py-24 text-center text-zinc-600 font-mono text-xs tracking-widest uppercase italic">
-                Designed for Impact — © {new Date().getFullYear()} {data.name}
+                Designed for Impact — © {new Date().getFullYear()} {data.name || "Candidate"}
             </footer>
         </div>
     );

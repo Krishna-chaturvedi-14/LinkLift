@@ -28,7 +28,7 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
             <header className="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
                 <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
                     <div className="font-bold text-xl tracking-tight text-slate-800">
-                        {data.name.split(" ")[0]}<span className="text-rose-500">.</span>
+                        {(data.name || "Creative").split(" ")[0]}<span className="text-rose-500">.</span>
                     </div>
                     <nav className="hidden md:flex gap-8 text-sm font-medium text-slate-600">
                         <a href="#about" className="hover:text-rose-500 transition">About</a>
@@ -36,7 +36,7 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                         <a href="#projects" className="hover:text-rose-500 transition">Projects</a>
                         <a href="#contact" className="hover:text-rose-500 transition">Contact</a>
                     </nav>
-                    <a href={`mailto:${data.email}`} className="px-5 py-2 bg-rose-500 text-white rounded-full text-sm font-bold hover:bg-rose-600 transition shadow-lg shadow-rose-500/20">
+                    <a href={`mailto:${data.email || "hello@example.com"}`} className="px-5 py-2 bg-rose-500 text-white rounded-full text-sm font-bold hover:bg-rose-600 transition shadow-lg shadow-rose-500/20">
                         Let's Talk
                     </a>
                 </div>
@@ -53,14 +53,14 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                         className="space-y-6"
                     >
                         <div className="inline-block px-3 py-1 bg-rose-100 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase">
-                            {data.role}
+                            {data.role || "Professional"}
                         </div>
                         <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 leading-tight">
                             Hello, I'm <br />
-                            <span className="text-rose-500">{data.name}</span>
+                            <span className="text-rose-500">{data.name || "Candidate"}</span>
                         </h1>
                         <p className="text-lg text-slate-600 leading-relaxed max-w-lg">
-                            {data.bio}
+                            {data.bio || "Crafting digital experiences with precision and passion."}
                         </p>
                         <div className="flex gap-4 pt-4">
                             {data.email && (
@@ -68,7 +68,6 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                                     <Mail size={20} />
                                 </a>
                             )}
-                            {/* Add other social links if available in data later (e.g. detailed parse) */}
                         </div>
                     </motion.div>
 
@@ -187,11 +186,11 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                         <p className="text-slate-600 max-w-md mx-auto">
                             I'm currently available for freelance work or full-time opportunities.
                         </p>
-                        <a href={`mailto:${data.email}`} className="inline-block px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:bg-slate-800 transition shadow-xl shadow-slate-900/10">
+                        <a href={`mailto:${data.email || "hello@example.com"}`} className="inline-block px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:bg-slate-800 transition shadow-xl shadow-slate-900/10">
                             Get in Touch
                         </a>
                         <div className="pt-12 text-sm text-slate-400">
-                            © {new Date().getFullYear()} {data.name}. All rights reserved.
+                            © {new Date().getFullYear()} {data.name || "Candidate"}. All rights reserved.
                         </div>
                     </div>
                 </footer>

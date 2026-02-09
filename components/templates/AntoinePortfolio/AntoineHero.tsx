@@ -34,20 +34,24 @@ export const AntoineHero = ({ data }: { data: ResumeData }) => {
         ));
     };
 
+    const name = data.name || "Creative Professional";
+    const role = data.role || "Innovator & Developer";
+    const bio = data.bio || "Crafting digital experiences with precision and passion.";
+
     return (
         <section className="relative min-h-screen flex flex-col justify-between overflow-hidden antoine-theme pt-32 pb-10">
             <AWaves className="opacity-40" />
 
             <div className="container mx-auto px-6 relative z-10 flex-grow flex flex-col justify-center">
-                <BinarySeparator text={data.name.toUpperCase()} className="mb-12" />
+                <BinarySeparator text={name.toUpperCase()} className="mb-12" />
 
                 <h1 ref={titleRef} className="antoine-title mb-12">
                     <div className="overflow-hidden">
-                        {splitText(data.role.split(" ")[0] || "Creative")}
+                        {splitText(role.split(" ")[0] || "Creative")}
                     </div>
                     <div className="flex items-center gap-8 overflow-hidden">
                         <img src="/icons/favicon.svg" alt="" className="w-16 h-16 md:w-32 md:h-32 rotate-12" />
-                        <span>{splitText(data.role.split(" ").slice(1).join(" ") || "Developer")}</span>
+                        <span>{splitText(role.split(" ").slice(1).join(" ") || "Developer")}</span>
                     </div>
                 </h1>
 
@@ -56,7 +60,7 @@ export const AntoineHero = ({ data }: { data: ResumeData }) => {
 
             <div className="container mx-auto px-6 relative z-10 mt-auto">
                 <p className="max-w-2xl text-xl font-mono leading-tight uppercase">
-                    {data.bio}
+                    {bio}
                 </p>
             </div>
 

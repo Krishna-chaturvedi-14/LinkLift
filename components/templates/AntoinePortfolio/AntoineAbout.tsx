@@ -13,14 +13,14 @@ export const AntoineAbout = ({ data }: { data: ResumeData }) => {
                     </div>
                     <div className="lg:col-span-8 flex flex-col gap-12">
                         <div className="text-3xl md:text-5xl leading-[1.1] font-serif uppercase">
-                            {data.bio}
+                            {data.bio || "Crafting digital experiences with precision and passion."}
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
                             <div>
                                 <h3 className="text-sm font-mono uppercase mb-4 opacity-70">// Skills</h3>
                                 <ul className="flex flex-wrap gap-x-6 gap-y-2 uppercase text-2xl">
-                                    {data.skills.map((skill, i) => (
+                                    {(data.skills || []).map((skill, i) => (
                                         <li key={i} className="antoine-link">{skill}</li>
                                     ))}
                                 </ul>
@@ -28,7 +28,7 @@ export const AntoineAbout = ({ data }: { data: ResumeData }) => {
                             <div>
                                 <h3 className="text-sm font-mono uppercase mb-4 opacity-70">// Info</h3>
                                 <div className="space-y-4">
-                                    <p className="text-2xl uppercase">{data.email}</p>
+                                    <p className="text-2xl uppercase">{data.email || "hello@example.com"}</p>
                                     <p className="text-2xl uppercase">Based in Earth</p>
                                 </div>
                             </div>

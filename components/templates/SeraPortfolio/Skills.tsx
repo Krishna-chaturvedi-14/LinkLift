@@ -16,15 +16,17 @@ const SkillBadge = ({ skill }: { skill: string }) => (
 );
 
 export default function Skills({ data }: { data: ResumeData }) {
+    const skills = data.skills || [];
+
     // Map standard string skills to categories for visual appeal
     const categories = [
-        { title: "Frontend", icon: Layout, color: "text-blue-400", skills: data.skills.slice(0, 8) },
-        { title: "Backend", icon: Database, color: "text-green-400", skills: data.skills.slice(8, 14) },
-        { title: "Tools", icon: Wrench, color: "text-purple-400", skills: data.skills.slice(14) },
+        { title: "Frontend", icon: Layout, color: "text-blue-400", skills: skills.slice(0, 8) },
+        { title: "Backend", icon: Database, color: "text-green-400", skills: skills.slice(8, 14) },
+        { title: "Tools", icon: Wrench, color: "text-purple-400", skills: skills.slice(14) },
     ].filter(c => c.skills.length > 0);
 
     // Slugs for the globe - mapping common names to simple-icons slugs
-    const skillSlugs = data.skills.map(s => s.toLowerCase().replace(/\s+/g, '')).slice(0, 30);
+    const skillSlugs = skills.map(s => s.toLowerCase().replace(/\s+/g, '')).slice(0, 30);
 
     return (
         <section id="skills" className="py-20 text-white min-h-screen bg-[#04081A] relative">

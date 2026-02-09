@@ -13,7 +13,7 @@ export default function Projects({ data }: { data: ResumeData }) {
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    {data.projects.map((project, index) => (
+                    {(data.projects || []).map((project, index) => (
                         <motion.div
                             key={index}
                             whileHover={{ y: -10 }}
@@ -50,7 +50,7 @@ export default function Projects({ data }: { data: ResumeData }) {
                                 </p>
 
                                 <div className="flex flex-wrap gap-2 pt-4">
-                                    {project.technologies.map((tech, idx) => (
+                                    {(project.technologies || []).map((tech, idx) => (
                                         <span
                                             key={idx}
                                             className="text-xs font-bold uppercase tracking-wider px-3 py-1 bg-blue-500/10 text-blue-400 rounded-lg border border-blue-500/20"
