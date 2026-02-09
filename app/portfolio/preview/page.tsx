@@ -6,13 +6,13 @@ import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // 🟢 Added for redirecting to public link
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Download, 
-  Share2, 
-  Check, 
-  ArrowLeft, 
-  SlidersHorizontal, 
-  Rocket, 
+import {
+  Download,
+  Share2,
+  Check,
+  ArrowLeft,
+  SlidersHorizontal,
+  Rocket,
   Loader2,
   X,
   ArrowRight
@@ -79,16 +79,22 @@ export default function PortfolioPreview() {
 
     setIsDeploying(true);
     try {
-      // 🟢 Replace this with your actual Vercel Deploy Hook URL
-      const VERCEL_HOOK_URL = "Yhttps://api.vercel.com/v1/integrations/deploy/prj_YmpASJXnZPrYUuFNGciyxFmeeWH4/cDnQ1pdpe9";
+      // 🟢 Replace hardcoded URL with Environment Variable
+      const VERCEL_HOOK_URL = process.env.NEXT_PUBLIC_VERCEL_DEPLOY_HOOK;
+
+      if (!VERCEL_HOOK_URL) {
+        alert("Configuration Error: Missing Vercel Deploy Hook URL.\nPlease add NEXT_PUBLIC_VERCEL_DEPLOY_HOOK to your Vercel Environment Variables.");
+        throw new Error("Missing NEXT_PUBLIC_VERCEL_DEPLOY_HOOK");
+      }
+
       const response = await fetch(VERCEL_HOOK_URL, { method: "POST" });
-      
+
       if (response.ok) {
         alert("Launch Successful! Taking you to your live site...");
         // 🟢 Redirect to the public dynamic route: linklift.vercel.app/[slug]
         router.push(`/${userSlug}`);
       } else {
-        throw new Error();
+        throw new Error("Deploy Hook returned " + response.status);
       }
     } catch (err) {
       alert("Deployment failed. Please verify your Vercel Build Hook URL is pasted in the code.");
@@ -102,7 +108,7 @@ export default function PortfolioPreview() {
 
   return (
     <div className="min-h-screen bg-[#030303] text-white selection:bg-indigo-500/30 overflow-x-hidden">
-      
+
       {/* AMBIENT BACKGROUND */}
       <div className="fixed inset-0 -z-10 bg-[#030303]">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
@@ -111,7 +117,7 @@ export default function PortfolioPreview() {
 
       <nav className="fixed top-0 w-full z-50 bg-black/50 backdrop-blur-xl border-b border-white/5 h-16 flex items-center justify-between px-6">
         <div className="flex items-center gap-6">
-          <Link href="/dashboard" className="p-2 hover:bg-white/5 rounded-full transition"><ArrowLeft size={18}/></Link>
+          <Link href="/dashboard" className="p-2 hover:bg-white/5 rounded-full transition"><ArrowLeft size={18} /></Link>
           <div className="font-bold text-xl bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent uppercase tracking-tighter">
             {gV('name', data.name)}
           </div>
@@ -124,12 +130,12 @@ export default function PortfolioPreview() {
       </nav>
 
       <main className="max-w-7xl mx-auto px-6 pt-56 pb-32 space-y-64">
-        
+
         {/* HERO: NAME-FIRST */}
         <section className="space-y-12 text-center md:text-left">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-[10px] font-bold tracking-[0.3em] uppercase">
-               AVAILABLE FOR NEW OPPORTUNITIES
+              AVAILABLE FOR NEW OPPORTUNITIES
             </div>
             <h1 className="text-7xl md:text-9xl font-bold tracking-tighter leading-[0.85] mb-10">
               <span className="bg-gradient-to-r from-white via-indigo-400 to-purple-400 bg-clip-text text-transparent uppercase">
@@ -139,15 +145,15 @@ export default function PortfolioPreview() {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
               <div className="md:col-span-8 space-y-6">
                 <p className="text-3xl font-medium text-white italic">
-                   I build digital value as an <span className="text-indigo-400">{gV('role', data.role)}</span>
+                  I build digital value as an <span className="text-indigo-400">{gV('role', data.role)}</span>
                 </p>
                 <p className="text-zinc-500 text-xl leading-relaxed max-w-2xl">{gV('bio', data.bio)}</p>
               </div>
-              
+
               <div className="md:col-span-4 flex flex-col md:items-end gap-6">
                 <div className="flex gap-4">
-                  <button 
-                    onClick={() => window.open(fileUrl || "", "_blank")} 
+                  <button
+                    onClick={() => window.open(fileUrl || "", "_blank")}
                     className="p-5 rounded-full bg-white text-black hover:scale-110 transition"
                   >
                     <Download size={24} />
@@ -191,7 +197,7 @@ export default function PortfolioPreview() {
                   <p className="text-xl text-zinc-400 font-medium italic">{exp.role || exp.title}</p>
                   <p className="text-zinc-500 leading-relaxed text-lg max-w-2xl">{exp.description}</p>
                 </div>
-                <div className="md:col-span-2 hidden md:flex justify-end items-start pt-2"><span className="text-white/5 font-black text-6xl group-hover:text-indigo-500/10 transition-colors">0{i+1}</span></div>
+                <div className="md:col-span-2 hidden md:flex justify-end items-start pt-2"><span className="text-white/5 font-black text-6xl group-hover:text-indigo-500/10 transition-colors">0{i + 1}</span></div>
               </motion.div>
             ))}
           </div>
@@ -256,7 +262,7 @@ export default function PortfolioPreview() {
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setCustomizeOpen(false)} className="fixed inset-0 bg-black/70 backdrop-blur-md z-[60]" />
             <motion.aside initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} className="fixed right-0 top-0 h-full w-full max-w-lg bg-[#0a0a0f] border-l border-white/10 z-[70] p-12 overflow-y-auto flex flex-col shadow-2xl">
-              <div className="flex justify-between items-center mb-12 text-white"><div><h3 className="text-2xl font-bold">Portfolio CMS</h3><p className="text-xs text-zinc-500">Manual edits overwrite AI data.</p></div><button onClick={() => setCustomizeOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition"><X size={28}/></button></div>
+              <div className="flex justify-between items-center mb-12 text-white"><div><h3 className="text-2xl font-bold">Portfolio CMS</h3><p className="text-xs text-zinc-500">Manual edits overwrite AI data.</p></div><button onClick={() => setCustomizeOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition"><X size={28} /></button></div>
               <div className="space-y-12 flex-1">
                 <div className="space-y-6">
                   <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Hero & Identity</h4>
