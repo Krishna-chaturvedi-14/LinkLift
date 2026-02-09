@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useRef, useState, useMemo, Suspense, useEffect } from "react";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { Html, useTexture, Text } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Html, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { ResumeData } from "@/lib/types";
 
@@ -15,7 +15,6 @@ const PLANE_HEIGHT = 18;
 class LocalErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
     constructor(props: any) {
         super(props);
-        this.hasError = false;
         this.state = { hasError: false };
     }
     static getDerivedStateFromError() {
@@ -37,12 +36,7 @@ function PaintingContent({ index, project, scroll, totalWidth }: {
     const originalX = index * SPACING;
 
     // Fallback texture or color if image is missing
-    let texture = null;
-    try {
-        texture = project.image ? useTexture(project.image) as any : null;
-    } catch (e) {
-        console.error("Failed to load texture:", project.image);
-    }
+    const texture = project.image ? useTexture(project.image) as any : null;
 
     useFrame(() => {
         if (!groupRef.current) return;
@@ -210,9 +204,14 @@ function Header({ data }: { data: ResumeData }) {
 }
 
 export default function InfiniteGallery({ data }: { data: ResumeData }) {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const projects = data.projects || [];
 
-    // If no projects, provide placeholders for visual consistency
+    // Fallback placeholders
     const displayProjects = projects.length > 0 ? projects : [
         {
             title: "Project Alpha",
@@ -246,15 +245,19 @@ export default function InfiniteGallery({ data }: { data: ResumeData }) {
         },
     ];
 
+    if (!mounted) return <div className="h-screen w-full bg-[#050505]" />;
+
     return (
         <div className="h-screen w-full bg-[#050505] overflow-hidden">
             <Header data={data} />
 
             <Canvas camera={{ fov: 45, near: 0.1, far: 1000 }}>
                 <color attach="background" args={["#050505"]} />
-                <Suspense fallback={null}>
-                    <Gallery projects={displayProjects} />
-                </Suspense>
+                <LocalErrorBoundary>
+                    <Suspense fallback={null}>
+                        <Gallery projects={displayProjects} />
+                    </Suspense>
+                </LocalErrorBoundary>
             </Canvas>
 
             {/* Grain Overlay */}
