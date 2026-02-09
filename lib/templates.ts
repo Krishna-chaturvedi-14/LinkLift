@@ -11,6 +11,7 @@ export interface Template {
 
 import ThreeDPortfolio from "@/components/templates/ThreeDPortfolio";
 import SeraPortfolio from "@/components/templates/SeraPortfolio";
+import AntoinePortfolio from "@/components/templates/AntoinePortfolio";
 
 export const TEMPLATES: Record<string, Template> = {
     "default": {
@@ -22,21 +23,27 @@ export const TEMPLATES: Record<string, Template> = {
     "modern": {
         id: "modern",
         name: "Modern Clean",
-        thumbnail: "/templates/modern-thumb.png", // Placeholder
-        component: ModernPortfolio
+        component: ModernPortfolio,
+        thumbnail: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&q=80",
     },
     "3d": {
         id: "3d",
         name: "3D Interactive",
-        thumbnail: "/templates/3d-thumb.png", // Placeholder
-        component: ThreeDPortfolio
+        component: ThreeDPortfolio,
+        thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80",
     },
-    "sera": {
+    sera: {
         id: "sera",
         name: "Sera Universe",
-        thumbnail: "/templates/sera-thumb.png", // Placeholder
-        component: SeraPortfolio
-    }
+        component: SeraPortfolio,
+        thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+    },
+    antoine: {
+        id: "antoine",
+        name: "Antoine Bold",
+        component: AntoinePortfolio,
+        thumbnail: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&q=80",
+    },
 };
 
 export const DEFAULT_TEMPLATE_ID = "default";
