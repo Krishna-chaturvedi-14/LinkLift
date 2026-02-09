@@ -9,12 +9,14 @@ export interface Template {
     component: React.ComponentType<{ data: ResumeData }>;
 }
 
+import ThreeDPortfolio from "@/components/templates/ThreeDPortfolio";
+
 export const TEMPLATES: Record<string, Template> = {
     "default": {
         id: "default",
         name: "Terminal (Default)",
         thumbnail: "/templates/terminal-thumb.png", // Placeholder
-        component: () => null // We'll handle the default case specially or import the component later
+        component: () => null // We'll handle the default case in the page logic for now
     },
     "modern": {
         id: "modern",
@@ -26,7 +28,7 @@ export const TEMPLATES: Record<string, Template> = {
         id: "3d",
         name: "3D Interactive",
         thumbnail: "/templates/3d-thumb.png", // Placeholder
-        component: () => null // Placeholder until ported
+        component: ThreeDPortfolio
     }
 };
 

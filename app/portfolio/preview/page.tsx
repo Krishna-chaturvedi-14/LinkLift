@@ -128,6 +128,24 @@ export default function PortfolioPreview() {
     );
   }
 
+  // 🟢 3D TEMPLATE RENDERING
+  if (currentTemplateId === '3d') {
+    return (
+      <div className="relative">
+        <nav className="fixed top-4 right-4 z-[200] flex gap-2">
+          <Link href="/portfolio/select-template" className="px-4 py-2 bg-black/80 backdrop-blur-md rounded-full text-white text-xs font-bold hover:bg-black transition flex items-center gap-2 border border-white/20 shadow-2xl">
+            <Layout size={14} /> Change Template
+          </Link>
+          <button onClick={handleDeploy} disabled={isDeploying} className="px-4 py-2 bg-indigo-600 rounded-full text-white text-xs font-bold hover:bg-indigo-700 transition flex items-center gap-2 shadow-lg">
+            {isDeploying ? <Loader2 size={12} className="animate-spin" /> : <Rocket size={12} />}
+            Deploy Live
+          </button>
+        </nav>
+        <TEMPLATES["3d"].component data={data} />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#030303] text-white selection:bg-indigo-500/30 overflow-x-hidden">
 
@@ -262,7 +280,7 @@ export default function PortfolioPreview() {
               <p className="text-zinc-500">Last login: {new Date().toLocaleDateString()} on ttys001</p>
               <div className="space-y-2 pt-4">
                 <p className="text-white flex gap-3"><span className="text-emerald-500">➜</span><span>ls expertise/</span></p>
-                <p className="flex flex-wrap gap-x-6 gap-y-1 text-zinc-400">{data.skills?.slice(0, 8).map((s: string) => <span key={s}>{s.toLowerCase()}.sh</span>)}</p>
+                <p className="flex flex-wrap gap-x-6 gap-y-1 text-zinc-400">{(data.skills || []).slice(0, 8).map((s: string) => <span key={s}>{s.toLowerCase()}.sh</span>)}</p>
               </div>
               <div className="space-y-2 pt-4">
                 <p className="text-white flex gap-3"><span className="text-emerald-500">➜</span><span>cat bio.txt</span></p>
