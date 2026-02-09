@@ -80,11 +80,11 @@ export default function PortfolioPreview() {
     setIsDeploying(true);
     try {
       // 🟢 Replace hardcoded URL with Environment Variable
-      const VERCEL_HOOK_URL = process.env.NEXT_PUBLIC_VERCEL_DEPLOY_HOOK;
+      const VERCEL_HOOK_URL = process.env.NEXT_PUBLIC_VERCEL_BUILD_HOOK;
 
       if (!VERCEL_HOOK_URL) {
-        alert("Configuration Error: Missing Vercel Deploy Hook URL.\nPlease add NEXT_PUBLIC_VERCEL_DEPLOY_HOOK to your Vercel Environment Variables.");
-        throw new Error("Missing NEXT_PUBLIC_VERCEL_DEPLOY_HOOK");
+        alert("Configuration Error: Missing Vercel Deploy Hook URL.\nPlease add NEXT_PUBLIC_VERCEL_BUILD_HOOK to your Vercel Environment Variables.");
+        throw new Error("Missing NEXT_PUBLIC_VERCEL_BUILD_HOOK");
       }
 
       const response = await fetch(VERCEL_HOOK_URL, { method: "POST" });
