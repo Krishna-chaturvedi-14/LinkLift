@@ -103,7 +103,7 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                             </div>
                             <div className="space-y-2 pt-4">
                                 <p className="text-white flex gap-3"><span className="text-emerald-500">➜</span><span>cat bio.txt</span></p>
-                                <p className="text-emerald-400/70 leading-relaxed italic">"{data.bio}"</p>
+                                <p className="text-emerald-400/70 leading-relaxed italic">"{data.bio || "Crafting digital experiences."}"</p>
                             </div>
                             <div className="pt-4 flex gap-3"><span className="text-emerald-500 animate-pulse">➜</span><span className="w-2 h-5 bg-emerald-500 animate-pulse" /></div>
                         </div>

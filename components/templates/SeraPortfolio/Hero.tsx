@@ -102,7 +102,7 @@ const profile = {
                             <span className="relative inline-block text-white">
                                 I&apos;m{" "}
                                 <span className="typing-effect gradient-text">
-                                    {data.name}
+                                    {data.name || "Creative Professional"}
                                 </span>
                             </span>
                         </h1>
@@ -117,7 +117,7 @@ const profile = {
 
                     <div className="relative mb-8 sm:mb-12 max-w-xl">
                         <p className="text-base sm:text-xl text-gray-300/90 leading-relaxed">
-                            {data.bio}
+                            {data.bio || "Crafting digital experiences with precision and passion."}
                         </p>
                     </div>
 

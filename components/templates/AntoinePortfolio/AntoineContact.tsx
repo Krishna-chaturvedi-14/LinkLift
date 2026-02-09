@@ -11,13 +11,13 @@ export const AntoineContact = ({ data }: { data: ResumeData }) => {
                     Available for freelance work
                 </p>
                 <a
-                    href={`mailto:${data.email}`}
+                    href={`mailto:${data.email || "hello@example.com"}`}
                     className="antoine-title block hover:italic transition-all duration-500 hover:scale-105"
                 >
                     Let's Chat
                 </a>
                 <div className="mt-24 flex flex-col md:flex-row justify-between items-center border-t border-current pt-12 gap-8">
-                    <p className="text-2xl font-serif">© 2025 {data.name}</p>
+                    <p className="text-2xl font-serif">© 2025 {data.name || "Candidate"}</p>
                     <div className="flex gap-12 font-mono uppercase text-sm">
                         <a href="#" className="antoine-link">LinkedIn</a>
                         <a href="#" className="antoine-link">Github</a>

@@ -19,7 +19,7 @@ export default function Experience({ data }: { data: ResumeData }) {
                 </div>
 
                 <div className="max-w-4xl mx-auto space-y-12">
-                    {data.experience.map((exp, index) => (
+                    {(data.experience || []).map((exp, index) => (
                         <div key={index} className="group relative">
                             {/* Glass morphism card */}
                             <div className="absolute inset-0 backdrop-blur-lg bg-white/5 rounded-2xl -z-10" />

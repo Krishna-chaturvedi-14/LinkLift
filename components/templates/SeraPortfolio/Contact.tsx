@@ -26,7 +26,7 @@ export default function Contact({ data }: { data: ResumeData }) {
                                     </div>
                                     <div>
                                         <h3 className="text-gray-400 text-sm font-bold uppercase tracking-widest">Email</h3>
-                                        <p className="text-white font-medium">{data.email}</p>
+                                        <p className="text-white font-medium">{data.email || "hello@example.com"}</p>
                                     </div>
                                 </div>
 
