@@ -181,6 +181,27 @@ export default function PortfolioPreview() {
                     </div>
                   ))}
                 </div>
+
+                <div className="space-y-4">
+                  <h4 className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em]">Projects</h4>
+                  {gV('projects', data.projects)?.slice(0, 3).map((proj: any, i: number) => (
+                    <div key={i} className="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-3">
+                      <input value={proj.title} onChange={(e) => { const n = [...gV('projects', data.projects)]; n[i].title = e.target.value; updateField('projects', n); }} className="w-full bg-transparent border-b border-white/10 text-white font-bold text-sm" placeholder="Project Title" />
+                      <textarea value={proj.description} onChange={(e) => { const n = [...gV('projects', data.projects)]; n[i].description = e.target.value; updateField('projects', n); }} rows={2} className="w-full bg-transparent text-xs text-zinc-500 resize-none" placeholder="Project Description" />
+                    </div>
+                  ))}
+                  {(!gV('projects', data.projects) || gV('projects', data.projects).length === 0) && (
+                    <button
+                      onClick={() => {
+                        const newProjects = [{ title: "New Project", description: "Describe your project here...", technologies: [] }];
+                        updateField('projects', newProjects);
+                      }}
+                      className="w-full py-3 border border-dashed border-white/20 rounded-2xl text-[10px] text-zinc-500 uppercase tracking-widest hover:border-indigo-500/50 hover:text-white transition-all"
+                    >
+                      + Add First Project
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="sticky bottom-0 bg-[#0a0a0f] pt-6 pb-2 border-t border-white/5 mt-10">

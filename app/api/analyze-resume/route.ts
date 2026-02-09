@@ -99,6 +99,14 @@ export async function POST(req: NextRequest) {
         experience: [
           { role: "Software Engineer", company: "LinkLift Tech", duration: "Present", description: "Developing AI-powered portfolio generators." }
         ],
+        projects: [
+          {
+            title: "Project LinkLift",
+            description: "An AI-powered portfolio generator that turns resumes into stunning websites.",
+            technologies: ["React", "Next.js", "Gemini AI"],
+            link: "https://linklift.vercel.app"
+          }
+        ],
         suggestions: [
           { area: "Impact", issue: "Action verbs", advice: "Start bullet points with strong verbs like 'Directed' or 'Optimized'." },
           { area: "Skills", issue: "Tailoring", advice: "Include keywords from your target job description to pass ATS filters." },
@@ -116,6 +124,11 @@ export async function POST(req: NextRequest) {
     // Ensure suggestions exist so the dashboard mapping doesn't crash
     if (!parsedData.suggestions || !Array.isArray(parsedData.suggestions)) {
       parsedData.suggestions = [];
+    }
+
+    // 🟢 ENSURE PROJECTS EXIST
+    if (!parsedData.projects || !Array.isArray(parsedData.projects)) {
+      parsedData.projects = [];
     }
 
     // 5. Final DB Update

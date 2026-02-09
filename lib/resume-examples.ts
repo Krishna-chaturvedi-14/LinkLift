@@ -37,6 +37,14 @@ export const RESUME_EXAMPLES = [
                     description: "Built frontend components using React and Redux."
                 }
             ],
+            projects: [
+                {
+                    title: "AI Chatbot",
+                    description: "Developed an AI-powered customer support bot using OpenAI API and Next.js.",
+                    technologies: ["Next.js", "OpenAI", "TailwindCSS"],
+                    link: "https://github.com/johndoe/ai-chatbot"
+                }
+            ],
             suggestions: [
                 { area: "Impact", issue: "quantifiable results", advice: "Good job using numbers (40%). Add more metrics to the Junior Dev role." }
             ]
@@ -56,6 +64,9 @@ export const RESUME_EXAMPLES = [
     
     UX Designer at Creative Studio (2016 - 2018)
     Designed wireframes for e-commerce clients.
+
+    Projects:
+    E-commerce Redesign: Led the UX research for a major retailer, resulting in 20% increase in conversion.
 
     Core Competencies:
     Agile, Scrum, Figma, Jira, User Research
@@ -78,6 +89,13 @@ export const RESUME_EXAMPLES = [
                     company: "Creative Studio",
                     duration: "2016 - 2018",
                     description: "Designed wireframes for e-commerce clients."
+                }
+            ],
+            projects: [
+                {
+                    title: "E-commerce Redesign",
+                    description: "Led the UX research for a major retailer, resulting in 20% increase in conversion.",
+                    technologies: ["User Research", "Figma"],
                 }
             ],
             suggestions: [
