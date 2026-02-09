@@ -95,11 +95,12 @@ export async function POST(req: NextRequest) {
     let parsedData: any = null;
 
     // 2. Model Loop
-    // 🟢 DIVERSE MODELS TO BEAT QUOTAS
+    // 🟢 DIVERSE MODELS TO BEAT QUOTAS (Fixed 404 identifiers)
     const modelsToTry = [
       "gemini-2.0-flash",
+      "gemini-1.5-flash-latest",
       "gemini-1.5-flash",
-      "gemini-1.5-flash-8b",
+      "gemini-1.5-pro-latest",
       "gemini-1.5-pro"
     ];
 
@@ -127,17 +128,17 @@ export async function POST(req: NextRequest) {
         });
 
         const prompt = `
-          You are an expert AI Recruiter and Resume parser. 
+          You are an expert AI Recruiter and Resume parser.
           Your goal is to extract structured data from a resume text.
-          
+
           CRITICAL: You MUST find the "Projects" section. If a person has built anything (even academic or personal), list it in "projects".
           Do NOT confuse work experience with projects. Work experience goes in "experience". Side projects, Github repos, and personal work go in "projects".
-          
+
           Here are some examples of perfect extraction:
           ${examplesText}
 
           Now, analyze the following resume:
-          
+
           Resume Text:
           "${resumeText}"
         `;
@@ -152,10 +153,14 @@ export async function POST(req: NextRequest) {
         }
       } catch (e: any) {
         if (e.message?.includes("429") || e.message?.includes("Quota")) {
-          console.warn(`🚨 ${modelName} Quota Exceeded. Trying next model immediately...`);
-          continue; // Skip to next model without long delay to avoid Vercel timeout
+          console.warn(`🚨 ${modelName} Quota Exceeded. Trying next model...`);
+          continue;
         }
-        console.warn(`⚠️ ${modelName} failed for other reason:`, e.message);
+        if (e.message?.includes("404") || e.message?.includes("not found")) {
+          console.warn(`❌ ${modelName} Not Found (404). Trying next model...`);
+          continue;
+        }
+        console.warn(`⚠️ ${modelName} failed:`, e.message);
       }
     }
 
