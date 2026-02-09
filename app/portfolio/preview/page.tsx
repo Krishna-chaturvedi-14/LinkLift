@@ -114,13 +114,13 @@ export default function PortfolioPreview() {
   if (currentTemplateId === 'modern') {
     return (
       <div className="relative">
-        <nav className="fixed top-4 right-4 z-[60] flex gap-2">
-          <Link href="/portfolio/select-template" className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-full text-white text-xs font-bold hover:bg-black/70 transition flex items-center gap-2 border border-white/10">
+        <nav className="fixed top-4 right-4 z-[200] flex gap-2">
+          <Link href="/portfolio/select-template" className="px-4 py-2 bg-black/80 backdrop-blur-md rounded-full text-white text-xs font-bold hover:bg-black transition flex items-center gap-2 border border-white/20 shadow-2xl">
             <Layout size={14} /> Change Template
           </Link>
           <button onClick={handleDeploy} disabled={isDeploying} className="px-4 py-2 bg-indigo-600 rounded-full text-white text-xs font-bold hover:bg-indigo-700 transition flex items-center gap-2 shadow-lg">
             {isDeploying ? <Loader2 size={12} className="animate-spin" /> : <Rocket size={12} />}
-            Deploy
+            Deploy Live
           </button>
         </nav>
         <TEMPLATES.modern.component data={data} />
@@ -137,7 +137,7 @@ export default function PortfolioPreview() {
         <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[30%] bg-purple-500/10 blur-[120px] rounded-full" />
       </div>
 
-      <nav className="fixed top-0 w-full z-50 bg-black/50 backdrop-blur-xl border-b border-white/5 h-16 flex items-center justify-between px-6">
+      <nav className="fixed top-0 w-full z-[200] bg-[#030303] border-b border-white/5 h-16 flex items-center justify-between px-6 shadow-2xl">
         <div className="flex items-center gap-6">
           <Link href="/dashboard" className="p-2 hover:bg-white/5 rounded-full transition"><ArrowLeft size={18} /></Link>
           <div className="font-bold text-xl bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent uppercase tracking-tighter">
