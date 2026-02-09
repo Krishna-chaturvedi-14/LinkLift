@@ -95,7 +95,13 @@ export async function POST(req: NextRequest) {
     let parsedData: any = null;
 
     // 2. Model Loop
-    const modelsToTry = ["gemini-2.0-flash", "gemini-1.5-pro"]; // Pro is better at deep extraction if flash misses
+    // 🟢 DIVERSE MODELS TO BEAT QUOTAS
+    const modelsToTry = [
+      "gemini-2.0-flash",
+      "gemini-1.5-flash",
+      "gemini-1.5-flash-8b",
+      "gemini-1.5-pro"
+    ];
 
     // 🟢 FEW-SHOT PROMPT CONSTRUCTION
     const examplesText = RESUME_EXAMPLES.map((ex, i) => `
@@ -140,14 +146,16 @@ export async function POST(req: NextRequest) {
         const text = result.response.text();
         parsedData = JSON.parse(text);
 
-        if (parsedData && parsedData.projects && parsedData.projects.length > 0) {
-          console.log(`✅ Success with ${modelName}! Extracted ${parsedData.projects.length} projects.`);
+        if (parsedData) {
+          console.log(`✅ Success with ${modelName}!`);
           break;
-        } else if (parsedData) {
-          console.log(`⚠️ ${modelName} returned data but no projects. Trying next model...`);
         }
       } catch (e: any) {
-        console.warn(`⚠️ ${modelName} failed:`, e.message);
+        if (e.message?.includes("429") || e.message?.includes("Quota")) {
+          console.warn(`🚨 ${modelName} Quota Exceeded. Trying next model immediately...`);
+          continue; // Skip to next model without long delay to avoid Vercel timeout
+        }
+        console.warn(`⚠️ ${modelName} failed for other reason:`, e.message);
       }
     }
 
