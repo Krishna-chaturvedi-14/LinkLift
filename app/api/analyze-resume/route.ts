@@ -97,12 +97,12 @@ export async function POST(req: NextRequest) {
     // 🟢 DIVERSE MODELS & API VERSIONS TO BEAT 404/429
     const configsToTry = [
       { name: "gemini-2.0-flash", version: "v1beta", useSchema: true, jsonMode: true },
-      { name: "gemini-1.5-flash", version: "v1beta", useSchema: true, jsonMode: true },
-      { name: "gemini-1.5-flash-8b", version: "v1beta", useSchema: true, jsonMode: true },
-      { name: "gemini-1.5-pro", version: "v1beta", useSchema: true, jsonMode: true },
-      { name: "gemini-1.5-flash", version: "v1", useSchema: false, jsonMode: true },
-      { name: "gemini-1.5-flash-8b", version: "v1", useSchema: false, jsonMode: true },
-      { name: "gemini-1.5-pro", version: "v1", useSchema: false, jsonMode: true },
+      { name: "gemini-1.5-flash-latest", version: "v1beta", useSchema: true, jsonMode: true },
+      { name: "gemini-1.5-flash-002", version: "v1beta", useSchema: true, jsonMode: true },
+      { name: "gemini-1.5-flash-8b-latest", version: "v1beta", useSchema: true, jsonMode: true },
+      { name: "gemini-1.5-pro-latest", version: "v1beta", useSchema: true, jsonMode: true },
+      { name: "gemini-1.5-flash-latest", version: "v1", useSchema: false, jsonMode: true },
+      { name: "gemini-1.5-pro-latest", version: "v1", useSchema: false, jsonMode: true },
       { name: "gemini-pro", version: "v1", useSchema: false, jsonMode: false }
     ];
 
@@ -119,6 +119,8 @@ export async function POST(req: NextRequest) {
     const geminiKeys = (process.env.GEMINI_API_KEY || "").split(",").map(k => k.trim()).filter(Boolean);
     const groqKey = process.env.GROQ_API_KEY;
 
+    console.log(`[AI] Checking Providers... Gemini Keys: ${geminiKeys.length}, Groq Key: ${groqKey ? "Set ✅" : "Missing ❌"}`);
+
     // --- PHASE 1: GOOGLE GEMINI (Multi-Key Rotation) ---
     for (const apiKey of geminiKeys) {
       if (parsedData) break;
@@ -134,7 +136,9 @@ export async function POST(req: NextRequest) {
           console.log(`[AI] Attempting ${modelName} on ${apiVer} (Key: ...${apiKey.slice(-4)})...`);
 
           const genConfig: any = {};
-          if (config.jsonMode) genConfig.responseMimeType = "application/json";
+          if (config.jsonMode && apiVer === "v1beta") {
+            genConfig.responseMimeType = "application/json";
+          }
           if (config.useSchema) {
             // @ts-ignore
             genConfig.responseSchema = schema;
