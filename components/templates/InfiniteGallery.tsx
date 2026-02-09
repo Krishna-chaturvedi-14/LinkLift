@@ -183,11 +183,36 @@ export default function InfiniteGallery({ data }: { data: ResumeData }) {
 
     // If no projects, provide placeholders for visual consistency
     const displayProjects = projects.length > 0 ? projects : [
-        { title: "Project Alpha", description: "Immersive 3D Experience", technologies: ["Three.js", "React"] },
-        { title: "Beta Platform", description: "Full-stack Innovation", technologies: ["Next.js", "Tailwind"] },
-        { title: "Gamma System", description: "Design Orchestration", technologies: ["GSAP", "Framer"] },
-        { title: "Delta Module", description: "Cloud Infrastructure", technologies: ["AWS", "Node"] },
-        { title: "Epsilon Core", description: "Architectural Clarity", technologies: ["Postgres", "Redis"] },
+        {
+            title: "Project Alpha",
+            description: "Immersive 3D Experience",
+            technologies: ["Three.js", "React"],
+            image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80"
+        },
+        {
+            title: "Beta Platform",
+            description: "Full-stack Innovation",
+            technologies: ["Next.js", "Tailwind"],
+            image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&q=80"
+        },
+        {
+            title: "Gamma System",
+            description: "Design Orchestration",
+            technologies: ["GSAP", "Framer"],
+            image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80"
+        },
+        {
+            title: "Delta Module",
+            description: "Cloud Infrastructure",
+            technologies: ["AWS", "Node"],
+            image: "https://images.unsplash.com/photo-1460666819451-e16104c8605c?w=800&q=80"
+        },
+        {
+            title: "Epsilon Core",
+            description: "Architectural Clarity",
+            technologies: ["Postgres", "Redis"],
+            image: "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=800&q=80"
+        },
     ];
 
     return (
