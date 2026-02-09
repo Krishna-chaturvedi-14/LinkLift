@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 
 // @ts-ignore
 import pdf from "pdf-parse";
+import { RESUME_EXAMPLES } from "@/lib/resume-examples";
 
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 
@@ -41,47 +42,46 @@ export async function POST(req: NextRequest) {
 
     let parsedData: any = null;
 
-    // 🔍 DEBUG: List available models to see what the key has access to
-    try {
-      // @ts-ignore
-      if (genAI.listModels) {
-        // @ts-ignore
-        const models = await genAI.listModels();
-        console.log("Items available:", models);
-      }
-    } catch (debugError) {
-      console.log("Debug listModels failed (expected if method doesn't exist on this SDK version)", debugError);
-    }
-
     // 2. Model Loop
     // Verified available models for this key: gemini-2.0-flash, gemini-flash-latest
     const modelsToTry = ["gemini-2.0-flash", "gemini-flash-latest"];
 
+    // 🟢 FEW-SHOT PROMPT CONSTRUCTION
+    const examplesText = RESUME_EXAMPLES.map((ex, i) => `
+    Example ${i + 1} Input:
+    ${ex.input}
+
+    Example ${i + 1} Output (JSON):
+    ${JSON.stringify(ex.output)}
+    `).join("\n\n");
+
     for (const modelName of modelsToTry) {
       try {
         console.log(`🤖 Attempting analysis with ${modelName}...`);
-        const model = genAI.getGenerativeModel({ model: modelName, safetySettings });
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          safetySettings,
+          generationConfig: { responseMimeType: "application/json" } // 🟢 FORCE JSON MODE
+        });
 
         const prompt = `
-          You are an expert recruiter. Extract structured data from the resume.
-          Return STRICTLY valid JSON with this shape:
-          {
-            "name": "string",
-            "role": "string",
-            "email": "string",
-            "skills": ["string"],
-            "score": number,
-            "experience": [{ "role": "string", "company": "string", "duration": "string", "description": "string" }],
-            "suggestions": [{ "area": "string", "issue": "string", "advice": "string" }]
-          }
-          Resume text: ${resumeText}
+          You are an expert AI Recruiter and Resume parser. 
+          Your goal is to extract structured data from a resume text and provide actionable advice.
+          
+          Here are some examples of how to do it correctly:
+          ${examplesText}
+
+          Now, analyze the following resume and return strictly valid JSON.
+          
+          Resume Text:
+          "${resumeText}"
         `;
 
         const result = await model.generateContent(prompt);
-        const text = result.response.text().replace(/```json|```/g, "").trim();
-        parsedData = JSON.parse(text);
-        if (parsedData) break;
+        const text = result.response.text(); // No need to regex remove markdown if using responseMimeType (usually), but keeping safety clean just in case
+        parsedData = JSON.parse(text.replace(/```json|```/g, "").trim());
 
+        if (parsedData) break;
       } catch (e: any) {
         console.warn(`⚠️ ${modelName} failed:`, e.message);
       }
