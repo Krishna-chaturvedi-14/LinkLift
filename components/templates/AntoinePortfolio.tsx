@@ -2,11 +2,11 @@
 
 import React, { useEffect } from "react";
 import Lenis from "lenis";
-import { ResumeData } from "../../lib/types";
-import { AntoineHero } from "./SeraPortfolio/AntoineHero";
-import { AntoineAbout } from "./SeraPortfolio/AntoineAbout";
-import { AntoineWork } from "./SeraPortfolio/AntoineWork";
-import { AntoineContact } from "./SeraPortfolio/AntoineContact";
+import { ResumeData } from "@/lib/types";
+import { AntoineHero } from "./AntoinePortfolio/AntoineHero";
+import { AntoineAbout } from "./AntoinePortfolio/AntoineAbout";
+import { AntoineWork } from "./AntoinePortfolio/AntoineWork";
+import { AntoineContact } from "./AntoinePortfolio/AntoineContact";
 import "./antoine-portfolio.css";
 
 export default function AntoinePortfolio({ data }: { data: ResumeData }) {

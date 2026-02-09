@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ResumeData } from "../../../lib/types";
+import { ResumeData } from "@/lib/types";
 
 export const AntoineContact = ({ data }: { data: ResumeData }) => {
     return (

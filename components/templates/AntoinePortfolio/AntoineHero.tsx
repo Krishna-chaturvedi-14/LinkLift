@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { AWaves } from "../../ui/antoine/waves";
 import { BinarySeparator } from "../../ui/antoine/binary-separator";
-import { ResumeData } from "../../../lib/types";
+import { ResumeData } from "@/lib/types";
 
 export const AntoineHero = ({ data }: { data: ResumeData }) => {
     const titleRef = useRef<HTMLHeadingElement>(null);

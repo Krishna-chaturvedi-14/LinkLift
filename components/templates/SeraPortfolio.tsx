@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ResumeData } from "../../lib/types";
+import { ResumeData } from "@/lib/types";
 import Header from "./SeraPortfolio/Header";
 import Hero from "./SeraPortfolio/Hero";
 import Skills from "./SeraPortfolio/Skills";

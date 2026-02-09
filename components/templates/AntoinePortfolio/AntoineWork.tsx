@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ResumeData } from "../../../lib/types";
+import { ResumeData } from "@/lib/types";
 import { ArrowUpRight } from "lucide-react";
 
 export const AntoineWork = ({ data }: { data: ResumeData }) => {
