@@ -41,8 +41,20 @@ export async function POST(req: NextRequest) {
 
     let parsedData: any = null;
 
+    // 🔍 DEBUG: List available models to see what the key has access to
+    try {
+      // @ts-ignore
+      if (genAI.listModels) {
+        // @ts-ignore
+        const models = await genAI.listModels();
+        console.log("Items available:", models);
+      }
+    } catch (debugError) {
+      console.log("Debug listModels failed (expected if method doesn't exist on this SDK version)", debugError);
+    }
+
     // 2. Model Loop
-    const modelsToTry = ["gemini-1.5-flash-002", "gemini-1.5-pro-002"];
+    const modelsToTry = ["gemini-1.5-flash", "gemini-pro", "gemini-1.5-pro-latest"];
 
     for (const modelName of modelsToTry) {
       try {
