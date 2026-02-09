@@ -4,15 +4,15 @@
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { 
-  Globe, 
-  Loader2, 
-  Sparkles, 
-  AlertTriangle, 
-  Lightbulb, 
-  Rocket, 
-  Plus, 
-  User 
+import {
+  Globe,
+  Loader2,
+  Sparkles,
+  AlertTriangle,
+  Lightbulb,
+  Rocket,
+  Plus,
+  User
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
@@ -56,7 +56,7 @@ export default function DashboardPage() {
   useEffect(() => {
     async function fetchLatestResume() {
       if (!user?.id) return;
-      
+
       const { data, error } = await supabase
         .from("resumes")
         .select("*")
@@ -64,13 +64,13 @@ export default function DashboardPage() {
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle();
-      
+
       if (error) console.error("Supabase error:", error.message);
-      
+
       setResume(data);
       setLoading(false);
     }
-    
+
     if (userLoaded) {
       fetchLatestResume();
     }
@@ -90,20 +90,20 @@ export default function DashboardPage() {
   const displayScore = parsed.score || 85; // Fallback score if needed
 
   if (!resume || !resume.parsed_json) return (
-     <div className="min-h-screen flex flex-col items-center justify-center bg-[#05050A] gap-6">
-        <h2 className="text-2xl font-bold">No Analysis Found</h2>
-        <Link href="/upload" className="px-8 py-4 bg-indigo-600 rounded-full font-bold hover:bg-indigo-500 transition-all">
-          Upload Resume to Start
-        </Link>
-     </div>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#05050A] gap-6">
+      <h2 className="text-2xl font-bold">No Analysis Found</h2>
+      <Link href="/upload" className="px-8 py-4 bg-indigo-600 rounded-full font-bold hover:bg-indigo-500 transition-all">
+        Upload Resume to Start
+      </Link>
+    </div>
   );
 
   return (
     <div className="min-h-screen bg-[#05050A] text-white pt-32 px-6 pb-20">
-      
+
       {/* --- SEAMLESS HEADER --- */}
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }} 
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6"
       >
@@ -116,7 +116,7 @@ export default function DashboardPage() {
             {displayName} • <span className="text-indigo-400">{displayRole}</span>
           </p>
         </div>
-        
+
         <div className="flex gap-4">
           <Link href="/upload">
             <button className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all text-sm font-medium backdrop-blur-md">
@@ -127,14 +127,14 @@ export default function DashboardPage() {
           <Link href="/portfolio/preview">
             <button className="flex items-center gap-2 px-6 py-3 bg-indigo-600 rounded-full hover:bg-indigo-500 transition-all text-sm font-bold shadow-lg shadow-indigo-500/20">
               <Globe size={18} />
-              View Portfolio
+              Preview Portfolio
             </button>
           </Link>
         </div>
       </motion.div>
 
       {/* --- UNIFIED REPORT CONTAINER --- */}
-      <motion.div 
+      <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -142,15 +142,15 @@ export default function DashboardPage() {
       >
         <div className="bg-[#05050A] rounded-[47px] p-10 md:p-16 border border-white/5">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
-            
+
             {/* LEFT: Analysis & Coaching */}
             <div className="lg:col-span-2 space-y-24">
-              
+
               <motion.section variants={itemVariants} className="flex flex-col md:flex-row items-center gap-12">
                 <div className="relative">
                   <svg className="h-40 w-40 -rotate-90" viewBox="0 0 120 120">
                     <circle cx="60" cy="60" r="54" fill="none" stroke="currentColor" strokeWidth="8" className="text-white/5" />
-                    <motion.circle 
+                    <motion.circle
                       cx="60" cy="60" r="54" fill="none" stroke="url(#dashGradient)" strokeWidth="8" strokeLinecap="round"
                       initial={{ strokeDasharray: "0 339" }}
                       animate={{ strokeDasharray: `${(displayScore) * 3.39} 339` }}
@@ -168,7 +168,7 @@ export default function DashboardPage() {
                 <div className="flex-1 space-y-4 text-center md:text-left">
                   <h3 className="text-2xl font-bold">Market Compatibility</h3>
                   <p className="text-zinc-400 leading-relaxed text-lg">
-                    Your profile is optimized for <span className="text-white font-semibold">{displayRole}</span>. 
+                    Your profile is optimized for <span className="text-white font-semibold">{displayRole}</span>.
                     Refining the areas identified below can significantly increase your callback rate.
                   </p>
                 </div>
@@ -179,21 +179,21 @@ export default function DashboardPage() {
                   <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-400"><User size={20} /></div>
                   <h2 className="text-2xl font-bold">Expert AI Insights</h2>
                 </div>
-                
+
                 <div className="space-y-10">
                   {parsed.suggestions && parsed.suggestions.length > 0 ? (
                     parsed.suggestions.map((s, i) => (
                       <div key={i} className="group relative border-l border-white/10 pl-8 py-2 hover:border-indigo-500 transition-colors">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2 block">{s.area}</span>
                         <div className="space-y-4">
-                           <div className="flex gap-3 text-zinc-300 italic text-lg leading-relaxed">
-                              <AlertTriangle size={18} className="text-amber-500 shrink-0 mt-1" />
-                              "{s.issue}"
-                           </div>
-                           <div className="flex gap-3 text-white text-lg">
-                              <Lightbulb size={18} className="text-emerald-500 shrink-0 mt-1" />
-                              {s.advice}
-                           </div>
+                          <div className="flex gap-3 text-zinc-300 italic text-lg leading-relaxed">
+                            <AlertTriangle size={18} className="text-amber-500 shrink-0 mt-1" />
+                            "{s.issue}"
+                          </div>
+                          <div className="flex gap-3 text-white text-lg">
+                            <Lightbulb size={18} className="text-emerald-500 shrink-0 mt-1" />
+                            {s.advice}
+                          </div>
                         </div>
                       </div>
                     ))
