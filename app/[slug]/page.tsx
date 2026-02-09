@@ -3,7 +3,7 @@ export const dynamicParams = true;
 export const revalidate = 0;
 
 import { notFound } from "next/navigation";
-import PortfolioContent from "@/components/PortfolioContent";
+import { TEMPLATES } from "@/lib/templates";
 
 export default async function PublicPortfolio({ params }: { params: Promise<{ slug: string }> }) {
   // 🟢 STEP 1: FORCE FETCH FROM SUPABASE REST API TO BYPASS VERCEL CACHE
@@ -22,20 +22,18 @@ export default async function PublicPortfolio({ params }: { params: Promise<{ sl
 
   try {
     const res = await fetch(
-      `${supabaseUrl}/rest/v1/resumes?slug=eq.${slug}&select=parsed_json`,
+      `${supabaseUrl}/rest/v1/resumes?slug=eq.${slug}&select=parsed_json,template_id`,
       {
         headers: {
           apikey: supabaseAnonKey,
           Authorization: `Bearer ${supabaseAnonKey}`,
         },
-        cache: 'no-store', // 🟢 This forces Vercel to check the DB every single time
+        cache: 'no-store',
       }
     );
 
     if (!res.ok) {
       console.error(`❌ Supabase Fetch Error: ${res.status} ${res.statusText}`);
-      const text = await res.text();
-      console.error(`Response body: ${text}`);
       throw new Error(`Failed to fetch resume: ${res.status}`);
     }
 
@@ -44,7 +42,6 @@ export default async function PublicPortfolio({ params }: { params: Promise<{ sl
 
   } catch (error) {
     console.error("❌ Critical Error in Portfolio Page:", error);
-    // Return null to trigger notFound() below, or handle differently
   }
 
   if (!resume) {
@@ -52,15 +49,15 @@ export default async function PublicPortfolio({ params }: { params: Promise<{ sl
   }
 
   const data = resume.parsed_json || {};
-  const displayName = data.name || "Professional Candidate";
-  const displayRole = data.role || "Software Engineer";
-  const skills = data.skills || [];
+  const templateId = resume.template_id || 'default';
+
+  // 🟢 DYNAMIC TEMPLATE SELECTION
+  const template = TEMPLATES[templateId] || TEMPLATES.default;
+  const TemplateComponent = template.component;
 
   return (
-    <PortfolioContent
-      displayName={displayName}
-      displayRole={displayRole}
-      skills={skills}
-    />
+    <div className="w-full">
+      <TemplateComponent data={data} />
+    </div>
   );
 }

@@ -113,18 +113,30 @@ export default function SelectTemplatePage() {
                                     }
                             `}
                             >
-                                {/* Placeholder for now - normally an Image */}
-                                <div className={`aspect-video w-full bg-black/40 flex items-center justify-center relative`}>
-                                    {/* Using a colored div as placeholder thumbnail */}
-                                    <div className={`w-3/4 h-3/4 rounded-xl opacity-50 ${template.id === 'modern' ? 'bg-rose-500' : template.id === '3d' ? 'bg-blue-500' : 'bg-emerald-500'}`} />
+                                {/* Real Thumbnail from lib/templates */}
+                                <div className="aspect-video w-full bg-zinc-900 flex items-center justify-center relative">
+                                    <img
+                                        src={template.thumbnail}
+                                        alt={template.name}
+                                        className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500"
+                                    />
 
                                     {isSelected && (
-                                        <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-                                            <div className="bg-indigo-500 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 shadow-xl">
-                                                <Check size={16} /> Active
+                                        <div className="absolute inset-0 flex items-center justify-center bg-indigo-500/20 backdrop-blur-[2px]">
+                                            <div className="bg-indigo-500 text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 shadow-2xl scale-110">
+                                                <Check size={14} /> Active
                                             </div>
                                         </div>
                                     )}
+
+                                    {/* Preview Button on Hover */}
+                                    <div className="absolute inset-0 flex items-center justify-center translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
+                                        {!isSelected && (
+                                            <div className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-2 rounded-full text-xs font-bold shadow-2xl uppercase tracking-widest">
+                                                Select Template
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <div className="p-6">
