@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     const response = await fetch(fileUrl);
     const buffer = Buffer.from(await response.arrayBuffer());
     const pdfData = await pdf(buffer);
-    const resumeText = pdfData.text.slice(0, 6000);
+    const resumeText = pdfData.text.slice(0, 8000); // Increased to 8k to catch projects at the end
 
     const safetySettings = [
       { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
@@ -40,11 +40,62 @@ export async function POST(req: NextRequest) {
       { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
     ];
 
+    // 🟢 DEFINE STRICT SCHEMA
+    const schema = {
+      type: "object",
+      properties: {
+        name: { type: "string" },
+        role: { type: "string" },
+        email: { type: "string" },
+        bio: { type: "string" },
+        skills: { type: "array", items: { type: "string" } },
+        score: { type: "number" },
+        experience: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              role: { type: "string" },
+              company: { type: "string" },
+              duration: { type: "string" },
+              description: { type: "string" }
+            },
+            required: ["role", "company", "description"]
+          }
+        },
+        projects: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              title: { type: "string" },
+              description: { type: "string" },
+              technologies: { type: "array", items: { type: "string" } },
+              link: { type: "string" }
+            },
+            required: ["title", "description"]
+          }
+        },
+        suggestions: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              area: { type: "string" },
+              issue: { type: "string" },
+              advice: { type: "string" }
+            },
+            required: ["area", "issue", "advice"]
+          }
+        }
+      },
+      required: ["name", "role", "skills", "experience", "projects", "score"]
+    };
+
     let parsedData: any = null;
 
     // 2. Model Loop
-    // Verified available models for this key: gemini-2.0-flash, gemini-flash-latest
-    const modelsToTry = ["gemini-2.0-flash", "gemini-flash-latest"];
+    const modelsToTry = ["gemini-2.0-flash", "gemini-1.5-pro"]; // Pro is better at deep extraction if flash misses
 
     // 🟢 FEW-SHOT PROMPT CONSTRUCTION
     const examplesText = RESUME_EXAMPLES.map((ex, i) => `
@@ -61,29 +112,40 @@ export async function POST(req: NextRequest) {
         const model = genAI.getGenerativeModel({
           model: modelName,
           safetySettings,
-          generationConfig: { responseMimeType: "application/json" } // 🟢 FORCE JSON MODE
+          generationConfig: {
+            // @ts-ignore
+            responseMimeType: "application/json",
+            // @ts-ignore
+            responseSchema: schema
+          }
         });
 
         const prompt = `
           You are an expert AI Recruiter and Resume parser. 
-          Your goal is to extract structured data from a resume text and provide actionable advice.
+          Your goal is to extract structured data from a resume text.
           
-          CRITICAL: Look specifically for a "Projects" or "Personal Projects" or "Technical Projects" section and extract each project into the "projects" array with "title", "description", and "technologies" (if listed).
+          CRITICAL: You MUST find the "Projects" section. If a person has built anything (even academic or personal), list it in "projects".
+          Do NOT confuse work experience with projects. Work experience goes in "experience". Side projects, Github repos, and personal work go in "projects".
           
-          Here are some examples of how to do it correctly:
+          Here are some examples of perfect extraction:
           ${examplesText}
 
-          Now, analyze the following resume and return strictly valid JSON.
+          Now, analyze the following resume:
           
           Resume Text:
           "${resumeText}"
         `;
 
         const result = await model.generateContent(prompt);
-        const text = result.response.text(); // No need to regex remove markdown if using responseMimeType (usually), but keeping safety clean just in case
-        parsedData = JSON.parse(text.replace(/```json|```/g, "").trim());
+        const text = result.response.text();
+        parsedData = JSON.parse(text);
 
-        if (parsedData) break;
+        if (parsedData && parsedData.projects && parsedData.projects.length > 0) {
+          console.log(`✅ Success with ${modelName}! Extracted ${parsedData.projects.length} projects.`);
+          break;
+        } else if (parsedData) {
+          console.log(`⚠️ ${modelName} returned data but no projects. Trying next model...`);
+        }
       } catch (e: any) {
         console.warn(`⚠️ ${modelName} failed:`, e.message);
       }
