@@ -95,9 +95,13 @@ export async function POST(req: NextRequest) {
     let parsedData: any = null;
 
     // 2. Model Loop
-    // 🟢 DIVERSE MODELS TO BEAT QUOTAS
+    // 🟢 DIVERSE MODELS TO BEAT QUOTAS (Standard stable identifiers)
     const modelsToTry = [
       "gemini-2.0-flash",
+      "gemini-1.5-flash-latest",
+      "gemini-1.5-pro-latest",
+      "gemini-1.5-flash-002",
+      "gemini-1.5-pro-002",
       "gemini-1.5-flash",
       "gemini-1.5-pro"
     ];
@@ -129,7 +133,7 @@ export async function POST(req: NextRequest) {
             }
           });
 
-          const result = await model.generateContent(`Analyze this resume: ${resumeText}. Help: ${examplesText}`);
+          const result = await model.generateContent(`Analyze this resume and extract projects: ${resumeText}. Using these examples for format: ${examplesText}`);
           const text = result.response.text();
           parsedData = JSON.parse(text);
           if (parsedData) {
@@ -137,7 +141,15 @@ export async function POST(req: NextRequest) {
             break;
           }
         } catch (schemaErr: any) {
-          console.warn(`⚙️ Schema failed for ${modelName}, falling back to plain JSON mode...`);
+          console.warn(`⚙️ Schema Mode failed for ${modelName}: ${schemaErr.message}. Trying Plain JSON fallback...`);
+
+          if (schemaErr.message?.includes("429") || schemaErr.message?.includes("Quota")) {
+            throw schemaErr; // Jump to next model if quota is hit
+          }
+
+          if (schemaErr.message?.includes("404") || schemaErr.message?.includes("not found")) {
+            throw schemaErr; // Jump to next if model doesn't exist
+          }
 
           // 🧪 PHASE 2: Fallback to plain JSON mode (No schema)
           const model = genAI.getGenerativeModel({
@@ -147,8 +159,8 @@ export async function POST(req: NextRequest) {
           });
 
           const prompt = `
-            Analyze this resume and return a JSON object.
-
+            Analyze this resume and return strictly valid JSON.
+            
             STRUCTURE:
             {
               "name": "...",
@@ -159,10 +171,13 @@ export async function POST(req: NextRequest) {
               "score": 85
             }
 
-            MUST extract projects if they exist.
-
+            CRITICAL: Extract a "projects" array if there is ANY project data in the resume.
+            
             Resume:
             "${resumeText}"
+
+            Reference Format:
+            ${examplesText}
           `;
 
           const result = await model.generateContent(prompt);
@@ -176,7 +191,11 @@ export async function POST(req: NextRequest) {
         }
       } catch (e: any) {
         if (e.message?.includes("429") || e.message?.includes("Quota")) {
-          console.warn(`🚨 ${modelName} Quota Exceeded.`);
+          console.warn(`🚨 ${modelName} Quota Exceeded. Trying next model...`);
+          continue;
+        }
+        if (e.message?.includes("404") || e.message?.includes("not found") || e.message?.includes("403")) {
+          console.warn(`❌ ${modelName} unavailable (404/403). Skipping...`);
           continue;
         }
         console.warn(`⚠️ ${modelName} failed:`, e.message);
