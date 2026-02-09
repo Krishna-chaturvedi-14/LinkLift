@@ -95,15 +95,12 @@ export async function POST(req: NextRequest) {
     let parsedData: any = null;
 
     // 2. Model Loop
-    // 🟢 DIVERSE MODELS TO BEAT QUOTAS (Standard stable identifiers)
+    // 🟢 DIVERSE MODELS TO BEAT QUOTAS (Correct identifiers)
     const modelsToTry = [
       "gemini-2.0-flash",
-      "gemini-1.5-flash-latest",
-      "gemini-1.5-pro-latest",
-      "gemini-1.5-flash-002",
-      "gemini-1.5-pro-002",
       "gemini-1.5-flash",
-      "gemini-1.5-pro"
+      "gemini-1.5-pro",
+      "gemini-pro" // This is 1.0 Pro, high availability
     ];
 
     // 🟢 FEW-SHOT PROMPT CONSTRUCTION
@@ -121,84 +118,59 @@ export async function POST(req: NextRequest) {
       try {
         console.log(`🤖 Attempting analysis with ${modelName}...`);
 
-        // 🧪 PHASE 1: Try with strict schema (Mandatory projects)
-        try {
-          const model = genAI.getGenerativeModel({
-            model: modelName,
-            safetySettings,
-            generationConfig: {
-              responseMimeType: "application/json",
-              // @ts-ignore
-              responseSchema: schema
-            }
-          });
+        // 🧪 PHASE 1: Try with JSON Mode (Schema if supported)
+        const config: any = { responseMimeType: "application/json" };
 
-          const result = await model.generateContent(`Analyze this resume and extract projects: ${resumeText}. Using these examples for format: ${examplesText}`);
-          const text = result.response.text();
-          parsedData = JSON.parse(text);
-          if (parsedData) {
-            console.log(`✅ Success with ${modelName} (Strict Schema)!`);
-            break;
-          }
-        } catch (schemaErr: any) {
-          console.warn(`⚙️ Schema Mode failed for ${modelName}: ${schemaErr.message}. Trying Plain JSON fallback...`);
+        // Only use schema for 1.5+ models
+        if (!modelName.includes("gemini-pro")) {
+          // @ts-ignore
+          config.responseSchema = schema;
+        }
 
-          if (schemaErr.message?.includes("429") || schemaErr.message?.includes("Quota")) {
-            throw schemaErr; // Jump to next model if quota is hit
-          }
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          safetySettings,
+          generationConfig: config
+        });
 
-          if (schemaErr.message?.includes("404") || schemaErr.message?.includes("not found")) {
-            throw schemaErr; // Jump to next if model doesn't exist
-          }
+        const prompt = `
+          Extract structured data from this resume. You MUST include a "projects" array.
+          Resume Text: "${resumeText}"
+          Examples: ${examplesText}
+        `;
 
-          // 🧪 PHASE 2: Fallback to plain JSON mode (No schema)
-          const model = genAI.getGenerativeModel({
-            model: modelName,
-            safetySettings,
-            generationConfig: { responseMimeType: "application/json" }
-          });
+        const result = await model.generateContent(prompt);
+        const text = result.response.text();
+        parsedData = JSON.parse(text.replace(/```json|```/g, "").trim());
 
-          const prompt = `
-            Analyze this resume and return strictly valid JSON.
-            
-            STRUCTURE:
-            {
-              "name": "...",
-              "role": "...",
-              "skills": [...],
-              "experience": [{"role": "...", "company": "...", "description": "..."}],
-              "projects": [{"title": "...", "description": "...", "technologies": [...]}],
-              "score": 85
-            }
-
-            CRITICAL: Extract a "projects" array if there is ANY project data in the resume.
-            
-            Resume:
-            "${resumeText}"
-
-            Reference Format:
-            ${examplesText}
-          `;
-
-          const result = await model.generateContent(prompt);
-          const text = result.response.text();
-          parsedData = JSON.parse(text.replace(/```json|```/g, "").trim());
-
-          if (parsedData) {
-            console.log(`✅ Success with ${modelName} (Plain JSON)!`);
-            break;
-          }
+        if (parsedData) {
+          console.log(`✅ Success with ${modelName}!`);
+          break;
         }
       } catch (e: any) {
-        if (e.message?.includes("429") || e.message?.includes("Quota")) {
-          console.warn(`🚨 ${modelName} Quota Exceeded. Trying next model...`);
+        const errorMsg = e.message || "";
+
+        if (errorMsg.includes("429") || errorMsg.includes("Quota")) {
+          console.warn(`🚨 ${modelName} Quota Exceeded. Moving to NEXT model...`);
+          continue; // Don't retry the same model in different mode
+        }
+
+        if (errorMsg.includes("404") || errorMsg.includes("not found")) {
+          console.warn(`❌ ${modelName} not found (404). Trying next...`);
           continue;
         }
-        if (e.message?.includes("404") || e.message?.includes("not found") || e.message?.includes("403")) {
-          console.warn(`❌ ${modelName} unavailable (404/403). Skipping...`);
-          continue;
+
+        // If it was a schema/parsing error, try one last super-simple prompt on this model
+        try {
+          console.warn(`⚙️ ${modelName} format error. Trying basic prompt...`);
+          const simpleModel = genAI.getGenerativeModel({ model: modelName });
+          const plainResult = await simpleModel.generateContent(`Extract resume JSON: ${resumeText.slice(0, 4000)}`);
+          const plainText = plainResult.response.text();
+          parsedData = JSON.parse(plainText.replace(/```json|```/g, "").trim());
+          if (parsedData) break;
+        } catch (innerE) {
+          console.warn(`❌ ${modelName} complete failure. Skipping.`);
         }
-        console.warn(`⚠️ ${modelName} failed:`, e.message);
       }
     }
 
