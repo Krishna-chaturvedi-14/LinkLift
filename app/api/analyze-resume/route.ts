@@ -96,12 +96,14 @@ export async function POST(req: NextRequest) {
     // 2. Model Loop
     // 🟢 DIVERSE MODELS & API VERSIONS TO BEAT 404/429
     const configsToTry = [
-      { name: "gemini-2.0-flash", version: "v1beta", useSchema: true },
-      { name: "gemini-1.5-flash", version: "v1beta", useSchema: true },
-      { name: "gemini-1.5-pro", version: "v1beta", useSchema: true },
-      { name: "gemini-1.5-flash", version: "v1", useSchema: false },
-      { name: "gemini-1.5-pro", version: "v1", useSchema: false },
-      { name: "gemini-pro", version: "v1", useSchema: false }
+      { name: "gemini-2.0-flash", version: "v1beta", useSchema: true, jsonMode: true },
+      { name: "gemini-1.5-flash", version: "v1beta", useSchema: true, jsonMode: true },
+      { name: "gemini-1.5-flash-8b", version: "v1beta", useSchema: true, jsonMode: true },
+      { name: "gemini-1.5-pro", version: "v1beta", useSchema: true, jsonMode: true },
+      { name: "gemini-1.5-flash", version: "v1", useSchema: false, jsonMode: true },
+      { name: "gemini-1.5-flash-8b", version: "v1", useSchema: false, jsonMode: true },
+      { name: "gemini-1.5-pro", version: "v1", useSchema: false, jsonMode: true },
+      { name: "gemini-pro", version: "v1", useSchema: false, jsonMode: false }
     ];
 
     // 🟢 FEW-SHOT PROMPT CONSTRUCTION
@@ -122,9 +124,12 @@ export async function POST(req: NextRequest) {
       const apiVer = config.version;
 
       try {
-        console.log(`🤖 Attempting ${modelName} on ${apiVer} (Schema: ${config.useSchema})...`);
+        console.log(`[AI] Attempting ${modelName} on ${apiVer} (Schema: ${config.useSchema}, JSON: ${config.jsonMode})...`);
 
-        const genConfig: any = { responseMimeType: "application/json" };
+        const genConfig: any = {};
+        if (config.jsonMode) {
+          genConfig.responseMimeType = "application/json";
+        }
         if (config.useSchema) {
           // @ts-ignore
           genConfig.responseSchema = schema;
@@ -161,10 +166,17 @@ export async function POST(req: NextRequest) {
 
         const result = await model.generateContent(prompt);
         const text = result.response.text();
-        parsedData = JSON.parse(text.replace(/```json|```/g, "").trim());
+        const cleanedText = text.replace(/```json|```/g, "").trim();
+
+        try {
+          parsedData = JSON.parse(cleanedText);
+        } catch (parseErr) {
+          console.warn(`[AI] Parse error on ${modelName} (${apiVer}):`, cleanedText.slice(0, 300));
+          throw new Error("JSON Parse Error");
+        }
 
         if (parsedData) {
-          console.log(`✅ Success with ${modelName} (${apiVer})!`);
+          console.log(`[AI] Success with ${modelName} (${apiVer})!`);
           break;
         }
       } catch (e: any) {
@@ -181,14 +193,18 @@ export async function POST(req: NextRequest) {
         }
 
         try {
-          console.warn(`⚙️ ${modelName} (${apiVer}) config/parse error. Trying desperation mode...`);
-          const simpleModel = genAI.getGenerativeModel({ model: modelName });
-          const plainResult = await simpleModel.generateContent(`Return resume data as JSON: ${resumeText.slice(0, 3000)}`);
+          console.warn(`[AI] ${modelName} (${apiVer}) config/parse error. Trying desperation mode...`);
+          const simpleModel = genAI.getGenerativeModel(
+            { model: modelName },
+            { apiVersion: apiVer as any }
+          );
+          const plainResult = await simpleModel.generateContent(`Return resume data as JSON. No markdown. Resume: ${resumeText.slice(0, 4000)}`);
           const plainText = plainResult.response.text();
-          parsedData = JSON.parse(plainText.replace(/```json|```/g, "").trim());
+          const cleanedPlain = plainText.replace(/```json|```/g, "").trim();
+          parsedData = JSON.parse(cleanedPlain);
           if (parsedData) break;
         } catch (innerE) {
-          console.warn(`❌ ${modelName} (${apiVer}) complete failure.`);
+          console.warn(`[AI] ${modelName} (${apiVer}) complete failure.`);
         }
       }
     }
