@@ -318,9 +318,26 @@ export async function POST(req: NextRequest) {
       };
     }
 
-    // 🟢 STEP 4: VERIFY JSON STRUCTURE & SCORE
-    // Default to 75 if missing to show it's "Working" but needs improvement
-    const finalScore = Math.round(Number(parsedData.score || 75));
+    // 🟢 STEP 4: HARDENED DATA VERIFICATION
+    console.log("[AI] Raw Score Candidate:", parsedData.score);
+
+    let rawScore = parsedData.score;
+    let numericScore = 75; // Default safe fallback
+
+    if (typeof rawScore === 'number') {
+      numericScore = rawScore;
+    } else if (typeof rawScore === 'string') {
+      const match = rawScore.match(/(\d+)/);
+      if (match) numericScore = parseInt(match[1]);
+    }
+
+    // Defensive: If the AI returned a 1-10 scale score (like "9"), normalize it to 100
+    if (numericScore > 0 && numericScore <= 10) {
+      console.log(`[AI] Normalizing 10-point scale score (${numericScore}) to 100-point scale.`);
+      numericScore = numericScore * 10;
+    }
+
+    const finalScore = Math.round(numericScore);
     parsedData.ats_score = finalScore;
     parsedData.score = finalScore;
 
