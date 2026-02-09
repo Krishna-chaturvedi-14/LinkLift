@@ -97,12 +97,10 @@ export async function POST(req: NextRequest) {
     // 🟢 DIVERSE MODELS & API VERSIONS TO BEAT 404/429
     const configsToTry = [
       { name: "gemini-2.0-flash", version: "v1beta", useSchema: true, jsonMode: true },
-      { name: "gemini-1.5-flash-latest", version: "v1beta", useSchema: true, jsonMode: true },
-      { name: "gemini-1.5-flash-002", version: "v1beta", useSchema: true, jsonMode: true },
-      { name: "gemini-1.5-flash-8b-latest", version: "v1beta", useSchema: true, jsonMode: true },
-      { name: "gemini-1.5-pro-latest", version: "v1beta", useSchema: true, jsonMode: true },
-      { name: "gemini-1.5-flash-latest", version: "v1", useSchema: false, jsonMode: true },
-      { name: "gemini-1.5-pro-latest", version: "v1", useSchema: false, jsonMode: true },
+      { name: "gemini-1.5-flash", version: "v1beta", useSchema: true, jsonMode: true },
+      { name: "gemini-1.5-flash", version: "v1", useSchema: false, jsonMode: true },
+      { name: "gemini-1.5-pro", version: "v1beta", useSchema: true, jsonMode: true },
+      { name: "gemini-1.5-pro", version: "v1", useSchema: false, jsonMode: true },
       { name: "gemini-pro", version: "v1", useSchema: false, jsonMode: false }
     ];
 
@@ -218,10 +216,10 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // --- PHASE 2: GROQ FALLBACK (Llama 3.1 70B) ---
+    // --- PHASE 2: GROQ FALLBACK (Llama 3.3 70B) ---
     if (!parsedData && groqKey) {
       try {
-        console.log("🚀 Gemini exhausted. Attempting Groq (Llama 3.1 70B)...");
+        console.log("🚀 Gemini exhausted. Attempting Groq (Llama 3.3 70B)...");
         const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: {
@@ -229,7 +227,7 @@ export async function POST(req: NextRequest) {
             "Authorization": `Bearer ${groqKey}`
           },
           body: JSON.stringify({
-            model: "llama-3.1-70b-versatile",
+            model: "llama-3.3-70b-versatile",
             messages: [
               { role: "system", content: "Extract resume data into JSON format." },
               { role: "user", content: `Resume Text: ${resumeText.slice(0, 8000)}\n\nSchema: ${JSON.stringify(schema)}` }
@@ -239,14 +237,20 @@ export async function POST(req: NextRequest) {
           })
         });
 
+        if (!groqResponse.ok) {
+          const errorData = await groqResponse.text();
+          console.warn(`❌ Groq API Error Status: ${groqResponse.status} - ${errorData.slice(0, 200)}`);
+          throw new Error(`Groq API Error: ${groqResponse.status}`);
+        }
+
         const groqJson = await groqResponse.json();
         const content = groqJson.choices?.[0]?.message?.content;
         if (content) {
           parsedData = JSON.parse(content);
           console.log("✅ Success with Groq (Llama 3)!");
         }
-      } catch (groqErr) {
-        console.error("❌ Groq fallback failed:", groqErr);
+      } catch (groqErr: any) {
+        console.error("❌ Groq fallback failed:", groqErr.message);
       }
     }
 
