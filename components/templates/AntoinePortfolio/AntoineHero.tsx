@@ -50,7 +50,7 @@ export const AntoineHero = ({ data }: { data: ResumeData }) => {
                         {splitText(role.split(" ")[0] || "Creative")}
                     </div>
                     <div className="flex items-center gap-8 overflow-hidden">
-                        <img src="/icons/favicon.svg" alt="" className="w-16 h-16 md:w-32 md:h-32 rotate-12" />
+                        <img src="/globe.svg" alt="" className="w-16 h-16 md:w-32 md:h-32 rotate-12 invert" />
                         <span>{splitText(role.split(" ").slice(1).join(" ") || "Developer")}</span>
                     </div>
                 </h1>
