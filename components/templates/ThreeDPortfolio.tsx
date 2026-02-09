@@ -14,7 +14,9 @@ import EarthCanvas from "@/components/canvas/Earth";
 import BallCanvas from "@/components/canvas/Ball";
 
 // --- UTILS & CONSTANTS ---
-const textVariant = (delay?: number) => ({
+import { Variants } from "framer-motion";
+
+const textVariant = (delay?: number): Variants => ({
     hidden: { y: -50, opacity: 0 },
     show: {
         y: 0,
@@ -23,7 +25,7 @@ const textVariant = (delay?: number) => ({
     }
 });
 
-const fadeIn = (direction: string, type: string, delay: number, duration: number) => ({
+const fadeIn = (direction: string, type: string, delay: number, duration: number): Variants => ({
     hidden: {
         x: direction === "left" ? 100 : direction === "right" ? -100 : 0,
         y: direction === "up" ? 100 : direction === "down" ? -100 : 0,
@@ -33,11 +35,11 @@ const fadeIn = (direction: string, type: string, delay: number, duration: number
         x: 0,
         y: 0,
         opacity: 1,
-        transition: { type: type, delay: delay, duration: duration, ease: "easeOut" }
+        transition: { type: type as any, delay: delay, duration: duration, ease: "easeOut" }
     },
 });
 
-const staggerContainer = (staggerChildren?: number, delayChildren?: number) => ({
+const staggerContainer = (staggerChildren?: number, delayChildren?: number): Variants => ({
     hidden: {},
     show: { transition: { staggerChildren: staggerChildren, delayChildren: delayChildren } },
 });
