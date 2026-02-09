@@ -96,12 +96,12 @@ export async function POST(req: NextRequest) {
     // 2. Model Loop
     // 🟢 DIVERSE MODELS & API VERSIONS TO BEAT 404/429
     const configsToTry = [
-      { name: "gemini-2.0-flash", version: "v1beta" },
-      { name: "gemini-1.5-flash", version: "v1" },
-      { name: "gemini-1.5-flash", version: "v1beta" },
-      { name: "gemini-1.5-pro", version: "v1" },
-      { name: "gemini-1.5-pro", version: "v1beta" },
-      { name: "gemini-pro", version: "v1" }
+      { name: "gemini-2.0-flash", version: "v1beta", useSchema: true },
+      { name: "gemini-1.5-flash", version: "v1beta", useSchema: true },
+      { name: "gemini-1.5-pro", version: "v1beta", useSchema: true },
+      { name: "gemini-1.5-flash", version: "v1", useSchema: false },
+      { name: "gemini-1.5-pro", version: "v1", useSchema: false },
+      { name: "gemini-pro", version: "v1", useSchema: false }
     ];
 
     // 🟢 FEW-SHOT PROMPT CONSTRUCTION
@@ -122,13 +122,10 @@ export async function POST(req: NextRequest) {
       const apiVer = config.version;
 
       try {
-        console.log(`🤖 Attempting ${modelName} on ${apiVer}...`);
-
-        // Dynamic configuration based on version/model capabilities
-        // const genAIInstance = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "", { apiVersion: apiVer as any });
+        console.log(`🤖 Attempting ${modelName} on ${apiVer} (Schema: ${config.useSchema})...`);
 
         const genConfig: any = { responseMimeType: "application/json" };
-        if (apiVer === "v1beta" || modelName.includes("1.5")) {
+        if (config.useSchema) {
           // @ts-ignore
           genConfig.responseSchema = schema;
         }
@@ -140,15 +137,25 @@ export async function POST(req: NextRequest) {
         );
 
         const prompt = `
-          Extract structured data from this resume text. You MUST include a "projects" array.
-          
-          CRITICAL:
-          - If the user lists "Projects", "Technical Work", or "GitHub", extract them into the "projects" array.
-          - If no projects are found, return an empty array [] but NEVER null.
+          Analyze this resume and return strictly valid JSON. 
+          You MUST include a "projects" array. If no projects exist, return [].
           
           Resume Text: "${resumeText}"
           
-          Format Examples:
+          Required Structure:
+          {
+            "name": "...",
+            "role": "...",
+            "email": "...",
+            "bio": "...",
+            "skills": ["..."],
+            "experience": [{"role": "...", "company": "...", "duration": "...", "description": "..."}],
+            "projects": [{"title": "...", "description": "...", "technologies": ["..."], "link": "..."}],
+            "score": 85,
+            "suggestions": [{"area": "...", "issue": "...", "advice": "..."}]
+          }
+
+          Reference Examples:
           ${examplesText}
         `;
 
@@ -169,20 +176,19 @@ export async function POST(req: NextRequest) {
         }
 
         if (errorMsg.includes("404") || errorMsg.includes("not found")) {
-          console.warn(`❌ ${modelName} (${apiVer}) Not Found. trying next...`);
+          console.warn(`❌ ${modelName} (${apiVer}) Not Found. Skipping...`);
           continue;
         }
 
         try {
-          console.warn(`⚙️ ${modelName} (${apiVer}) config error. Trying basic prompt...`);
-          const basicGenAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-          const basicModel = basicGenAI.getGenerativeModel({ model: modelName });
-          const basicResult = await basicModel.generateContent(`Extract resume JSON: ${resumeText.slice(0, 4000)}`);
-          const basicText = basicResult.response.text();
-          parsedData = JSON.parse(basicText.replace(/```json|```/g, "").trim());
+          console.warn(`⚙️ ${modelName} (${apiVer}) config/parse error. Trying desperation mode...`);
+          const simpleModel = genAI.getGenerativeModel({ model: modelName });
+          const plainResult = await simpleModel.generateContent(`Return resume data as JSON: ${resumeText.slice(0, 3000)}`);
+          const plainText = plainResult.response.text();
+          parsedData = JSON.parse(plainText.replace(/```json|```/g, "").trim());
           if (parsedData) break;
         } catch (innerE) {
-          console.warn(`❌ ${modelName} (${apiVer}) total failure.`);
+          console.warn(`❌ ${modelName} (${apiVer}) complete failure.`);
         }
       }
     }
@@ -238,13 +244,11 @@ export async function POST(req: NextRequest) {
     }
 
     // 5. Final DB Update
+    // 🛡️ ONLY UPDATE EXISTING COLUMNS (parsed_json)
     const { error: updateError } = await supabase
       .from("resumes")
       .update({
-        parsed_json: parsedData,
-        status: "completed",
-        score: finalScore,
-        updated_at: new Date().toISOString()
+        parsed_json: parsedData
       })
       .eq("id", resumeId);
 
