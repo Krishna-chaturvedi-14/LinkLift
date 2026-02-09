@@ -84,7 +84,7 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                                 <div className="text-6xl">👋</div>
                                 <h3 className="text-2xl font-bold text-slate-800">Based in Tech</h3>
                                 <div className="flex flex-wrap gap-2 justify-center">
-                                    {data.skills.slice(0, 5).map(skill => (
+                                    {(data.skills || []).slice(0, 5).map(skill => (
                                         <span key={skill} className="px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-600">
                                             {skill}
                                         </span>
@@ -109,7 +109,7 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                         </motion.div>
 
                         <div className="space-y-12 border-l-2 border-slate-100 ml-4 md:ml-0 pl-8 md:pl-0">
-                            {data.experience.map((exp, i) => (
+                            {(data.experience || []).map((exp, i) => (
                                 <motion.div
                                     key={i}
                                     initial={{ opacity: 0, x: -20 }}
@@ -153,7 +153,7 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                             viewport={{ once: true }}
                             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
                         >
-                            {data.projects.map((proj, i) => (
+                            {(data.projects || []).map((proj, i) => (
                                 <motion.div
                                     key={i}
                                     variants={item}
@@ -167,7 +167,7 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                                         {proj.description}
                                     </p>
                                     <div className="flex flex-wrap gap-2 mt-auto pt-4">
-                                        {proj.technologies.slice(0, 3).map(tech => (
+                                        {(proj.technologies || []).slice(0, 3).map(tech => (
                                             <span key={tech} className="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">
                                                 {tech}
                                             </span>
@@ -175,6 +175,7 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                                     </div>
                                 </motion.div>
                             ))}
+
                         </motion.div>
                     </div>
                 </section>
