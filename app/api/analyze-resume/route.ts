@@ -6,22 +6,31 @@ import pdf from "pdf-parse";
 
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+// Initialize clients lazily or check env vars inside the handler to prevent top-level crashes
+// const supabase = createClient(...)
+// const genAI = ...
 
 export async function POST(req: NextRequest) {
   try {
+    // 0. Environment Check
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.GEMINI_API_KEY) {
+      console.error("❌ Missing Environment Variables");
+      throw new Error("Server configuration error: Missing Environment Variables");
+    }
+
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
     const { fileUrl, resumeId } = await req.json();
 
     // 1. Download & Parse
     const response = await fetch(fileUrl);
     const buffer = Buffer.from(await response.arrayBuffer());
     const pdfData = await pdf(buffer);
-    const resumeText = pdfData.text.slice(0, 6000); 
+    const resumeText = pdfData.text.slice(0, 6000);
 
     const safetySettings = [
       { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
@@ -31,10 +40,10 @@ export async function POST(req: NextRequest) {
     ];
 
     let parsedData: any = null;
-    
+
     // 2. Model Loop
     const modelsToTry = ["gemini-1.5-flash", "gemini-2.0-flash"];
-    
+
     for (const modelName of modelsToTry) {
       try {
         console.log(`🤖 Attempting analysis with ${modelName}...`);
@@ -58,10 +67,10 @@ export async function POST(req: NextRequest) {
         const result = await model.generateContent(prompt);
         const text = result.response.text().replace(/```json|```/g, "").trim();
         parsedData = JSON.parse(text);
-        if (parsedData) break; 
+        if (parsedData) break;
 
       } catch (e: any) {
-        console.warn(`⚠️ ${modelName} failed:`, e.message); 
+        console.warn(`⚠️ ${modelName} failed:`, e.message);
       }
     }
 
@@ -88,8 +97,8 @@ export async function POST(req: NextRequest) {
     // 🟢 STEP 4: VERIFY JSON STRUCTURE & SCORE
     // Ensure the score is always a valid number for the dashboard gauge
     const finalScore = Math.round(Number(parsedData.score || 85));
-    parsedData.ats_score = finalScore;   
-    parsedData.score = finalScore;       
+    parsedData.ats_score = finalScore;
+    parsedData.score = finalScore;
 
     // Ensure suggestions exist so the dashboard mapping doesn't crash
     if (!parsedData.suggestions || !Array.isArray(parsedData.suggestions)) {
