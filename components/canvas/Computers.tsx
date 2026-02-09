@@ -31,42 +31,144 @@ const Computers = ({ isMobile }: { isMobile: boolean }) => {
                 shadow-mapSize={1024}
             />
 
-            {/* Procedural Laptop */}
+            {/* Gaming Setup Container */}
             <group
-                position={[0, isMobile ? -1.5 : -1, 0]}
-                scale={isMobile ? 0.6 : 0.75}
-                rotation={[0.1, -0.2, 0]}
+                position={[0, isMobile ? -2.5 : -3.25, -1.5]}
+                scale={isMobile ? 0.5 : 0.6}
+                rotation={[0, -0.2, 0]}
             >
-                {/* Laptop Base */}
-                <mesh position={[0, 0, 0]}>
-                    <boxGeometry args={[3.2, 0.2, 2.2]} />
-                    <meshStandardMaterial color="#1a1a1a" roughness={0.5} metalness={0.8} />
+
+                {/* --- DESK --- */}
+                <mesh position={[0, -0.5, 0]} receiveShadow>
+                    <boxGeometry args={[10, 0.5, 5]} />
+                    <meshStandardMaterial color="#0f0f0f" roughness={0.8} />
                 </mesh>
 
-                {/* Laptop Screen Pivot */}
-                <group position={[0, 0.1, -1]} rotation={[-0.25, 0, 0]}>
-                    {/* Screen Frame */}
-                    <mesh position={[0, 1, 0]}>
-                        <boxGeometry args={[3.2, 2.1, 0.1]} />
-                        <meshStandardMaterial color="#1a1a1a" roughness={0.5} metalness={0.8} />
+                {/* --- GAMING PC TOWER --- */}
+                <group position={[3.5, 1.5, 1]} rotation={[0, -0.3, 0]}>
+                    {/* Case */}
+                    <mesh castShadow receiveShadow>
+                        <boxGeometry args={[1.2, 3.5, 3]} />
+                        <meshStandardMaterial color="#050505" metalness={0.8} roughness={0.2} />
                     </mesh>
-                    {/* Screen Display (Emissive to look like it's on) */}
-                    <mesh position={[0, 1, 0.06]}>
-                        <planeGeometry args={[3, 1.9]} />
-                        <meshStandardMaterial color="#000000" emissive="#3b0764" emissiveIntensity={0.5} />
+                    {/* Front RGB Strip */}
+                    <mesh position={[0, 0, 1.51]}>
+                        <boxGeometry args={[0.1, 3.5, 0.01]} />
+                        <meshStandardMaterial color="#00ffcc" emissive="#00ffcc" emissiveIntensity={2} />
                     </mesh>
-                    {/* Logo on back */}
-                    <mesh position={[0, 1, -0.06]} rotation={[0, Math.PI, 0]}>
-                        <circleGeometry args={[0.3, 32]} />
-                        <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.2} />
+                    {/* Side Glass Panel (Internal RGB) */}
+                    <mesh position={[-0.61, 0, 0]}>
+                        <planeGeometry args={[0.1, 2.5]} />
+                        <meshStandardMaterial color="#ff00ff" emissive="#ff00ff" emissiveIntensity={0.5} transparent opacity={0.3} />
                     </mesh>
                 </group>
 
-                {/* Keyboard Area (Texture placeholder) */}
-                <mesh position={[0, 0.11, 0.3]} rotation={[-Math.PI / 2, 0, 0]}>
-                    <planeGeometry args={[2.8, 1.2]} />
-                    <meshStandardMaterial color="#000000" metalness={0.8} roughness={0.2} />
-                </mesh>
+                {/* --- MONITOR & VS CODE --- */}
+                <group position={[0, 1.8, -0.5]}>
+                    {/* Stand */}
+                    <mesh position={[0, -1.5, 0]}>
+                        <boxGeometry args={[0.5, 1.5, 0.5]} />
+                        <meshStandardMaterial color="#111" />
+                    </mesh>
+                    <mesh position={[0, -2.3, 0.2]}>
+                        <cylinderGeometry args={[0.8, 1, 0.2, 32]} />
+                        <meshStandardMaterial color="#111" />
+                    </mesh>
+
+                    {/* Screen Frame */}
+                    <group rotation={[0, 0, 0]}>
+                        <mesh position={[0, 0, 0]}>
+                            <boxGeometry args={[6.2, 3.6, 0.2]} />
+                            <meshStandardMaterial color="#111" roughness={0.7} />
+                        </mesh>
+
+                        {/* --- VS CODE SCREEN CONTENT --- */}
+                        <group position={[0, 0, 0.11]}>
+                            {/* Background (Editor Dark Theme) */}
+                            <mesh>
+                                <planeGeometry args={[6, 3.4]} />
+                                <meshStandardMaterial color="#1e1e1e" emissive="#1e1e1e" emissiveIntensity={0.8} />
+                            </mesh>
+
+                            {/* Left Sidebar (Activity Bar) */}
+                            <mesh position={[-2.85, 0, 0.01]}>
+                                <planeGeometry args={[0.3, 3.4]} />
+                                <meshStandardMaterial color="#333" emissive="#333" />
+                            </mesh>
+
+                            {/* File Explorer */}
+                            <mesh position={[-2.3, 0, 0.01]}>
+                                <planeGeometry args={[0.8, 3.4]} />
+                                <meshStandardMaterial color="#252526" emissive="#252526" />
+                            </mesh>
+
+                            {/* Top Tab Bar */}
+                            <mesh position={[0.2, 1.55, 0.01]}>
+                                <planeGeometry args={[4.2, 0.3]} />
+                                <meshStandardMaterial color="#2d2d2d" emissive="#2d2d2d" />
+                            </mesh>
+
+                            {/* Bottom Status Bar */}
+                            <mesh position={[0, -1.6, 0.01]}>
+                                <planeGeometry args={[6, 0.2]} />
+                                <meshStandardMaterial color="#007acc" emissive="#007acc" />
+                            </mesh>
+
+                            {/* Pseudo-Code Lines (Syntax Highlighting) */}
+                            {[...Array(12)].map((_, i) => (
+                                <group key={i} position={[-1.5, 1.2 - (i * 0.2), 0.02]}>
+                                    {/* Line Number */}
+                                    <mesh position={[-0.2, 0, 0]}>
+                                        <planeGeometry args={[0.1, 0.05]} />
+                                        <meshStandardMaterial color="#858585" />
+                                    </mesh>
+                                    {/* Keyword (Pink/Blue) */}
+                                    <mesh position={[0.2, 0, 0]}>
+                                        <planeGeometry args={[0.4, 0.08]} />
+                                        <meshStandardMaterial color={i % 3 === 0 ? "#ff00ea" : "#569cd6"} emissive={i % 3 === 0 ? "#ff00ea" : "#569cd6"} />
+                                    </mesh>
+                                    {/* Variable/Text (White/Yellow) */}
+                                    <mesh position={[0.8, 0, 0]}>
+                                        <planeGeometry args={[0.6, 0.08]} />
+                                        <meshStandardMaterial color={i % 2 === 0 ? "#dcdcaa" : "#ce9178"} emissive={i % 2 === 0 ? "#dcdcaa" : "#ce9178"} />
+                                    </mesh>
+                                    {/* Long code part */}
+                                    <mesh position={[1.8, 0, 0]}>
+                                        <planeGeometry args={[1.2, 0.08]} />
+                                        <meshStandardMaterial color="#9cdcfe" emissive="#9cdcfe" />
+                                    </mesh>
+                                </group>
+                            ))}
+                        </group>
+                    </group>
+                </group>
+
+                {/* --- KEYBOARD --- */}
+                <group position={[0, 0, 1.5]} rotation={[-0.1, 0, 0]}>
+                    <mesh>
+                        <boxGeometry args={[3, 0.1, 1]} />
+                        <meshStandardMaterial color="#222" />
+                    </mesh>
+                    {/* RGB Underglow */}
+                    <mesh position={[0, -0.05, 0]}>
+                        <boxGeometry args={[3.05, 0.05, 1.05]} />
+                        <meshStandardMaterial color="#ff00ff" emissive="#ff00ff" emissiveIntensity={0.5} />
+                    </mesh>
+                </group>
+
+                {/* --- MOUSE --- */}
+                <group position={[2.2, 0, 1.5]}>
+                    <mesh>
+                        <sphereGeometry args={[0.25, 32, 16]} scale={[1, 0.6, 1.5]} />
+                        <meshStandardMaterial color="#222" />
+                    </mesh>
+                    {/* Mouse Wheel RGB */}
+                    <mesh position={[0, 0.1, -0.15]}>
+                        <boxGeometry args={[0.05, 0.05, 0.1]} />
+                        <meshStandardMaterial color="#00ff00" emissive="#00ff00" />
+                    </mesh>
+                </group>
+
             </group>
         </group>
     );
