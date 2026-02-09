@@ -11,7 +11,23 @@ const SPACING = 45;
 const PLANE_WIDTH = 14;
 const PLANE_HEIGHT = 18;
 
-function Painting({ index, project, scroll, totalWidth }: {
+// Simple Error Boundary for Three.js components
+class LocalErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+    constructor(props: any) {
+        super(props);
+        this.hasError = false;
+        this.state = { hasError: false };
+    }
+    static getDerivedStateFromError() {
+        return { hasError: true };
+    }
+    render() {
+        if (this.state.hasError) return null;
+        return this.props.children;
+    }
+}
+
+function PaintingContent({ index, project, scroll, totalWidth }: {
     index: number,
     project: any,
     scroll: React.MutableRefObject<number>,
@@ -21,7 +37,12 @@ function Painting({ index, project, scroll, totalWidth }: {
     const originalX = index * SPACING;
 
     // Fallback texture or color if image is missing
-    const texture = project.image ? useTexture(project.image) as any : null;
+    let texture = null;
+    try {
+        texture = project.image ? useTexture(project.image) as any : null;
+    } catch (e) {
+        console.error("Failed to load texture:", project.image);
+    }
 
     useFrame(() => {
         if (!groupRef.current) return;
@@ -68,6 +89,16 @@ function Painting({ index, project, scroll, totalWidth }: {
                 </div>
             </Html>
         </group>
+    );
+}
+
+function Painting(props: any) {
+    return (
+        <LocalErrorBoundary>
+            <Suspense fallback={null}>
+                <PaintingContent {...props} />
+            </Suspense>
+        </LocalErrorBoundary>
     );
 }
 
