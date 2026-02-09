@@ -15,8 +15,10 @@ import {
   Rocket,
   Loader2,
   X,
-  ArrowRight
+  ArrowRight,
+  Layout
 } from "lucide-react";
+import { TEMPLATES } from "@/lib/templates";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -30,6 +32,7 @@ export default function PortfolioPreview() {
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [resumeId, setResumeId] = useState<string | null>(null);
   const [userSlug, setUserSlug] = useState<string | null>(null); // 🟢 State to track the URL slug
+  const [currentTemplateId, setCurrentTemplateId] = useState<string>("default");
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [isDeploying, setIsDeploying] = useState(false);
@@ -43,7 +46,7 @@ export default function PortfolioPreview() {
       // 🟢 Updated query to include 'slug' column
       const { data: resumes } = await supabase
         .from("resumes")
-        .select("id, parsed_json, file_url, slug")
+        .select("id, parsed_json, file_url, slug, template_id")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(1);
@@ -53,6 +56,7 @@ export default function PortfolioPreview() {
         setFileUrl(resumes[0].file_url);
         setResumeId(resumes[0].id);
         setUserSlug(resumes[0].slug); // 🟢 Store slug locally
+        if (resumes[0].template_id) setCurrentTemplateId(resumes[0].template_id);
       }
       setLoading(false);
     };
@@ -106,6 +110,24 @@ export default function PortfolioPreview() {
   if (loading) return <div className="min-h-screen bg-black flex items-center justify-center"><Loader2 className="animate-spin text-indigo-500" size={48} /></div>;
   if (!data) return <div className="min-h-screen bg-black text-white flex items-center justify-center">No resume data found.</div>;
 
+  // 🟢 DYNAMIC TEMPLATE RENDERING
+  if (currentTemplateId === 'modern') {
+    return (
+      <div className="relative">
+        <nav className="fixed top-4 right-4 z-[60] flex gap-2">
+          <Link href="/portfolio/select-template" className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-full text-white text-xs font-bold hover:bg-black/70 transition flex items-center gap-2 border border-white/10">
+            <Layout size={14} /> Change Template
+          </Link>
+          <button onClick={handleDeploy} disabled={isDeploying} className="px-4 py-2 bg-indigo-600 rounded-full text-white text-xs font-bold hover:bg-indigo-700 transition flex items-center gap-2 shadow-lg">
+            {isDeploying ? <Loader2 size={12} className="animate-spin" /> : <Rocket size={12} />}
+            Deploy
+          </button>
+        </nav>
+        <TEMPLATES.modern.component data={data} />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#030303] text-white selection:bg-indigo-500/30 overflow-x-hidden">
 
@@ -122,11 +144,15 @@ export default function PortfolioPreview() {
             {gV('name', data.name)}
           </div>
         </div>
-        {/* SMALL NAV DEPLOY BUTTON */}
-        <button onClick={handleDeploy} disabled={isDeploying} className="px-6 py-2 bg-indigo-600 rounded-full text-sm font-bold shadow-lg shadow-indigo-500/20 hover:scale-105 transition flex items-center gap-2">
-          {isDeploying ? <Loader2 size={14} className="animate-spin" /> : <Rocket size={14} />}
-          {isDeploying ? "Deploying..." : "Deploy Live"}
-        </button>
+        <div className="flex items-center gap-4">
+          <Link href="/portfolio/select-template" className="text-zinc-400 hover:text-white transition flex items-center gap-2 text-sm font-medium">
+            <Layout size={16} /> Templates
+          </Link>
+          <button onClick={handleDeploy} disabled={isDeploying} className="px-6 py-2 bg-indigo-600 rounded-full text-sm font-bold shadow-lg shadow-indigo-500/20 hover:scale-105 transition flex items-center gap-2">
+            {isDeploying ? <Loader2 size={14} className="animate-spin" /> : <Rocket size={14} />}
+            {isDeploying ? "Deploying..." : "Deploy Live"}
+          </button>
+        </div>
       </nav>
 
       <main className="max-w-7xl mx-auto px-6 pt-56 pb-32 space-y-64">
