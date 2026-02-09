@@ -73,7 +73,20 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                         <h2 className="text-6xl md:text-8xl font-bold tracking-tighter text-white">Projects</h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        {data.projects?.map((proj, i) => (
+                        {(data.projects && data.projects.length > 0 ? data.projects : [
+                            {
+                                title: "Project Alpha",
+                                description: "A high-end 3D immersive experience built with React Three Fiber.",
+                                technologies: ["React", "Three.js", "GSAP"],
+                                link: "#"
+                            },
+                            {
+                                title: "Beta Analytics",
+                                description: "Real-time data visualization platform with advanced filtering and reporting.",
+                                technologies: ["Next.js", "TypeScript", "Tailwind"],
+                                link: "#"
+                            }
+                        ]).map((proj, i) => (
                             <motion.div key={i} whileHover={{ y: -15 }} className="relative group aspect-[4/5] overflow-hidden rounded-[48px] bg-white/[0.02] border border-white/5 p-12 flex flex-col justify-end gap-8 transition-all duration-700">
                                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 group-hover:via-indigo-500/10 transition-all duration-700" />
                                 <div className="relative z-10 space-y-6">

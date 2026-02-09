@@ -68,6 +68,8 @@ export async function POST(req: NextRequest) {
           You are an expert AI Recruiter and Resume parser. 
           Your goal is to extract structured data from a resume text and provide actionable advice.
           
+          CRITICAL: Look specifically for a "Projects" or "Personal Projects" or "Technical Projects" section and extract each project into the "projects" array with "title", "description", and "technologies" (if listed).
+          
           Here are some examples of how to do it correctly:
           ${examplesText}
 

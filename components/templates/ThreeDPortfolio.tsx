@@ -207,7 +207,26 @@ export default function ThreeDPortfolio({ data }: { data: ResumeData }) {
                 </div>
 
                 <div className='mt-20 flex flex-wrap gap-7'>
-                    {(data.projects || []).map((project, index) => (
+                    {(data.projects && data.projects.length > 0 ? data.projects : [
+                        {
+                            title: "Project Alpha",
+                            description: "A high-end 3D immersive experience built with React Three Fiber.",
+                            technologies: ["React", "Three.js", "GSAP"],
+                            link: "#"
+                        },
+                        {
+                            title: "Beta Analytics",
+                            description: "Real-time data visualization platform with advanced filtering and reporting.",
+                            technologies: ["Next.js", "TypeScript", "Tailwind"],
+                            link: "#"
+                        },
+                        {
+                            title: "Gamma System",
+                            description: "Cloud-native infrastructure management tool for modern devops teams.",
+                            technologies: ["AWS", "Node.js", "Docker"],
+                            link: "#"
+                        }
+                    ]).map((project, index) => (
                         <ProjectCard
                             key={`project-${index}`}
                             index={index}

@@ -184,10 +184,10 @@ export default function PortfolioPreview() {
 
                 <div className="space-y-4">
                   <h4 className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em]">Projects</h4>
-                  {gV('projects', data.projects)?.slice(0, 3).map((proj: any, i: number) => (
+                  {(gV('projects', data.projects) || [])?.slice(0, 3).map((proj: any, i: number) => (
                     <div key={i} className="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-3">
-                      <input value={proj.title} onChange={(e) => { const n = [...gV('projects', data.projects)]; n[i].title = e.target.value; updateField('projects', n); }} className="w-full bg-transparent border-b border-white/10 text-white font-bold text-sm" placeholder="Project Title" />
-                      <textarea value={proj.description} onChange={(e) => { const n = [...gV('projects', data.projects)]; n[i].description = e.target.value; updateField('projects', n); }} rows={2} className="w-full bg-transparent text-xs text-zinc-500 resize-none" placeholder="Project Description" />
+                      <input value={proj.title} onChange={(e) => { const n = [...(gV('projects', data.projects) || [])]; n[i].title = e.target.value; updateField('projects', n); }} className="w-full bg-transparent border-b border-white/10 text-white font-bold text-sm" placeholder="Project Title" />
+                      <textarea value={proj.description} onChange={(e) => { const n = [...(gV('projects', data.projects) || [])]; n[i].description = e.target.value; updateField('projects', n); }} rows={2} className="w-full bg-transparent text-xs text-zinc-500 resize-none" placeholder="Project Description" />
                     </div>
                   ))}
                   {(!gV('projects', data.projects) || gV('projects', data.projects).length === 0) && (

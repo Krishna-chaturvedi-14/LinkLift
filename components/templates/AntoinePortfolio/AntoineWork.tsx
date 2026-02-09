@@ -16,7 +16,20 @@ export const AntoineWork = ({ data }: { data: ResumeData }) => {
                 </div>
 
                 <div className="flex flex-col border-t border-current">
-                    {(data.projects || []).map((project, i) => (
+                    {(data.projects && data.projects.length > 0 ? data.projects : [
+                        {
+                            title: "Project Alpha",
+                            description: "A high-end 3D immersive experience built with React Three Fiber.",
+                            technologies: ["React", "Three.js", "GSAP"],
+                            link: "#"
+                        },
+                        {
+                            title: "Beta Analytics",
+                            description: "Real-time data visualization platform with advanced filtering and reporting.",
+                            technologies: ["Next.js", "TypeScript", "Tailwind"],
+                            link: "#"
+                        }
+                    ]).map((project, i) => (
                         <a
                             key={i}
                             href={project.link || "#"}

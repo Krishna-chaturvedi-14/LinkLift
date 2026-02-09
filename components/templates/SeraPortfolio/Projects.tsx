@@ -13,7 +13,20 @@ export default function Projects({ data }: { data: ResumeData }) {
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    {(data.projects || []).map((project, index) => (
+                    {(data.projects && data.projects.length > 0 ? data.projects : [
+                        {
+                            title: "Project Alpha",
+                            description: "A high-end 3D immersive experience built with React Three Fiber.",
+                            technologies: ["React", "Three.js", "GSAP"],
+                            link: "#"
+                        },
+                        {
+                            title: "Beta Analytics",
+                            description: "Real-time data visualization platform with advanced filtering and reporting.",
+                            technologies: ["Next.js", "TypeScript", "Tailwind"],
+                            link: "#"
+                        }
+                    ]).map((project, index) => (
                         <motion.div
                             key={index}
                             whileHover={{ y: -10 }}
@@ -21,7 +34,7 @@ export default function Projects({ data }: { data: ResumeData }) {
                         >
                             {/* Image Placeholder with Gradient */}
                             <div className="h-[250px] bg-gradient-to-br from-gray-800 to-gray-950 flex items-center justify-center p-8 overflow-hidden">
-                                <div className="text-4xl font-bold text-gray-700 opacity-20 uppercase tracking-widest rotate-12 group-hover:rotate-0 transition-transform duration-500">
+                                <div className="text-4xl font-bold text-gray-700 opacity-20 uppercase tracking-widest rotate-12 group-hover:rotate-0 transition-transform duration-500 text-center">
                                     {project.title}
                                 </div>
                                 {/* Overlay on hover */}

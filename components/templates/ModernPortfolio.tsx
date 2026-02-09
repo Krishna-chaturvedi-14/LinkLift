@@ -152,7 +152,26 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                             viewport={{ once: true }}
                             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
                         >
-                            {(data.projects || []).map((proj, i) => (
+                            {(data.projects && data.projects.length > 0 ? data.projects : [
+                                {
+                                    title: "Project Alpha",
+                                    description: "A high-end 3D immersive experience built with React Three Fiber.",
+                                    technologies: ["React", "Three.js", "GSAP"],
+                                    link: "#"
+                                },
+                                {
+                                    title: "Beta Analytics",
+                                    description: "Real-time data visualization platform with advanced filtering and reporting.",
+                                    technologies: ["Next.js", "TypeScript", "Tailwind"],
+                                    link: "#"
+                                },
+                                {
+                                    title: "Gamma System",
+                                    description: "Cloud-native infrastructure management tool for modern devops teams.",
+                                    technologies: ["AWS", "Node.js", "Docker"],
+                                    link: "#"
+                                }
+                            ]).map((proj, i) => (
                                 <motion.div
                                     key={i}
                                     variants={item}
