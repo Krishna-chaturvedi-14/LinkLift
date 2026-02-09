@@ -10,6 +10,7 @@ export interface Template {
 }
 
 import ThreeDPortfolio from "@/components/templates/ThreeDPortfolio";
+import SeraPortfolio from "@/components/templates/SeraPortfolio";
 
 export const TEMPLATES: Record<string, Template> = {
     "default": {
@@ -29,6 +30,12 @@ export const TEMPLATES: Record<string, Template> = {
         name: "3D Interactive",
         thumbnail: "/templates/3d-thumb.png", // Placeholder
         component: ThreeDPortfolio
+    },
+    "sera": {
+        id: "sera",
+        name: "Sera Universe",
+        thumbnail: "/templates/sera-thumb.png", // Placeholder
+        component: SeraPortfolio
     }
 };
 
