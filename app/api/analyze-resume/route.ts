@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
           }
         }
       },
-      required: ["name", "role", "skills", "experience", "projects", "score"]
+      required: ["name", "role", "skills", "experience", "projects", "score", "suggestions"]
     };
 
     let parsedData: any = null;
@@ -149,8 +149,18 @@ export async function POST(req: NextRequest) {
 
           const prompt = `
           Analyze this resume and return strictly valid JSON. 
-          You MUST include a "projects" array. If no projects exist, return [].
           
+          ### SCORING RUBRIC:
+          - 90-100: Exceptional. Quantifiable metrics, clear projects, modern stack.
+          - 75-89: Strong. Good skills but lacks specific metrics or links.
+          - 50-74: Growing. Needs more projects or clearer role focus.
+          
+          ### INSIGHTS REQUIREMENTS:
+          - Provide at least 2-3 constructive suggestions.
+          - "area": A short category (e.g., "Projects", "Quantification").
+          - "issue": What is missing or weak.
+          - "advice": How to fix it specifically.
+
           Resume Text: "${resumeText}"
           
           Required Structure:
@@ -172,41 +182,41 @@ export async function POST(req: NextRequest) {
 
           const result = await model.generateContent(prompt);
           const text = result.response.text();
-          const cleanedText = text.replace(/```json|```/g, "").trim();
+          const cleanedText = text.replace(/```json | ```/g, "").trim();
 
           try {
             parsedData = JSON.parse(cleanedText);
           } catch (parseErr) {
-            console.warn(`[AI] Parse error on ${modelName} (${apiVer}):`, cleanedText.slice(0, 300));
+            console.warn(`[AI] Parse error on ${modelName} (${apiVer}): `, cleanedText.slice(0, 300));
             throw new Error("JSON Parse Error");
           }
 
           if (parsedData) {
-            console.log(`[AI] Success with Gemini ${modelName}!`);
+            console.log(`[AI] Success with Gemini ${modelName} !`);
             break;
           }
         } catch (e: any) {
           const errorMsg = e.message || "";
 
           if (errorMsg.includes("429") || errorMsg.includes("Quota")) {
-            console.warn(`🚨 ${modelName} (${apiVer}) Quota Exceeded. Trying next config...`);
+            console.warn(`🚨 ${modelName} (${apiVer}) Quota Exceeded.Trying next config...`);
             continue;
           }
 
           if (errorMsg.includes("404") || errorMsg.includes("not found")) {
-            console.warn(`❌ ${modelName} (${apiVer}) Not Found. Skipping...`);
+            console.warn(`❌ ${modelName} (${apiVer}) Not Found.Skipping...`);
             continue;
           }
 
           try {
-            console.warn(`[AI] ${modelName} (${apiVer}) config/parse error. Trying desperation mode...`);
+            console.warn(`[AI] ${modelName} (${apiVer}) config / parse error.Trying desperation mode...`);
             const simpleModel = genAI.getGenerativeModel(
               { model: modelName },
               { apiVersion: apiVer as any }
             );
-            const plainResult = await simpleModel.generateContent(`Return resume data as JSON. No markdown. Resume: ${resumeText.slice(0, 4000)}`);
+            const plainResult = await simpleModel.generateContent(`Return resume data as JSON.Include name, role, email, skills, experience, projects, score(0 - 100), and suggestions.No markdown.Resume: ${resumeText.slice(0, 4000)} `);
             const plainText = plainResult.response.text();
-            const cleanedPlain = plainText.replace(/```json|```/g, "").trim();
+            const cleanedPlain = plainText.replace(/```json | ```/g, "").trim();
             parsedData = JSON.parse(cleanedPlain);
             if (parsedData) break;
           } catch (innerE) {
@@ -224,13 +234,13 @@ export async function POST(req: NextRequest) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${groqKey}`
+            "Authorization": `Bearer ${groqKey} `
           },
           body: JSON.stringify({
             model: "llama-3.3-70b-versatile",
             messages: [
-              { role: "system", content: "Extract resume data into JSON format." },
-              { role: "user", content: `Resume Text: ${resumeText.slice(0, 8000)}\n\nSchema: ${JSON.stringify(schema)}` }
+              { role: "system", content: "Extract resume data into JSON format. Provide accurate ATS scoring and 3 constructive suggestions for improvement." },
+              { role: "user", content: `Resume Text: ${resumeText.slice(0, 8000)} \n\nSchema: ${JSON.stringify(schema)} ` }
             ],
             response_format: { type: "json_object" },
             temperature: 0.1
@@ -239,8 +249,8 @@ export async function POST(req: NextRequest) {
 
         if (!groqResponse.ok) {
           const errorData = await groqResponse.text();
-          console.warn(`❌ Groq API Error Status: ${groqResponse.status} - ${errorData.slice(0, 200)}`);
-          throw new Error(`Groq API Error: ${groqResponse.status}`);
+          console.warn(`❌ Groq API Error Status: ${groqResponse.status} - ${errorData.slice(0, 200)} `);
+          throw new Error(`Groq API Error: ${groqResponse.status} `);
         }
 
         const groqJson = await groqResponse.json();
@@ -261,7 +271,7 @@ export async function POST(req: NextRequest) {
       const nameMatch = resumeText.match(/([A-Z][a-z]+ [A-Z][a-z]+)/);
       const emailMatch = resumeText.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/);
       const commonSkills = ["React", "JavaScript", "TypeScript", "Node", "Tailwind", "Python", "Java", "Next", "SQL"];
-      const foundSkills = commonSkills.filter(s => new RegExp(`\\b${s}\\b`, "i").test(resumeText));
+      const foundSkills = commonSkills.filter(s => new RegExp(`\\b${s} \\b`, "i").test(resumeText));
 
       regexInfo = {
         name: nameMatch?.[0],
@@ -309,7 +319,8 @@ export async function POST(req: NextRequest) {
     }
 
     // 🟢 STEP 4: VERIFY JSON STRUCTURE & SCORE
-    const finalScore = Math.round(Number(parsedData.score || 85));
+    // Default to 75 if missing to show it's "Working" but needs improvement
+    const finalScore = Math.round(Number(parsedData.score || 75));
     parsedData.ats_score = finalScore;
     parsedData.score = finalScore;
 
