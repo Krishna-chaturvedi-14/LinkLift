@@ -130,6 +130,7 @@ export default function PortfolioPreview() {
 
   // 🟢 3D TEMPLATE RENDERING
   if (currentTemplateId === '3d') {
+    const ThreeDComponent = TEMPLATES["3d"].component;
     return (
       <div className="relative">
         <nav className="fixed top-4 right-4 z-[200] flex gap-2">
@@ -141,7 +142,7 @@ export default function PortfolioPreview() {
             Deploy Live
           </button>
         </nav>
-        <TEMPLATES["3d"].component data={data} />
+        <ThreeDComponent data={data} />
       </div>
     );
   }
