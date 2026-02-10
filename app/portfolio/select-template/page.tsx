@@ -58,8 +58,8 @@ export default function SelectTemplatePage() {
             alert("Failed to save preference");
         } else {
             setCurrentTemplateId(templateId);
-            // Optional: Redirect to preview after selection?
-            // router.push("/portfolio/preview");
+            // 🟢 Redirect to preview after selection
+            router.push("/portfolio/preview");
         }
         setSaving(null);
     };

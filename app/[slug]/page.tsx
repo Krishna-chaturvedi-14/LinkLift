@@ -56,8 +56,21 @@ export default async function PublicPortfolio({ params }: { params: Promise<{ sl
   const TemplateComponent = template.component;
 
   return (
-    <div className="w-full">
+    <div className="relative w-full">
       <TemplateComponent data={data} />
+
+      {/* 🟢 Public Branding Footer */}
+      <footer className="w-full py-10 bg-black/20 backdrop-blur-sm border-t border-white/5 flex flex-col items-center justify-center gap-2">
+        <p className="text-[10px] text-zinc-500 uppercase tracking-[0.3em] font-medium">
+          Powered by
+        </p>
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 bg-indigo-600 rounded-lg flex items-center justify-center">
+            <span className="text-white text-[10px] font-black italic">LL</span>
+          </div>
+          <span className="text-white text-xs font-bold tracking-tight">LinkLift</span>
+        </div>
+      </footer>
     </div>
   );
 }

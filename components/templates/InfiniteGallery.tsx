@@ -4,6 +4,8 @@ import React, { useRef, useState, useMemo, Suspense, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, useTexture } from "@react-three/drei";
 import * as THREE from "three";
+import { X } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 import { ResumeData } from "@/lib/types";
 
 const WALL_ANGLE = -0.25;
@@ -178,52 +180,75 @@ function Gallery({ projects }: { projects: any[] }) {
 }
 
 // Fixed UI Overlay
-function Header({ data }: { data: ResumeData }) {
+function Header({ data, contactOpen, onContactClick }: { data: ResumeData, contactOpen: boolean, onContactClick: () => void }) {
     return (
-        <div className="fixed inset-0 pointer-events-none z-50 flex flex-col p-12 justify-between">
-            <div className="flex justify-between items-start">
-                <div className="space-y-2">
-                    <h1 className="text-4xl font-black tracking-tighter text-white uppercase italic leading-none">
-                        {data.name || "Portfolio"}
-                    </h1>
-                    <p className="text-sm font-mono text-white/50 tracking-[0.3em] uppercase">
-                        {data.role || "Creative Developer"}
-                    </p>
+        <>
+            <div className="fixed inset-0 pointer-events-none z-50 flex flex-col p-12 justify-between">
+                <div className="flex justify-between items-start">
+                    <div className="space-y-2">
+                        <h1 className="text-4xl font-black tracking-tighter text-white uppercase italic leading-none">
+                            {data.name || "Portfolio"}
+                        </h1>
+                        <p className="text-sm font-mono text-white/50 tracking-[0.3em] uppercase">
+                            {data.role || "Creative Developer"}
+                        </p>
+                    </div>
+                    <div className="text-right font-mono text-[10px] text-white/30 uppercase tracking-widest leading-loose">
+                        [ Scroll to Explore ] <br />
+                        [ Infinitely Tileable Gallery ]
+                    </div>
                 </div>
-                <div className="text-right font-mono text-[10px] text-white/30 uppercase tracking-widest leading-loose">
-                    [ Scroll to Explore ] <br />
-                    [ Infinitely Tileable Gallery ]
+
+                <div className="flex justify-between items-end">
+                    <div className="max-w-md">
+                        <p className="text-lg text-white/80 font-serif italic leading-tight">
+                            {data.bio || "Crafting digital experiences through a fusion of code and creativity."}
+                        </p>
+                    </div>
+                    <div className="flex gap-4 pointer-events-auto">
+                        {data.github && (
+                            <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-white hover:text-indigo-400 transition-colors uppercase font-mono text-xs">
+                                GitHub
+                            </a>
+                        )}
+                        {data.linkedin && (
+                            <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-white hover:text-indigo-400 transition-colors uppercase font-mono text-xs">
+                                LinkedIn
+                            </a>
+                        )}
+                        <button
+                            onClick={() => onContactClick()}
+                            className="text-sm font-mono text-white underline underline-offset-4 pointer-events-auto cursor-pointer hover:text-white/70 transition-colors uppercase"
+                        >
+                            Message
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div className="flex justify-between items-end">
-                <div className="max-w-md">
-                    <p className="text-lg text-white/80 font-serif italic leading-tight">
-                        {data.bio || "Crafting digital experiences through a fusion of code and creativity."}
-                    </p>
+            {/* 🟢 Contact Modal */}
+            {contactOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-md pointer-events-auto">
+                    <div className="w-full max-w-lg bg-[#0a0a0f] border border-white/10 rounded-[32px] p-8 relative shadow-2xl">
+                        <button
+                            onClick={() => onContactClick()}
+                            className="absolute top-6 right-6 p-2 text-zinc-500 hover:text-white transition-colors"
+                        >
+                            <X size={20} />
+                        </button>
+                        <h2 className="text-2xl font-bold text-white mb-2 italic tracking-tighter uppercase">Get in Touch</h2>
+                        <p className="text-zinc-500 text-xs mb-8 uppercase tracking-widest font-mono">Message delivered to {data.name}</p>
+                        <ContactForm toName={data.name} />
+                    </div>
                 </div>
-                <div className="flex gap-4 pointer-events-auto">
-                    {data.github && (
-                        <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-white hover:text-indigo-400 transition-colors uppercase font-mono text-xs">
-                            GitHub
-                        </a>
-                    )}
-                    {data.linkedin && (
-                        <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-white hover:text-indigo-400 transition-colors uppercase font-mono text-xs">
-                            LinkedIn
-                        </a>
-                    )}
-                    <a href={`mailto:${data.email}`} className="text-sm font-mono text-white underline underline-offset-4 pointer-events-auto cursor-pointer hover:text-white/70 transition-colors uppercase">
-                        Message
-                    </a>
-                </div>
-            </div>
-        </div>
+            )}
+        </>
     );
 }
 
 export default function InfiniteGallery({ data }: { data: ResumeData }) {
     const [mounted, setMounted] = useState(false);
+    const [contactOpen, setContactOpen] = useState(false);
     useEffect(() => {
         setMounted(true);
     }, []);
@@ -268,7 +293,7 @@ export default function InfiniteGallery({ data }: { data: ResumeData }) {
 
     return (
         <div className="h-screen w-full bg-[#050505] overflow-hidden">
-            <Header data={data} />
+            <Header data={data} contactOpen={contactOpen} onContactClick={() => setContactOpen(!contactOpen)} />
 
             <Canvas camera={{ fov: 45, near: 0.1, far: 1000 }}>
                 <color attach="background" args={["#050505"]} />

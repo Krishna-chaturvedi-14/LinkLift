@@ -9,8 +9,10 @@ import {
     Mail,
     MapPin,
     Github,
-    Linkedin
+    Linkedin,
+    Send
 } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 import { ResumeData } from "@/lib/types";
 
 export default function TerminalPortfolio({ data }: { data: ResumeData }) {
@@ -121,26 +123,11 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                     </div>
                 </section>
 
-                {/* TERMINAL */}
+                {/* SYSTEM CONTACT */}
                 <section className="space-y-24 pb-48">
-                    <div className="flex flex-col gap-6"><span className="text-emerald-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 04 SYSTEM_CORE</span><h2 className="text-6xl md:text-8xl font-bold tracking-tighter text-white">Terminal</h2></div>
-                    <div className="w-full max-w-4xl mx-auto rounded-3xl bg-black border border-white/10 shadow-2xl overflow-hidden font-mono text-sm">
-                        <div className="bg-white/5 px-6 py-4 border-b border-white/10 flex items-center justify-between text-zinc-500 text-[10px] uppercase tracking-widest">
-                            <div className="flex gap-2"><div className="w-3 h-3 rounded-full bg-red-500/50" /><div className="w-3 h-3 rounded-full bg-amber-500/50" /><div className="w-3 h-3 rounded-full bg-emerald-500/50" /></div>
-                            guest@linklift: ~
-                        </div>
-                        <div className="p-8 space-y-4 min-h-[300px] text-emerald-500/80">
-                            <p className="text-zinc-500">Last login: {new Date().toLocaleDateString()} on ttys001</p>
-                            <div className="space-y-2 pt-4">
-                                <p className="text-white flex gap-3"><span className="text-emerald-500">➜</span><span>ls expertise/</span></p>
-                                <p className="flex flex-wrap gap-x-6 gap-y-1 text-zinc-400">{(data.skills || []).slice(0, 8).map((s: string) => <span key={s}>{s.toLowerCase()}.sh</span>)}</p>
-                            </div>
-                            <div className="space-y-2 pt-4">
-                                <p className="text-white flex gap-3"><span className="text-emerald-500">➜</span><span>cat bio.txt</span></p>
-                                <p className="text-emerald-400/70 leading-relaxed italic">"{data.bio || "Crafting digital experiences."}"</p>
-                            </div>
-                            <div className="pt-4 flex gap-3"><span className="text-emerald-500 animate-pulse">➜</span><span className="w-2 h-5 bg-emerald-500 animate-pulse" /></div>
-                        </div>
+                    <div className="flex flex-col gap-6"><span className="text-emerald-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 04 SYSTEM_CONTACT</span><h2 className="text-6xl md:text-8xl font-bold tracking-tighter text-white">Get in Touch</h2></div>
+                    <div className="w-full max-w-2xl mx-auto rounded-3xl bg-black border border-white/10 shadow-2xl p-10 font-mono">
+                        <ContactForm toName={data.name} />
                     </div>
                 </section>
             </main>

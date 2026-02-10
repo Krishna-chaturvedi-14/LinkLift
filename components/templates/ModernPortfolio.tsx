@@ -4,6 +4,7 @@
 import { motion } from "framer-motion";
 import { ResumeData } from "@/lib/types";
 import { Github, Linkedin, Mail, MapPin, Globe, Download, ArrowRight } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 
 export default function ModernPortfolio({ data }: { data: ResumeData }) {
     const container = {
@@ -230,9 +231,9 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                         <p className="text-slate-600 max-w-md mx-auto">
                             I'm currently available for freelance work or full-time opportunities.
                         </p>
-                        <a href={`mailto:${data.email || "hello@example.com"}`} className="inline-block px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:bg-slate-800 transition shadow-xl shadow-slate-900/10">
-                            Get in Touch
-                        </a>
+                        <div className="max-w-xl mx-auto py-10">
+                            <ContactForm toName={data.name} />
+                        </div>
                         <div className="pt-12 text-sm text-slate-400">
                             © {new Date().getFullYear()} {data.name || "Candidate"}. All rights reserved.
                         </div>

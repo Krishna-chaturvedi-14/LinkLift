@@ -2,6 +2,7 @@
 import React from "react";
 import { Mail, MapPin, Send, Github, Linkedin, Twitter } from "lucide-react";
 import { ResumeData } from "../../../lib/types";
+import ContactForm from "@/components/ContactForm";
 
 export default function Contact({ data }: { data: ResumeData }) {
     return (
@@ -42,47 +43,25 @@ export default function Contact({ data }: { data: ResumeData }) {
                             </div>
 
                             <div className="flex gap-4 pt-8">
-                                {[Github, Linkedin, Twitter].map((Icon, i) => (
-                                    <a key={i} href="#" className="p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-all border border-white/10 hover:border-blue-500/50">
-                                        <Icon className="w-6 h-6" />
+                                {data.github && (
+                                    <a href={data.github.startsWith('http') ? data.github : `https://${data.github}`} target="_blank" rel="noopener noreferrer" className="p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-all border border-white/10 hover:border-blue-500/50">
+                                        <Github className="w-6 h-6" />
                                     </a>
-                                ))}
+                                )}
+                                {data.linkedin && (
+                                    <a href={data.linkedin.startsWith('http') ? data.linkedin : `https://${data.linkedin}`} target="_blank" rel="noopener noreferrer" className="p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-all border border-white/10 hover:border-blue-500/50">
+                                        <Linkedin className="w-6 h-6" />
+                                    </a>
+                                )}
                             </div>
                         </div>
 
                         <div className="relative">
                             <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur opacity-25" />
                             <div className="relative bg-[#091121] p-8 rounded-3xl border border-white/10 shadow-2xl">
-                                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Full Name</label>
-                                        <input
-                                            type="text"
-                                            className="w-full px-4 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500 focus:outline-none transition-all"
-                                            placeholder="John Doe"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Email Address</label>
-                                        <input
-                                            type="email"
-                                            className="w-full px-4 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500 focus:outline-none transition-all"
-                                            placeholder="john@example.com"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Message</label>
-                                        <textarea
-                                            rows={4}
-                                            className="w-full px-4 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500 focus:outline-none transition-all resize-none"
-                                            placeholder="How can I help you?"
-                                        />
-                                    </div>
-                                    <button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-all transform active:scale-95 shadow-xl shadow-blue-500/20">
-                                        Send Message
-                                        <Send size={18} />
-                                    </button>
-                                </form>
+                                <div className="space-y-6">
+                                    <ContactForm toName={data.name} />
+                                </div>
                             </div>
                         </div>
                     </div>

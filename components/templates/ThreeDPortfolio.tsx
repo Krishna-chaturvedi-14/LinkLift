@@ -12,6 +12,7 @@ import ComputersCanvas from "@/components/canvas/Computers";
 import StarsCanvas from "@/components/canvas/Stars";
 import EarthCanvas from "@/components/canvas/Earth";
 import BallCanvas from "@/components/canvas/Ball";
+import ContactForm from "@/components/ContactForm";
 
 // --- UTILS & CONSTANTS ---
 import { Variants } from "framer-motion";
@@ -248,23 +249,11 @@ export default function ThreeDPortfolio({ data }: { data: ResumeData }) {
                     <p className='sm:text-[18px] text-[14px] text-secondary uppercase tracking-wider text-zinc-400'>Get in touch</p>
                     <h3 className='text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px]'>Contact.</h3>
 
-                    <div className='mt-12 flex flex-wrap gap-4'>
-                        <a href={`mailto:${data.email}`} className='bg-tertiary py-4 px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl bg-indigo-600 hover:bg-indigo-700 transition flex items-center gap-2'>
-                            <Mail size={18} /> Send Email
-                        </a>
-                        {data.github && (
-                            <a href={data.github.startsWith('http') ? data.github : `https://${data.github}`} target="_blank" rel="noopener noreferrer" className='py-4 px-8 outline-none w-fit text-white font-bold shadow-md rounded-xl bg-zinc-800 hover:bg-zinc-700 transition flex items-center gap-2'>
-                                <Github size={18} /> GitHub
-                            </a>
-                        )}
-                        {data.linkedin && (
-                            <a href={data.linkedin.startsWith('http') ? data.linkedin : `https://${data.linkedin}`} target="_blank" rel="noopener noreferrer" className='py-4 px-8 outline-none w-fit text-white font-bold shadow-md rounded-xl bg-[#0077b5] hover:bg-[#00669c] transition flex items-center gap-2'>
-                                <Linkedin size={18} /> LinkedIn
-                            </a>
-                        )}
+                    <div className='mt-12'>
+                        <ContactForm toName={data.name} />
                     </div>
                     <p className="mt-8 text-zinc-500 text-sm italic">
-                        {data.email}
+                        Direct: {data.email}
                     </p>
                 </motion.div>
 

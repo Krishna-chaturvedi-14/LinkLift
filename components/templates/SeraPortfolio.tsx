@@ -24,7 +24,7 @@ export default function SeraPortfolio({ data }: { data: ResumeData }) {
 
       <footer className="py-10 text-center border-t border-white/5 bg-[#020617]">
         <p className="text-gray-500 text-sm">
-          © {new Date().getFullYear()} {data.name}. Built with LinkLift.
+          © {new Date().getFullYear()} {data.name}. All rights reserved.
         </p>
       </footer>
 
