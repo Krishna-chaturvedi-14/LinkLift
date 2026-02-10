@@ -156,19 +156,23 @@ export async function POST(req: NextRequest) {
           - 50-74: Growing. Needs more projects or clearer role focus.
           
           ### INSIGHTS REQUIREMENTS:
-          - Provide at least 2-3 constructive suggestions.
-          - "area": A short category (e.g., "Projects", "Quantification").
-          - "issue": What is missing or weak.
-          - "advice": How to fix it specifically.
+          - Provide 3 constructive suggestions STRICTLY about resume content and structure.
+          - FORBIDDEN topics: Master's degrees, PhDs, new certifications, or general career paths.
+          - FOCUS topics: Bullet point strength, quantifiable impact, layout clarity, and skill alignment.
+          - "area": A short category (e.g., "Impact", "Formatting").
+          - "issue": What is missing or weak in the resume's text.
+          - "advice": How to improve that specific section.
 
           Resume Text: "${resumeText}"
           
-          Required Structure:
+          Required Structure (Return exactly this):
           {
             "name": "...",
             "role": "...",
             "email": "...",
             "bio": "...",
+            "github": "...", // Extract if found
+            "linkedin": "...", // Extract if found
             "skills": ["..."],
             "experience": [{"role": "...", "company": "...", "duration": "...", "description": "..."}],
             "projects": [{"title": "...", "description": "...", "technologies": ["..."], "link": "..."}],

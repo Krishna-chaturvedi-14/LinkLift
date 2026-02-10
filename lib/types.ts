@@ -18,6 +18,8 @@ export interface ResumeData {
     role: string;
     email: string;
     bio: string;
+    github?: string;
+    linkedin?: string;
     skills: string[];
     experience: Experience[];
     projects: Project[];

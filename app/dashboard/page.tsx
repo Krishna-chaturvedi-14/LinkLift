@@ -12,7 +12,8 @@ import {
   Lightbulb,
   Rocket,
   Plus,
-  User
+  User,
+  Share2
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
@@ -31,6 +32,7 @@ type ResumeRecord = {
   id: string;
   user_id: string;
   parsed_json: ParsedResume | null;
+  slug: string | null;
   created_at: string;
 };
 
@@ -88,6 +90,7 @@ export default function DashboardPage() {
   const displayName = parsed.name || user?.fullName || "User";
   const displayRole = parsed.role || "Professional Candidate";
   const displayScore = parsed.score || 85; // Fallback score if needed
+  const userSlug = resume?.slug;
 
   if (!resume || !resume.parsed_json) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#05050A] gap-6">
@@ -117,17 +120,32 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
+          {userSlug && (
+            <div className="flex items-center gap-2 p-1 bg-white/5 border border-white/10 rounded-full backdrop-blur-md">
+              <span className="pl-4 text-xs text-zinc-500 font-mono">linklift.site/{userSlug}</span>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(`https://linklift.site/${userSlug}`);
+                  alert("Link copied to clipboard!");
+                }}
+                className="p-2 bg-indigo-600 rounded-full text-white hover:bg-indigo-500 transition-colors"
+                title="Copy Link"
+              >
+                <Share2 size={14} />
+              </button>
+            </div>
+          )}
           <Link href="/upload">
             <button className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all text-sm font-medium backdrop-blur-md">
               <Plus size={18} />
-              Analyze New
+              Update Resume
             </button>
           </Link>
           <Link href="/portfolio/preview">
             <button className="flex items-center gap-2 px-6 py-3 bg-indigo-600 rounded-full hover:bg-indigo-500 transition-all text-sm font-bold shadow-lg shadow-indigo-500/20">
               <Globe size={18} />
-              Preview Portfolio
+              Manage Portfolio
             </button>
           </Link>
         </div>

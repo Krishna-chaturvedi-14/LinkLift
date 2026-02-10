@@ -164,10 +164,14 @@ export default function PortfolioPreview() {
 
               <div className="space-y-10 flex-1">
                 <div className="space-y-4">
-                  <h4 className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em]">Hero Section</h4>
+                  <h4 className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em]">Hero & Socials</h4>
                   <div className="space-y-4">
                     <input value={gV('name', data.name)} onChange={(e) => updateField('name', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-indigo-500/50 transition-colors" placeholder="Full Name" />
                     <input value={gV('role', data.role)} onChange={(e) => updateField('role', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-indigo-500/50 transition-colors" placeholder="Headline / Role" />
+                    <div className="grid grid-cols-2 gap-3">
+                      <input value={gV('github', data.github)} onChange={(e) => updateField('github', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-xs outline-none focus:border-indigo-500/50 transition-colors" placeholder="GitHub URL" />
+                      <input value={gV('linkedin', data.linkedin)} onChange={(e) => updateField('linkedin', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-xs outline-none focus:border-indigo-500/50 transition-colors" placeholder="LinkedIn URL" />
+                    </div>
                     <textarea value={gV('bio', data.bio)} onChange={(e) => updateField('bio', e.target.value)} rows={4} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-indigo-500/50 transition-colors resize-none" placeholder="Elevator Pitch" />
                   </div>
                 </div>
@@ -187,6 +191,7 @@ export default function PortfolioPreview() {
                   {(gV('projects', data.projects) || [])?.slice(0, 3).map((proj: any, i: number) => (
                     <div key={i} className="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-3">
                       <input value={proj.title} onChange={(e) => { const n = [...(gV('projects', data.projects) || [])]; n[i].title = e.target.value; updateField('projects', n); }} className="w-full bg-transparent border-b border-white/10 text-white font-bold text-sm" placeholder="Project Title" />
+                      <input value={proj.link} onChange={(e) => { const n = [...(gV('projects', data.projects) || [])]; n[i].link = e.target.value; updateField('projects', n); }} className="w-full bg-transparent border-b border-white/10 text-indigo-400 text-xs" placeholder="Live Link (https://...)" />
                       <textarea value={proj.description} onChange={(e) => { const n = [...(gV('projects', data.projects) || [])]; n[i].description = e.target.value; updateField('projects', n); }} rows={2} className="w-full bg-transparent text-xs text-zinc-500 resize-none" placeholder="Project Description" />
                     </div>
                   ))}

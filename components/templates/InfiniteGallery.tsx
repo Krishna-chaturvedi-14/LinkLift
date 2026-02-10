@@ -75,10 +75,17 @@ function PaintingContent({ index, project, scroll, totalWidth }: {
                 <div className="bg-black/80 backdrop-blur-md p-6 rounded-2xl border border-white/10 text-white min-w-[200px] pointer-events-none select-none">
                     <h3 className="text-xl font-bold mb-1">{project.title || "Untitled Project"}</h3>
                     <p className="text-sm text-white/60 line-clamp-2">{project.description}</p>
-                    <div className="flex gap-2 mt-3">
-                        {(project.technologies || []).slice(0, 3).map((t: string) => (
-                            <span key={t} className="text-[10px] px-2 py-0.5 bg-white/10 rounded-full border border-white/5 uppercase tracking-widest">{t}</span>
-                        ))}
+                    <div className="flex justify-between items-center mt-3">
+                        <div className="flex gap-2">
+                            {(project.technologies || []).slice(0, 3).map((t: string) => (
+                                <span key={t} className="text-[10px] px-2 py-0.5 bg-white/10 rounded-full border border-white/5 uppercase tracking-widest">{t}</span>
+                            ))}
+                        </div>
+                        {project.link && (
+                            <span className="text-[10px] text-indigo-400 font-bold uppercase tracking-widest flex items-center gap-1">
+                                Link ✨
+                            </span>
+                        )}
                     </div>
                 </div>
             </Html>
@@ -195,8 +202,20 @@ function Header({ data }: { data: ResumeData }) {
                         {data.bio || "Crafting digital experiences through a fusion of code and creativity."}
                     </p>
                 </div>
-                <div className="text-sm font-mono text-white underline underline-offset-4 pointer-events-auto cursor-pointer hover:text-white/70 transition-colors uppercase">
-                    Connect With Me
+                <div className="flex gap-4 pointer-events-auto">
+                    {data.github && (
+                        <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-white hover:text-indigo-400 transition-colors uppercase font-mono text-xs">
+                            GitHub
+                        </a>
+                    )}
+                    {data.linkedin && (
+                        <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-white hover:text-indigo-400 transition-colors uppercase font-mono text-xs">
+                            LinkedIn
+                        </a>
+                    )}
+                    <a href={`mailto:${data.email}`} className="text-sm font-mono text-white underline underline-offset-4 pointer-events-auto cursor-pointer hover:text-white/70 transition-colors uppercase">
+                        Message
+                    </a>
                 </div>
             </div>
         </div>

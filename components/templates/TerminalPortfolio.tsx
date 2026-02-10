@@ -101,7 +101,20 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                                     <div className="flex flex-wrap gap-2">{proj.technologies?.map(t => <span key={t} className="px-4 py-1.5 bg-white/10 text-white text-[10px] font-bold uppercase tracking-widest rounded-full">{t}</span>)}</div>
                                     <h3 className="text-5xl font-bold text-white leading-tight">{proj.title}</h3>
                                     <p className="text-zinc-400 text-lg leading-relaxed line-clamp-3 group-hover:text-white/80 transition-colors">{proj.description}</p>
-                                    <button className="flex items-center gap-3 text-white font-bold uppercase text-xs tracking-widest border-b border-white/20 pb-2 group-hover:border-indigo-400 transition-all">View Project <ArrowRight size={14} /></button>
+                                    {proj.link ? (
+                                        <a
+                                            href={proj.link.startsWith('http') ? proj.link : `https://${proj.link}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-3 text-white font-bold uppercase text-xs tracking-widest border-b border-white/20 pb-2 group-hover:border-indigo-400 transition-all w-fit"
+                                        >
+                                            View Project <ArrowRight size={14} />
+                                        </a>
+                                    ) : (
+                                        <button className="flex items-center gap-3 text-white font-bold uppercase text-xs tracking-widest border-b border-white/20 pb-2 group-hover:border-indigo-400 transition-all">
+                                            Case Study <ArrowRight size={14} />
+                                        </button>
+                                    )}
                                 </div>
                             </motion.div>
                         ))}
@@ -132,8 +145,27 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                 </section>
             </main>
 
-            <footer className="border-t border-white/5 py-24 text-center text-zinc-600 font-mono text-xs tracking-widest uppercase italic">
-                Designed for Impact — © {new Date().getFullYear()} {data.name || "Candidate"}
+            <footer className="border-t border-white/5 py-24 flex flex-col items-center gap-8">
+                <div className="flex gap-8">
+                    {data.github && (
+                        <a href={data.github.startsWith('http') ? data.github : `https://${data.github}`} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors">
+                            <Github size={20} />
+                        </a>
+                    )}
+                    {data.linkedin && (
+                        <a href={data.linkedin.startsWith('http') ? data.linkedin : `https://${data.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors">
+                            <Linkedin size={20} />
+                        </a>
+                    )}
+                    {data.email && (
+                        <a href={`mailto:${data.email}`} className="text-zinc-500 hover:text-white transition-colors">
+                            <Mail size={20} />
+                        </a>
+                    )}
+                </div>
+                <div className="text-zinc-600 font-mono text-xs tracking-widest uppercase italic">
+                    Designed for Impact — © {new Date().getFullYear()} {data.name || "Candidate"}
+                </div>
             </footer>
         </div>
     );

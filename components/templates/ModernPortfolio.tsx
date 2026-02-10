@@ -64,8 +64,18 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                         </p>
                         <div className="flex gap-4 pt-4">
                             {data.email && (
-                                <a href={`mailto:${data.email}`} className="p-3 bg-slate-100 rounded-full hover:bg-slate-200 transition text-slate-600">
+                                <a href={`mailto:${data.email}`} className="p-3 bg-slate-100 rounded-full hover:bg-slate-200 transition text-slate-600" title="Email Me">
                                     <Mail size={20} />
+                                </a>
+                            )}
+                            {data.github && (
+                                <a href={data.github.startsWith('http') ? data.github : `https://${data.github}`} target="_blank" rel="noopener noreferrer" className="p-3 bg-slate-100 rounded-full hover:bg-slate-200 transition text-slate-600" title="GitHub">
+                                    <Github size={20} />
+                                </a>
+                            )}
+                            {data.linkedin && (
+                                <a href={data.linkedin.startsWith('http') ? data.linkedin : `https://${data.linkedin}`} target="_blank" rel="noopener noreferrer" className="p-3 bg-slate-100 rounded-full hover:bg-slate-200 transition text-slate-600" title="LinkedIn">
+                                    <Linkedin size={20} />
                                 </a>
                             )}
                         </div>
@@ -175,8 +185,13 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                                 <motion.div
                                     key={i}
                                     variants={item}
-                                    className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 flex flex-col items-start gap-4 h-full"
+                                    className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 flex flex-col items-start gap-4 h-full relative group"
                                 >
+                                    {proj.link && (
+                                        <a href={proj.link.startsWith('http') ? proj.link : `https://${proj.link}`} target="_blank" rel="noopener noreferrer" className="absolute top-6 right-6 p-2 bg-slate-50 rounded-lg text-slate-400 group-hover:text-rose-500 transition-colors">
+                                            <ArrowRight size={16} />
+                                        </a>
+                                    )}
                                     <div className="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center text-rose-500 mb-2">
                                         <Globe size={24} />
                                     </div>
@@ -191,6 +206,16 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                                             </span>
                                         ))}
                                     </div>
+                                    {proj.link && (
+                                        <a
+                                            href={proj.link.startsWith('http') ? proj.link : `https://${proj.link}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="mt-4 text-xs font-bold text-rose-500 flex items-center gap-1 hover:underline"
+                                        >
+                                            View Project <ArrowRight size={10} />
+                                        </a>
+                                    )}
                                 </motion.div>
                             ))}
 
