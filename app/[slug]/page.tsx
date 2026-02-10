@@ -4,6 +4,7 @@ export const revalidate = 0;
 
 import { notFound } from "next/navigation";
 import { TEMPLATES } from "@/lib/templates";
+import Image from "next/image";
 
 export default async function PublicPortfolio({ params }: { params: Promise<{ slug: string }> }) {
   // 🟢 STEP 1: FORCE FETCH FROM SUPABASE REST API TO BYPASS VERCEL CACHE
@@ -65,10 +66,13 @@ export default async function PublicPortfolio({ params }: { params: Promise<{ sl
           Powered by
         </p>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-indigo-600 rounded-lg flex items-center justify-center">
-            <span className="text-white text-[10px] font-black italic">SD</span>
-          </div>
-          <span className="text-white text-xs font-bold tracking-tight">stackd</span>
+          <Image
+            src="/logo.png"
+            alt="stackd"
+            width={80}
+            height={24}
+            className="h-6 w-auto invert opacity-80"
+          />
         </div>
       </footer>
     </div>
