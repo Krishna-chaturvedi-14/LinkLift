@@ -83,7 +83,7 @@ export default function Home() {
             <TechBadge name="Supabase" />
             <TechBadge name="Next.js 15" />
           </div>
-          <p>© 2026 LinkLift AI</p>
+          <p>© 2026 stackd AI</p>
         </div>
       </footer>
     </div>

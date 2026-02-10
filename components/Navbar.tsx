@@ -22,7 +22,7 @@ export function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-10">
           <Link href="/" className="text-xl font-bold tracking-tighter text-white hover:opacity-80 transition-opacity">
-            LinkLift
+            stackd
           </Link>
 
           <div className="hidden items-center gap-6 md:flex">

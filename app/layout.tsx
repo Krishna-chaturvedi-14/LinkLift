@@ -4,9 +4,9 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "LinkLift - Build Your Perfect Resume Portfolio",
+  title: "stackd - Your Tech Stack, Perfectly Stacked",
   description:
-    "Smarter, Faster, with AI. Upload your resume and generate a stunning portfolio in minutes.",
+    "Smarter, Faster, with AI. Build your professional tech identity and generate a stunning portfolio in minutes.",
 };
 
 export default function RootLayout({
@@ -21,12 +21,12 @@ export default function RootLayout({
         <body className="min-h-screen bg-[#05050A] font-sans text-white antialiased">
           {/* Background Glows stay here */}
           <div className="fixed inset-0 -z-10 overflow-hidden">
-             {/* ... keep your glow divs ... */}
+            {/* ... keep your glow divs ... */}
           </div>
 
           {/* 🟢 CHANGE: Removed mx-auto max-w-7xl px-6 pt-6 wrapper */}
-          <Navbar /> 
-          
+          <Navbar />
+
           <main>{children}</main>
         </body>
       </html>

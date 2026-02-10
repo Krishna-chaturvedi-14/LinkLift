@@ -66,9 +66,9 @@ export default async function PublicPortfolio({ params }: { params: Promise<{ sl
         </p>
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 bg-indigo-600 rounded-lg flex items-center justify-center">
-            <span className="text-white text-[10px] font-black italic">LL</span>
+            <span className="text-white text-[10px] font-black italic">SD</span>
           </div>
-          <span className="text-white text-xs font-bold tracking-tight">LinkLift</span>
+          <span className="text-white text-xs font-bold tracking-tight">stackd</span>
         </div>
       </footer>
     </div>
