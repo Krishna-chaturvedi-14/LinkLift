@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 
 // 🟢 Helper function to turn "Krishna Chaturvedi" into "krishna-chaturvedi"
-const slugify = (text: string) => 
+const slugify = (text: string) =>
   text.toLowerCase()
     .trim()
     .replace(/[^\w ]+/g, '')
@@ -78,7 +78,7 @@ export default function UploadPage() {
           file_path: filePath,
           file_url: fileUrl,
           parsed_json: null,
-          slug: tempSlug, 
+          slug: tempSlug,
         })
         .select("id")
         .single();
@@ -115,9 +115,9 @@ export default function UploadPage() {
       // 🟢 3. Final Database Sync: Update both the JSON data AND the final unique slug
       const { error: updateError } = await supabase
         .from("resumes")
-        .update({ 
+        .update({
           parsed_json: aiParsedData,
-          slug: finalSlug 
+          slug: finalSlug
         })
         .eq("id", resumeId);
 
@@ -127,8 +127,8 @@ export default function UploadPage() {
       setMessage({ type: "success", text: "Analysis complete! Generating your portfolio..." });
       await new Promise((resolve) => setTimeout(resolve, 2500));
 
-      // 3. Final Redirect to the live dynamic link
-      router.push(`/${finalSlug}`);
+      // 3. Final Redirect to the dashboard
+      router.push("/dashboard");
 
     } catch (error) {
       console.error(error);
