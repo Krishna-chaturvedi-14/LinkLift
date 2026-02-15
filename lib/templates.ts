@@ -13,8 +13,6 @@ import TerminalPortfolio from "@/components/templates/TerminalPortfolio";
 import ThreeDPortfolio from "@/components/templates/ThreeDPortfolio";
 import SeraPortfolio from "@/components/templates/SeraPortfolio";
 import AntoinePortfolio from "@/components/templates/AntoinePortfolio";
-import InfiniteGallery from "@/components/templates/InfiniteGallery";
-
 export const TEMPLATES: Record<string, Template> = {
     "default": {
         id: "default",
@@ -46,12 +44,7 @@ export const TEMPLATES: Record<string, Template> = {
         component: AntoinePortfolio,
         thumbnail: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&q=80",
     },
-    infinite: {
-        id: "infinite",
-        name: "Infinite Gallery",
-        component: InfiniteGallery,
-        thumbnail: "https://images.unsplash.com/photo-1460666819451-e16104c8605c?w=800&q=80",
-    },
+
 };
 
 export const DEFAULT_TEMPLATE_ID = "default";
