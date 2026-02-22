@@ -20,49 +20,49 @@ import MinimalistPortfolio from "@/components/templates/MinimalistPortfolio";
 export const TEMPLATES: Record<string, Template> = {
     "default": {
         id: "default",
-        name: "Terminal (Default)",
+        name: "Dev Console",
         thumbnail: "https://images.unsplash.com/photo-1614332287897-cdc485fa562d?w=800&q=80",
         component: TerminalPortfolio
     },
     "modern": {
         id: "modern",
-        name: "Modern Clean",
+        name: "Ascend Clean",
         component: ModernPortfolio,
         thumbnail: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&q=80",
     },
     "3d": {
         id: "3d",
-        name: "3D Interactive",
+        name: "Nexus 3D",
         component: ThreeDPortfolio,
         thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80",
     },
     sera: {
         id: "sera",
-        name: "Sera Universe",
+        name: "Cosmic Flow",
         component: SeraPortfolio,
         thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
     },
     antoine: {
         id: "antoine",
-        name: "Antoine Bold",
+        name: "Brutalist Impact",
         component: AntoinePortfolio,
         thumbnail: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&q=80",
     },
     figma: {
         id: "figma",
-        name: "Figma Community Port",
+        name: "Pixel Perfect",
         component: FigmaPortfolio,
         thumbnail: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
     },
     midnight: {
         id: "midnight",
-        name: "Midnight Glow",
+        name: "Neon Midnight",
         component: MidnightPortfolio,
         thumbnail: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&q=80", // Using placeholder image for now
     },
     minimalist: {
         id: "minimalist",
-        name: "Minimalist Mono",
+        name: "Zenith Mono",
         component: MinimalistPortfolio,
         thumbnail: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80", // Using placeholder minimalist image
     },
