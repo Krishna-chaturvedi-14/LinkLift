@@ -28,8 +28,8 @@ export default function Home() {
           <Link href="/" className="text-white">Home</Link>
           <Link href="/#features" className="hover:text-white transition-colors">Features</Link>
           <Link href="/#pricing" className="hover:text-white transition-colors">Pricing</Link>
-          <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
-          <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+          <Link href="/#blog" className="hover:text-white transition-colors">Blog</Link>
+          <Link href="/#contact" className="hover:text-white transition-colors">Contact</Link>
         </div>
 
         <div>
