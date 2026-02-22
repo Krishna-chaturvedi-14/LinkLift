@@ -10,13 +10,14 @@ export function Navbar() {
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path;
 
-  // 🟢 Hide Navbar on public portfolio pages
-  const isPublicPortfolio = pathname !== "/" &&
+  // 🟢 Hide Navbar on landing page and public portfolio pages
+  const isHidden = pathname === "/" || (
     !pathname.startsWith("/dashboard") &&
     !pathname.startsWith("/upload") &&
-    !pathname.startsWith("/portfolio");
+    !pathname.startsWith("/portfolio")
+  );
 
-  if (isPublicPortfolio) return null;
+  if (isHidden) return null;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-[100] border-b border-white/5 bg-black/60 backdrop-blur-xl">

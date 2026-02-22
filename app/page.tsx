@@ -1,146 +1,117 @@
 "use client";
 
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { ArrowRight, CheckCircle2, ChevronRight, UploadCloud, Zap, Code, Shield, Sparkles, BarChart, Rocket, Monitor } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { CheckCircle2, LayoutDashboard, MessageSquare, Briefcase, Users, PieChart, ArrowLeftRight, ChevronDown, Bell, LogOut, Search, PlusCircle, ArrowUpRight, ArrowDownRight, Sparkles } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const opacityFade = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   return (
-    <div className="relative min-h-screen bg-[#0B1220] text-white overflow-hidden font-sans selection:bg-[#2563EB]/30">
+    <div className="relative min-h-screen bg-[#070A11] text-white overflow-hidden font-sans selection:bg-[#2563EB]/30">
 
-      {/* Background Gradient & Grid */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1220] via-[#0B1220] to-[#0F172A]" />
-
-        {/* Animated Grid Texture */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
-            backgroundSize: '4rem 4rem',
-            maskImage: 'radial-gradient(ellipse 60% 60% at 50% 50%, #000 10%, transparent 100%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 60% 60% at 50% 50%, #000 10%, transparent 100%)'
-          }}
-        />
-
-        {/* Radial Blue Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#2563EB]/10 rounded-full blur-[120px] mix-blend-screen" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-[#06B6D4]/10 rounded-full blur-[100px] mix-blend-screen" />
-      </div>
+      {/* Deep Background Noise */}
+      <div
+        className="absolute inset-0 opacity-[0.02] pointer-events-none mix-blend-overlay z-0"
+        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
+      />
 
       {/* Navigation */}
-      <nav className="relative z-50 flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
+      <nav className="relative z-50 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#2563EB] to-[#06B6D4] flex items-center justify-center p-[1px]">
-            <div className="w-full h-full bg-[#0B1220] rounded-[7px] flex items-center justify-center">
-              <span className="font-bold text-white text-sm">S</span>
-            </div>
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#2563EB] to-[#1E3A8A] flex items-center justify-center shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+            <span className="font-bold text-white text-sm">S</span>
           </div>
-          <span className="text-xl font-bold tracking-tight text-white">stackd</span>
         </div>
 
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+        <div className="hidden md:flex items-center gap-10 text-[13px] font-medium text-slate-400">
+          <a href="#" className="text-white">Home</a>
           <a href="#features" className="hover:text-white transition-colors">Features</a>
-          <a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a>
           <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
           <a href="#blog" className="hover:text-white transition-colors">Blog</a>
+          <a href="#contact" className="hover:text-white transition-colors">Contact</a>
         </div>
 
-        <div className="flex items-center gap-4">
-          <Link href="/sign-in" className="hidden sm:block text-sm font-medium text-slate-300 hover:text-white transition-colors">
-            Login
-          </Link>
-          <Link href="/sign-up" className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] text-white text-sm font-medium hover:from-[#3B82F6] hover:to-[#2563EB] shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_25px_rgba(37,99,235,0.5)] transition-all">
-            Get Started
+        <div>
+          <Link href="/sign-up" className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#2563EB]/20 to-[#1E3A8A]/20 border border-[#2563EB]/30 text-white text-[13px] font-medium hover:bg-[#2563EB]/30 transition-all shadow-[0_0_20px_rgba(37,99,235,0.15)] shadow-inner flex items-center gap-2">
+            Sign up
           </Link>
         </div>
       </nav>
 
-      <main className="relative z-10 mx-auto max-w-7xl px-6 pt-20 pb-32">
+      <main className="relative z-10 mx-auto max-w-6xl px-4 pt-16 pb-32">
         {/* Hero Section */}
-        <section className="flex flex-col items-center text-center">
+        <section className="flex flex-col items-center text-center relative z-20">
 
+          {/* Social Proof Cluster */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1E293B]/50 border border-slate-700/50 backdrop-blur-sm mb-8"
+            transition={{ duration: 0.6 }}
+            className="flex items-center gap-3 mb-6"
           >
-            <Sparkles className="w-4 h-4 text-[#06B6D4]" />
-            <span className="text-sm font-medium text-slate-200">10,000+ resumes analyzed</span>
+            <div className="flex -space-x-3">
+              <div className="w-8 h-8 rounded-full border-2 border-[#070A11] bg-slate-800" />
+              <div className="w-8 h-8 rounded-full border-2 border-[#070A11] bg-[#2563EB]" />
+              <div className="w-8 h-8 rounded-full border-2 border-[#070A11] bg-slate-600" />
+              <div className="w-8 h-8 rounded-full border-2 border-[#070A11] bg-[#06B6D4]" />
+            </div>
+            <div className="flex flex-col items-start">
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <svg key={s} className="w-3.5 h-3.5 text-white fill-current" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <span className="text-xs text-slate-400 font-medium tracking-wide">10K+ Profiles Built</span>
+            </div>
           </motion.div>
 
+          {/* Dribbble Style Headline - Mixing Sans and Serif/Italic */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 max-w-4xl mx-auto leading-tight mb-6"
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-5xl md:text-6xl lg:text-[76px] font-semibold tracking-tight text-white max-w-4xl mx-auto leading-[1.1] mb-6"
           >
-            Turn Your Resume Into a <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#06B6D4] to-[#2563EB]">Deployable Portfolio</span>
+            Turn Your <span className="font-serif italic text-slate-300 font-light pr-2">Resume</span> Into a <br className="hidden md:block" />
+            <span className="font-serif italic text-slate-300 font-light pr-2">Deployable</span> Portfolio!
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-10"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-[15px] md:text-base text-slate-400 max-w-xl mx-auto leading-relaxed mb-10"
           >
-            Get AI-powered insights, instant ATS scoring, and launch a professional portfolio website in seconds. Built for ambitious professionals.
+            Get AI-powered insights, instant ATS scoring, and launch a professional, high-converting portfolio website in seconds.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center gap-4"
+            transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <Link href="/upload" className="group flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full bg-[#2563EB] text-white font-semibold hover:bg-[#3B82F6] transition-all shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)]">
-              <UploadCloud className="w-5 h-5 text-white/90 group-hover:text-white" />
-              Upload Resume
+            <Link href="/upload" className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white text-black font-semibold text-sm hover:scale-105 transition-transform duration-300 shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+              <Sparkles className="w-4 h-4" />
+              Start for free
             </Link>
-            <button className="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full bg-slate-800/50 text-white font-semibold hover:bg-slate-800 border border-slate-700/50 transition-all backdrop-blur-sm">
-              See Demo
-            </button>
           </motion.div>
         </section>
 
         {/* Centerpiece Visualization */}
-        <section className="relative mt-32 w-full max-w-5xl mx-auto h-[600px] flex items-center justify-center perspective-[2000px]">
-          {/* Energy Sphere */}
-          <EnergySphere />
+        <section className="relative mt-20 w-full mx-auto h-[700px] flex items-center justify-center perspective-[2000px] pointer-events-none">
 
-          {/* Glassmorphic Dashboard */}
-          <DashboardMockup />
-        </section>
+          {/* Background Arch Glow (Dribbble Inspired) */}
+          <ArchGlow />
 
-        {/* Features Section */}
-        <section id="features" className="mt-40">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard
-              icon={<Zap className="w-6 h-6 text-[#06B6D4]" />}
-              title="AI Resume Analysis"
-              description="Deep resume breakdown with actionable insights and tailored recommendations."
-              delay={0}
-            />
-            <FeatureCard
-              icon={<BarChart className="w-6 h-6 text-[#2563EB]" />}
-              title="ATS Optimization"
-              description="Improve keyword matching, fix formatting flaws, and increase interview chances."
-              delay={0.1}
-            />
-            <FeatureCard
-              icon={<Rocket className="w-6 h-6 text-[#06B6D4]" />}
-              title="Instant Portfolio"
-              description="Turn your optimized resume into a live personal website instantly, ready to share."
-              delay={0.2}
-            />
-          </div>
+          {/* Glassmorphic Dashboard UI */}
+          <NewDashboardMockup />
+
         </section>
 
       </main>
@@ -148,204 +119,254 @@ export default function Home() {
   );
 }
 
-// Subcomponents
+// ---- Subcomponents ----
 
-function EnergySphere() {
+function ArchGlow() {
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center z-10 pointer-events-none w-full h-full max-w-[600px] max-h-[600px]">
+    <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[600px] flex justify-center overflow-hidden z-0">
 
-      {/* Outer Glow */}
+      {/* Semi-Circle Core Burst */}
       <motion.div
-        animate={{ scale: [1, 1.05, 1], opacity: [0.6, 0.8, 0.6] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute w-[400px] h-[400px] rounded-full bg-[#06B6D4]/20 blur-[60px]"
+        animate={{ opacity: [0.6, 1, 0.6], scale: [1, 1.05, 1] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-0 w-[500px] h-[250px] bg-gradient-to-t from-[#2563EB] via-[#06B6D4] to-transparent rounded-t-[500px] blur-[60px]"
       />
 
-      {/* Inner Core */}
-      <motion.div
-        animate={{ scale: [1, 1.1, 1], opacity: [0.8, 1, 0.8] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute w-[200px] h-[200px] rounded-full bg-[#2563EB]/40 blur-[40px]"
+      {/* Outer Halo */}
+      <div className="absolute bottom-0 w-[900px] h-[450px] bg-[#1E3A8A]/30 rounded-t-[900px] blur-[100px] mix-blend-screen" />
+
+      {/* Grid Pattern radiating out */}
+      <div
+        className="absolute bottom-0 w-[800px] h-[400px] opacity-20"
+        style={{
+          backgroundImage: 'radial-gradient(circle at bottom center, transparent 30%, #2563EB 31%, transparent 32%, transparent 40%, #06B6D4 41%, transparent 42%, transparent 50%, #2563EB 51%, transparent 52%)',
+          backgroundSize: '100% 100%'
+        }}
       />
 
-      {/* Crisp Center */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="relative w-[150px] h-[150px] rounded-full bg-gradient-to-tr from-[#2563EB] to-[#06B6D4] opacity-90 blur-[10px] mix-blend-screen overflow-hidden"
-      >
-        <div className="absolute inset-0 opacity-30 mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-      </motion.div>
-
-      {/* Floating Code Particles */}
-      <CodeParticles />
-    </div>
-  );
-}
-
-function CodeParticles() {
-  const particles = Array.from({ length: 20 });
-  return (
-    <div className="absolute inset-0 z-0">
-      {particles.map((_, i) => {
-        const angle = (i / particles.length) * Math.PI * 2;
-        const radius = 250;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-
-        return (
-          <motion.div
+      {/* Starburst rays */}
+      <div className="absolute bottom-0 w-[600px] h-[300px] flex items-end justify-center">
+        {[...Array(12)].map((_, i) => (
+          <div
             key={i}
-            className="absolute top-1/2 left-1/2 text-xs font-mono text-[#06B6D4]/50 whitespace-nowrap blur-[0.5px]"
-            initial={{ x: x + 100 * Math.random(), y: y + 100 * Math.random(), opacity: 0, scale: 0.5 }}
-            animate={{
-              x: [x + 50 * Math.random(), x * 0.2, 0],
-              y: [y + 50 * Math.random(), y * 0.2, 0],
-              opacity: [0, 0.8, 0],
-              scale: [0.5, 1, 0.2]
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 3,
-              ease: "easeInOut"
-            }}
-          >
-            {['{ data }', '() =>', 'await res', '<tag>', '0101', 'func()'][Math.floor(Math.random() * 6)]}
-          </motion.div>
-        );
-      })}
+            className="absolute h-full w-[1px] bg-gradient-to-t from-transparent via-[#06B6D4]/30 to-transparent origin-bottom"
+            style={{ transform: `rotate(${-90 + (i * 15)}deg)` }}
+          />
+        ))}
+      </div>
+
+      {/* Particles */}
+      <FloatingDots />
+
+      {/* Horizon Line Blocking */}
+      <div className="absolute -bottom-[200px] left-0 w-full h-[200px] bg-[#070A11] blur-[20px]" />
     </div>
   );
 }
 
-function DashboardMockup() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+function FloatingDots() {
+  const [mounted, setMounted] = useState(false);
+  const [dots, setDots] = useState<any[]>([]);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const { left, top, width, height } = containerRef.current.getBoundingClientRect();
-      const x = (e.clientX - left) / width - 0.5;
-      const y = (e.clientY - top) / height - 0.5;
-      setMousePosition({ x, y });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    const newDots = Array.from({ length: 40 }).map((_, i) => ({
+      id: i,
+      x: (Math.random() - 0.5) * 800,
+      y: Math.random() * -400,
+      size: Math.random() * 3 + 1,
+      opacity: Math.random() * 0.5 + 0.1,
+      duration: Math.random() * 4 + 3,
+      delay: Math.random() * 2
+    }));
+    setDots(newDots);
+    setMounted(true);
   }, []);
 
+  if (!mounted) return null;
+
+  return (
+    <div className="absolute bottom-0 w-full h-full">
+      {dots.map((dot) => (
+        <motion.div
+          key={dot.id}
+          className="absolute bottom-0 left-1/2 rounded-full bg-white mix-blend-screen"
+          style={{ width: dot.size, height: dot.size, x: dot.x, opacity: dot.opacity }}
+          animate={{
+            y: [0, dot.y],
+            opacity: [0, dot.opacity, 0]
+          }}
+          transition={{
+            duration: dot.duration,
+            repeat: Infinity,
+            delay: dot.delay,
+            ease: "easeOut"
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+
+function NewDashboardMockup() {
   return (
     <motion.div
-      ref={containerRef}
-      initial={{ opacity: 0, y: 100, rotateX: 10 }}
-      animate={{ opacity: 1, y: 0, rotateX: mousePosition.y * -10, rotateY: mousePosition.x * 10 }}
-      transition={{
-        opacity: { duration: 1 },
-        y: { duration: 1, ease: "easeOut" },
-        rotateX: { type: "spring", stiffness: 100, damping: 30 },
-        rotateY: { type: "spring", stiffness: 100, damping: 30 }
-      }}
-      style={{ transformStyle: "preserve-3d" }}
-      className="relative z-20 w-full max-w-4xl mx-auto rounded-2xl bg-[#0F172A]/60 backdrop-blur-2xl border border-slate-700/50 shadow-[0_40px_80px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+      className="relative z-20 w-[1000px] h-[550px] rounded-[24px] bg-[#0B101E]/80 backdrop-blur-2xl border border-slate-700/40 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col pointer-events-auto"
+      style={{ boxShadow: "0 0 0 1px rgba(255,255,255,0.05), 0 30px 100px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.1)" }}
     >
-      {/* Top reflection / glare */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-      <div className="absolute top-0 left-0 w-[1px] h-full bg-gradient-to-b from-white/10 to-transparent" />
 
-      {/* Left Panel: Resume Preview */}
-      <div className="w-full md:w-1/3 border-r border-slate-700/50 p-6 flex flex-col gap-4 bg-[#0B1220]/40">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-3 h-3 rounded-full bg-slate-600" />
-          <div className="w-3 h-3 rounded-full bg-slate-600" />
-          <div className="w-3 h-3 rounded-full bg-slate-600" />
+      {/* Top Header Bar of Dashboard */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/[0.02]">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center bg-[#2563EB]/20 text-white">
+            <Sparkles size={12} />
+          </div>
+          <span className="font-semibold text-[15px] tracking-wide">Stackd</span>
         </div>
 
-        <div className="w-24 h-4 rounded bg-slate-700/50 mb-4" />
+        {/* Search */}
+        <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 w-64">
+          <Search size={14} className="text-slate-400" />
+          <input type="text" placeholder="Search..." className="bg-transparent text-xs text-white outline-none w-full placeholder:text-slate-500" disabled />
+        </div>
 
-        {/* Skeleton Resume */}
-        <div className="space-y-4">
-          <div className="flex gap-4">
-            <div className="w-12 h-12 rounded-full bg-slate-700/50 shrink-0" />
-            <div className="space-y-2 w-full">
-              <div className="w-3/4 h-3 rounded bg-slate-600/50" />
-              <div className="w-1/2 h-2 rounded bg-slate-700/50" />
-            </div>
+        {/* Right Actions */}
+        <div className="flex items-center gap-4">
+          <div className="flex gap-2 text-slate-400">
+            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/5"><Bell size={14} /></div>
+            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/5"><PlusCircle size={14} /></div>
           </div>
-          <div className="space-y-2 pt-2">
-            <div className="w-full h-2 rounded bg-slate-700/50" />
-            <div className="w-5/6 h-2 rounded bg-slate-700/50" />
-            <div className="w-4/6 h-2 rounded bg-slate-700/50" />
-          </div>
-          <div className="pt-2">
-            <div className="w-1/3 h-3 rounded bg-slate-600/50 mb-2" />
-            <div className="space-y-2">
-              <div className="w-full h-2 rounded bg-[#2563EB]/40 flex gap-2 overflow-hidden"><div className="w-1/2 bg-[#2563EB]/80 h-full" /></div>
-              <div className="w-full h-2 rounded bg-[#06B6D4]/40 flex gap-2 overflow-hidden"><div className="w-3/4 bg-[#06B6D4]/80 h-full" /></div>
-            </div>
+          <div className="flex items-center gap-2 pl-4 border-l border-white/10">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#2563EB] to-[#06B6D4]" />
+            <span className="text-[13px] font-medium hidden sm:block">Krishna</span>
           </div>
         </div>
       </div>
 
-      {/* Right Panel: AI Insights & Portfolio */}
-      <div className="w-full md:w-2/3 p-6 flex flex-col bg-[#0F172A]/40 divide-y divide-slate-700/50">
+      <div className="flex flex-1 overflow-hidden">
 
-        {/* AI Insights */}
-        <div className="pb-6">
-          <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-200 mb-4">
-            <Sparkles className="w-4 h-4 text-[#06B6D4]" />
-            AI Insights
-          </h3>
+        {/* Sidebar */}
+        <div className="w-56 border-r border-white/5 p-4 flex flex-col gap-1 bg-[#070A11]/30">
+          <SidebarItem icon={<LayoutDashboard size={16} />} text="Dashboard" active />
+          <SidebarItem icon={<MessageSquare size={16} />} text="AI Insights" />
+          <SidebarItem icon={<Briefcase size={16} />} text="Portfolio" />
+          <SidebarItem icon={<Users size={16} />} text="Recruiters" />
+          <SidebarItem icon={<PieChart size={16} />} text="Analytics" />
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="p-4 rounded-xl bg-[#0B1220]/50 border border-slate-700/50">
-              <div className="text-xs text-slate-400 mb-1">ATS Score</div>
-              <div className="text-3xl font-bold text-white flex items-end gap-1">
-                87<span className="text-sm font-medium text-slate-500 mb-1">/100</span>
-              </div>
-              <div className="w-full h-1.5 bg-slate-800 rounded-full mt-3 overflow-hidden">
-                <div className="w-[87%] h-full bg-gradient-to-r from-[#2563EB] to-[#06B6D4]" />
-              </div>
-            </div>
-
-            <div className="p-4 rounded-xl bg-[#0B1220]/50 border border-slate-700/50 flex flex-col justify-center">
-              <div className="text-xs text-slate-400 mb-1">Recruiter Readability</div>
-              <div className="text-xl font-semibold text-[#06B6D4]">Excellent</div>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex items-start gap-3 p-3 rounded-lg bg-[#2563EB]/10 border border-[#2563EB]/20">
-              <CheckCircle2 className="w-4 h-4 text-[#2563EB] mt-0.5 shrink-0" />
-              <p className="text-xs text-slate-300 leading-relaxed">Keyword match improved by adding <span className="text-[#06B6D4]">React Native</span> and <span className="text-[#06B6D4]">Node.js</span>.</p>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg bg-[#1E293B]">
-              <div className="w-4 h-4 mt-0.5 rounded-full border border-slate-500 shrink-0" />
-              <p className="text-xs text-slate-400 leading-relaxed">Quantify your achievements in experience #2.</p>
-            </div>
+          <div className="mt-auto">
+            <SidebarItem icon={<LogOut size={16} />} text="Sign out" className="text-slate-500" />
           </div>
         </div>
 
-        {/* Portfolio Preview Tab */}
-        <div className="pt-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-200">
-              <Monitor className="w-4 h-4 text-[#2563EB]" />
-              Portfolio Preview
-            </h3>
-            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded bg-[#2563EB]/20 text-[#2563EB]">Ready</span>
+        {/* Main Content Area */}
+        <div className="flex-1 p-8 overflow-y-auto bg-gradient-to-br from-transparent to-[#2563EB]/[0.02]">
+
+          <div className="flex justify-between items-end mb-8">
+            <div>
+              <h2 className="text-2xl font-semibold mb-1">Resume Overview</h2>
+              <p className="text-xs text-slate-400">Your professional profile health and deployed status.</p>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 text-xs text-white cursor-pointer hover:bg-white/10 transition-colors">
+              <span>This month</span>
+              <ChevronDown size={14} className="text-slate-400" />
+            </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-[#0B1220]/80 border border-slate-700/50 flex items-center justify-between gap-4">
-            <div className="flex flex-col gap-1">
-              <div className="text-xs font-medium text-slate-300">stackd.site/johndoe</div>
-              <div className="text-[10px] text-slate-500">Theme: Cyber Dark</div>
-            </div>
-            <button className="px-4 py-2 rounded-lg bg-[#2563EB] text-xs font-semibold text-white hover:bg-[#3B82F6] transition-colors shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-              Deploy
-            </button>
+          {/* Top Metric Cards (Dribbble Style) */}
+          <div className="grid grid-cols-4 gap-4 mb-8">
+            <MetricCard
+              title="Global ATS Score"
+              value="87/100"
+              trend="+12%"
+              trendUp={true}
+              subtitle="vs. Last Scan"
+              iconColor="text-[#2563EB]"
+              iconBg="bg-[#2563EB]/10"
+            />
+            <MetricCard
+              title="Keyword Match"
+              value="92%"
+              trend="+5%"
+              trendUp={true}
+              subtitle="Software Engineer"
+              iconColor="text-[#06B6D4]"
+              iconBg="bg-[#06B6D4]/10"
+            />
+            <MetricCard
+              title="Portfolio Visits"
+              value="1,240"
+              trend="-2%"
+              trendUp={false}
+              subtitle="Last 30 days"
+              iconColor="text-red-400"
+              iconBg="bg-red-400/10"
+            />
+            <MetricCard
+              title="Active Links"
+              value="12"
+              customRender={
+                <div className="flex items-center gap-2 text-[11px] text-slate-400 mt-2">
+                  <span>Github: <strong className="text-white font-medium">100%</strong></span>
+                  <span>LinkedIn: <strong className="text-white font-medium">100%</strong></span>
+                </div>
+              }
+            />
           </div>
+
+          {/* Lower Section Splits */}
+          <div className="grid grid-cols-3 gap-6">
+
+            {/* Left Graph/Summary Area */}
+            <div className="col-span-2 rounded-xl border border-white/5 bg-white/[0.02] p-6 h-48 relative overflow-hidden">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="font-medium text-sm">Profile Visibility</h3>
+                <div className="px-2 py-1 rounded-md bg-white/5 text-[10px] text-slate-400">6 Month</div>
+              </div>
+
+              {/* Decorative Graph lines */}
+              <svg className="absolute bottom-0 left-0 w-full h-[100px] opacity-40" preserveAspectRatio="none" viewBox="0 0 100 100">
+                <path d="M0,100 L0,80 Q20,60 40,70 T80,40 T100,50 L100,100 Z" fill="url(#gradientMain)" />
+                <path d="M0,100 L0,80 Q20,60 40,70 T80,40 T100,50" fill="none" stroke="#2563EB" strokeWidth="2" />
+                <defs>
+                  <linearGradient id="gradientMain" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#2563EB" stopOpacity="0.5" />
+                    <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            {/* Right List Area */}
+            <div className="col-span-1 rounded-xl border border-white/5 bg-white/[0.02] p-6">
+              <h3 className="font-medium text-sm mb-4">Urgent Actions</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[#06B6D4]/20 text-[#06B6D4] flex items-center justify-center text-[10px] font-bold">SEO</div>
+                    <div className="flex flex-col">
+                      <span className="text-xs text-white">Add Meta Title</span>
+                      <span className="text-[10px] text-slate-500">Portfolio Setting</span>
+                    </div>
+                  </div>
+                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center text-[10px] font-bold">PDF</div>
+                    <div className="flex flex-col">
+                      <span className="text-xs text-white">Missing Dates</span>
+                      <span className="text-[10px] text-slate-500">Experience #2</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
@@ -353,25 +374,37 @@ function DashboardMockup() {
   );
 }
 
-function FeatureCard({ icon, title, description, delay }: { icon: React.ReactNode, title: string, description: string, delay: number }) {
+// Micro Components for Dashboard UI
+
+function SidebarItem({ icon, text, active = false, className = "" }: { icon: React.ReactNode, text: string, active?: boolean, className?: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.5, delay }}
-      className="group p-8 rounded-2xl bg-[#0F172A]/40 border border-slate-800 hover:border-slate-700 hover:bg-[#0F172A]/80 transition-all text-left relative overflow-hidden"
-    >
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#2563EB]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="relative z-10">
-        <div className="w-12 h-12 rounded-xl bg-[#0B1220] border border-slate-800 flex items-center justify-center mb-6 relative">
-          {/* Subtle glow behind icon */}
-          <div className="absolute inset-0 bg-[#2563EB]/20 blur-xl rounded-full" />
-          {icon}
+    <div className={`flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer text-[13px] font-medium transition-all ${active ? "bg-[#2563EB]/10 text-[#2563EB]" : "text-slate-400 hover:text-white hover:bg-white/5"} ${className}`}>
+      {icon}
+      {text}
+    </div>
+  );
+}
+
+function MetricCard({ title, value, trend, trendUp, subtitle, customRender, iconColor, iconBg }: any) {
+  return (
+    <div className="flex flex-col p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors relative group">
+      <div className="flex justify-between items-start mb-2">
+        <div className="flex items-center gap-2">
+          {iconBg && <div className={`w-5 h-5 rounded-md flex items-center justify-center ${iconBg} ${iconColor}`}><CheckCircle2 size={10} /></div>}
+          <span className="text-[11px] text-slate-400 font-medium">{title}</span>
         </div>
-        <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
-        <p className="text-sm text-slate-400 leading-relaxed">{description}</p>
       </div>
-    </motion.div>
+      <div className="text-xl font-semibold mb-1 tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-400 transition-all">{value}</div>
+
+      {customRender ? customRender : (
+        <div className="flex items-center gap-2 text-[11px]">
+          <span className={`flex items-center ${trendUp ? 'text-emerald-400' : 'text-red-400'}`}>
+            {trendUp ? <ArrowUpRight size={10} className="mr-0.5" /> : <ArrowDownRight size={10} className="mr-0.5" />}
+            {trend}
+          </span>
+          <span className="text-slate-500">{subtitle}</span>
+        </div>
+      )}
+    </div>
   );
 }
