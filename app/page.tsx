@@ -176,16 +176,16 @@ export default function Home() {
             <p className="text-slate-400 max-w-[600px] mx-auto">Read our latest thoughts on career growth and tech stacks.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end">
+            <Link href="#" className="group h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end cursor-pointer hover:-translate-y-1 hover:border-violet-500/30 transition-all duration-300">
               <span className="text-violet-400 text-[12px] font-bold uppercase tracking-wider mb-2">Career Format</span>
-              <h3 className="text-[24px] font-semibold text-white mb-2">How to optimize your resume for AI parsers in 2026.</h3>
+              <h3 className="text-[24px] font-semibold text-white mb-2 group-hover:text-violet-400 transition-colors">How to optimize your resume for AI parsers in 2026.</h3>
               <span className="text-slate-500 text-[14px]">March 12 • 5 min read</span>
-            </div>
-            <div className="h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end">
+            </Link>
+            <Link href="#" className="group h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end cursor-pointer hover:-translate-y-1 hover:border-fuchsia-500/30 transition-all duration-300">
               <span className="text-fuchsia-400 text-[12px] font-bold uppercase tracking-wider mb-2">Engineering</span>
-              <h3 className="text-[24px] font-semibold text-white mb-2">The ultimate guide to building a deployable portfolio.</h3>
+              <h3 className="text-[24px] font-semibold text-white mb-2 group-hover:text-fuchsia-400 transition-colors">The ultimate guide to building a deployable portfolio.</h3>
               <span className="text-slate-500 text-[14px]">March 08 • 8 min read</span>
-            </div>
+            </Link>
           </div>
         </div>
 
@@ -195,8 +195,8 @@ export default function Home() {
           <h2 className="text-[48px] font-bold text-white mb-6 relative z-10 text-center">Ready to level up?</h2>
           <p className="text-slate-400 mb-10 relative z-10 text-center max-w-[500px]">Join thousands of developers building their perfect tech identity.</p>
           <div className="flex gap-4 relative z-10">
-            <button className="px-8 py-3 rounded-full bg-violet-600 text-white font-medium hover:bg-violet-500 transition-colors">Contact Sales</button>
-            <button className="px-8 py-3 rounded-full bg-[#18181B] border border-white/10 text-white font-medium hover:bg-white/5 transition-colors">Support Docs</button>
+            <a href="mailto:hello@stackd.com" className="px-8 py-3 rounded-full bg-violet-600 text-white font-medium hover:bg-violet-500 transition-colors text-[15px]">Contact Us</a>
+            <Link href="/#blog" className="px-8 py-3 rounded-full bg-[#18181B] border border-white/10 text-white font-medium hover:bg-white/5 transition-colors text-[15px]">Resume & Portfolio Guide</Link>
           </div>
         </div>
 
