@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle2, LayoutDashboard, MessageSquare, Briefcase, PieChart, ChevronDown, Bell, Search, ArrowUpRight, ArrowDownRight, RefreshCcw, Users, Copy, Code, Sparkles } from "lucide-react";
+import { CheckCircle2, LayoutDashboard, MessageSquare, Briefcase, PieChart, ChevronDown, Bell, Search, ArrowUpRight, ArrowDownRight, RefreshCcw, Users, Copy, Code, Sparkles, Share2, Globe, User, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
@@ -200,206 +200,141 @@ function DashboardMockup({ topOffset }: { topOffset: string }) {
       initial={{ opacity: 0, y: 50, rotateX: 2 }}
       animate={{ opacity: 1, y: 0, rotateX: 0 }}
       transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-      className={`absolute z-20 w-[1060px] h-[650px] rounded-[16px] overflow-hidden flex flex-col pointer-events-auto`}
+      className={`absolute z-20 w-[1060px] h-[650px] rounded-[16px] overflow-hidden flex flex-col pointer-events-auto border border-white/5`}
       style={{
         top: topOffset,
-        // Match the flat, ultra-dark matte aesthetic of the new reference
-        background: '#080C14',
+        background: '#09090B', // Very dark background like the image
         boxShadow: "0 50px 100px rgba(0,0,0,0.9), inset 0 1px 1px rgba(255,255,255,0.05)"
       }}
     >
-      <div className="flex h-full w-full">
-        {/* LEFT SIDEBAR */}
-        <div className="w-[230px] flex flex-col pt-7 pb-6 bg-[#0B101C] border-r border-[#1B2335]">
-
-          {/* App Logo */}
-          <div className="flex items-center gap-3 px-8 mb-10">
-            <div className="w-8 h-8 rounded-full bg-[#1A2645] flex items-center justify-center">
+      {/* Top Navigation */}
+      <div className="flex items-center justify-between px-8 py-4 border-b border-white/5 bg-[#09090B]">
+        <div className="flex items-center gap-8">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded bg-[#18181B] flex items-center justify-center border border-white/10">
               <span className="font-bold text-white text-[14px]">S</span>
             </div>
-            <span className="font-semibold text-white tracking-tight text-[16px]">Stackd</span>
+            <span className="font-semibold text-white tracking-tight text-[15px]">stackd</span>
+          </div>
+          <div className="flex items-center gap-6 text-[14px] font-medium text-slate-400">
+            <span className="hover:text-white cursor-pointer flex items-center gap-2"><span className="text-slate-500">+</span> Analyze New</span>
+            <span className="text-white font-semibold cursor-pointer">Dashboard</span>
+            <span className="hover:text-white cursor-pointer">Portfolio</span>
+          </div>
+        </div>
+        <div>
+          <div className="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-white text-xs font-medium border border-white/10">K</div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 p-10 overflow-hidden bg-[#09090B] flex flex-col">
+
+        {/* Header Section */}
+        <div className="flex justify-between items-start mb-10">
+          <div>
+            <h1 className="text-[42px] font-bold text-white leading-tight mb-2 tracking-tight">Resume<br />Intelligence</h1>
+            <p className="text-[15px] text-slate-400">Krishna Chaturvedi <span className="text-slate-600 mx-1">•</span> <span className="text-blue-500">Machine Learning Intern</span></p>
           </div>
 
-          {/* Sub Navigation */}
-          <div className="flex flex-col gap-1 px-4 mb-8">
-            <SidebarItem icon={<LayoutDashboard size={16} />} text="Dashboard" active />
-            <SidebarItem icon={<MessageSquare size={16} />} text="Messages" badge={2} />
-            <SidebarItem icon={<Briefcase size={16} />} text="Portfolio" />
-            <SidebarItem icon={<Users size={16} />} text="Connections" />
-            <SidebarItem icon={<PieChart size={16} />} text="Analytics" />
-            <SidebarItem icon={<ArrowUpRight size={16} />} text="Transactions" />
+          <div className="flex flex-col items-end gap-3">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center bg-[#18181B] border border-white/5 rounded-full pl-4 pr-1 py-1">
+                <span className="text-[13px] text-slate-500 mr-4 font-mono">stackd.krishnachaturvedi.in/krishna-chaturvedi-6222</span>
+                <div className="w-7 h-7 rounded-full bg-violet-600 flex items-center justify-center text-white cursor-pointer">
+                  <Share2 size={12} />
+                </div>
+              </div>
+              <div className="flex items-center gap-2 px-5 py-2 rounded-full border border-white/10 bg-[#18181B] text-[13px] font-medium text-white cursor-pointer hover:bg-white/5 transition-colors">
+                <span className="text-slate-400">+</span> Update Resume
+              </div>
+            </div>
+            <div className="flex items-center gap-2 px-5 py-2 rounded-full bg-violet-600 text-[13px] font-medium text-white cursor-pointer hover:bg-violet-500 transition-colors shadow-[0_0_20px_rgba(124,58,237,0.3)]">
+              <Globe size={14} /> Manage Portfolio
+            </div>
           </div>
-
         </div>
 
-        {/* MAIN PANEL */}
-        <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#080C14]">
+        {/* Main Card */}
+        <div className="flex-1 rounded-[24px] border border-white/5 bg-[#0C0C0F] p-8 flex gap-10">
 
-          {/* Header Row */}
-          <div className="flex items-center justify-between px-10 py-8 border-b border-[#1B2335]">
+          {/* Left Column (Score and Insights) */}
+          <div className="flex-1 flex flex-col pt-2">
 
-            {/* Search */}
-            <div className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-[#0E1524] border border-[#1B2335]/50 w-[320px]">
-              <Search size={15} className="text-slate-500" />
-              <input type="text" placeholder="Search..." className="bg-transparent text-[14px] text-white outline-none w-full placeholder:text-slate-500" disabled />
-            </div>
-
-            {/* Right Avatar & Toolbar */}
-            <div className="flex items-center gap-5">
-              <div className="flex items-center gap-4">
-                <div className="text-slate-400 hover:text-white transition-colors cursor-pointer"><Bell size={18} /></div>
-                <div className="text-slate-400 hover:text-white transition-colors cursor-pointer"><RefreshCcw size={16} /></div>
-              </div>
-
-              <div className="flex items-center gap-3 pr-2 pl-2 border-l border-[#1B2335] h-8">
-                <img src="https://i.pravatar.cc/100?img=1" alt="Avatar" className="w-8 h-8 rounded-full ml-2 border border-slate-700" />
-                <span className="text-[14px] font-medium text-white">Josika</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Dashboard Stage */}
-          <div className="flex-1 p-10 overflow-y-auto w-full">
-
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-[28px] font-semibold text-white tracking-tight">Dashboard</h2>
-              <div className="flex items-center gap-2 px-5 py-2 rounded-full border border-[#1B2335] bg-[#0E1524] text-[13px] font-medium text-slate-300 cursor-pointer hover:bg-[#151D2E] transition-colors">
-                <span>This month</span>
-                <ChevronDown size={14} className="text-slate-400" />
-              </div>
-            </div>
-
-            {/* 4-Col Metrics Grid */}
-            <div className="grid grid-cols-4 gap-4 mb-8">
-              <MetricCard
-                iconColor="text-[#60A5FA]"
-                icon={<PieChart size={16} className="text-inherit" />}
-                title="ATS Score"
-                value="87/100"
-                trend="15%" trendUp={true} subtitle="Scan Match"
-              />
-              <MetricCard
-                iconColor="text-[#2563EB]"
-                icon={<Code size={16} className="text-inherit" />}
-                title="Keywords"
-                value="92%"
-                trend="2%" trendUp={false} subtitle="Missing Terms"
-              />
-              <MetricCard
-                iconColor="text-[#10B981]"
-                icon={<Copy size={16} className="text-inherit" />}
-                title="Views"
-                value="1,240"
-                trend="24%" trendUp={true} subtitle="Traffic Surge"
-              />
-              <div className="col-span-1 flex flex-col p-6 pb-5 rounded-[16px] bg-[#0E1524] border border-[#1B2335] flex-1 relative overflow-hidden group hover:border-[#2A3752] transition-colors">
-                <div className="flex items-center gap-3 mb-4 relative z-10 text-[#60A5FA]">
-                  <div className="p-1.5 rounded-lg bg-[#141E33] text-slate-400">
-                    <Briefcase size={16} />
-                  </div>
-                  <span className="text-[13px] text-slate-400 font-medium">Deployed Rank</span>
-                </div>
-                <div className="text-[32px] font-medium text-white mb-4 relative z-10 tracking-tight">Top 5%</div>
-                <div className="flex items-center justify-between pt-4 relative z-10 border-t border-[#1B2335] mt-auto">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Links</span>
-                    <strong className="text-white text-[13px]">2 Active</strong>
-                  </div>
-                  <div className="flex flex-col gap-1 text-right">
-                    <span className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Leads</span>
-                    <strong className="text-white text-[13px]">14 Found</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Lower Split */}
-            <div className="grid grid-cols-3 gap-6">
-
-              {/* Graph Summary */}
-              <div className="col-span-2 rounded-[16px] border border-[#1B2335] bg-[#0A101A] p-7 relative overflow-hidden h-[240px]">
-                <div className="flex justify-between items-center mb-6 relative z-10">
-                  <h3 className="font-semibold text-[16px] text-white">Revenue Summary</h3>
-                  <div className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#1B2335] bg-[#141C2B] text-[12px] font-medium text-slate-300">
-                    6 Month <ChevronDown size={14} className="opacity-70" />
-                  </div>
-                </div>
-
-                <div className="absolute bottom-6 left-7 text-[11px] font-medium text-slate-600">100K</div>
-                <div className="absolute bottom-[40%] left-7 text-[11px] font-medium text-slate-600 border-b border-dashed border-[#1B2335] w-[85%]" />
-
-                <svg className="absolute bottom-0 left-0 w-full h-[140px] opacity-100" preserveAspectRatio="none" viewBox="0 0 100 100">
-                  <path d="M0,100 L0,70 Q20,50 40,65 T80,40 T100,20 L100,100 Z" fill="url(#gradientChart)" />
-                  <path d="M0,70 Q20,50 40,65 T80,40 T100,20" fill="none" stroke="#2563EB" strokeWidth="2" />
+            <div className="flex gap-8 mb-12">
+              {/* Score Ring */}
+              <div className="relative w-[140px] h-[140px] flex items-center justify-center shrink-0">
+                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" fill="none" stroke="#1E1E24" strokeWidth="8" />
+                  <circle cx="50" cy="50" r="45" fill="none" stroke="url(#scoreGradient)" strokeWidth="8" strokeDasharray="283" strokeDashoffset="42" className="drop-shadow-[0_0_10px_rgba(124,58,237,0.5)]" />
                   <defs>
-                    <linearGradient id="gradientChart" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#1E3A8A" stopOpacity="0.4" />
-                      <stop offset="100%" stopColor="#1E3A8A" stopOpacity="0" />
+                    <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#8B5CF6" />
+                      <stop offset="100%" stopColor="#3B82F6" />
                     </linearGradient>
                   </defs>
                 </svg>
+                <div className="absolute flex flex-col items-center justify-center">
+                  <span className="text-[40px] font-bold text-white leading-none tracking-tighter">85</span>
+                  <span className="text-[10px] text-slate-500 font-semibold tracking-widest mt-1">SCORE</span>
+                </div>
               </div>
 
-              {/* Right Lists */}
-              <div className="col-span-1 rounded-[16px] border border-[#1B2335] bg-[#0A101A] p-7 pb-4">
-                <h3 className="font-semibold text-[16px] text-white mb-6">New Messages</h3>
-                <div className="flex items-center justify-between mb-5">
-                  <div className="text-[12px] font-medium text-slate-400 bg-[#141C2B] px-3 py-1.5 rounded-full">Tenant</div>
-                  <div className="flex items-center gap-2 text-[13px] text-slate-300 font-medium">New Request <div className="w-5 h-5 rounded-full bg-[#1A2645] text-white text-[10px] flex items-center justify-center font-bold">2</div></div>
+              <div className="flex flex-col justify-center">
+                <h3 className="text-[22px] font-semibold text-white mb-3">Market Compatibility</h3>
+                <p className="text-[15px] text-slate-400 leading-relaxed max-w-[400px]">
+                  Your profile is optimized for <strong className="text-white font-medium">Machine Learning Intern</strong>. Refining the areas identified below can significantly increase your callback rate.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-auto">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-8 rounded bg-[#18181B] border border-white/5 flex items-center justify-center text-violet-500">
+                  <User size={16} />
                 </div>
-                <div className="h-px w-full bg-[#1B2335] my-5" />
-                <div className="flex items-center gap-4">
-                  <img src="https://i.pravatar.cc/100?img=33" className="w-10 h-10 rounded-full border border-slate-700" />
-                  <div>
-                    <div className="text-[14px] text-white font-medium">Alex Morgan</div>
-                    <div className="text-[12px] text-slate-400">Contact Request</div>
+                <h3 className="text-[20px] font-semibold text-white">Expert AI Insights</h3>
+              </div>
+
+              <div className="pl-4 border-l-2 border-[#1E1E24] py-1 ml-4">
+                <div className="text-[10px] text-slate-500 font-semibold tracking-widest uppercase mb-2">EDUCATION</div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-start gap-2 text-amber-500/90 text-[14px]">
+                    <AlertTriangle size={14} className="mt-0.5 shrink-0" />
+                    <span className="italic">"Lack of relevant certifications"</span>
                   </div>
                 </div>
               </div>
+            </div>
 
+          </div>
+
+          <div className="w-px bg-white/5" />
+
+          {/* Right Column (Technical Arsenal) */}
+          <div className="w-[320px] pt-2">
+            <div className="flex items-center gap-2 mb-6">
+              <Sparkles size={14} className="text-violet-500" />
+              <h3 className="text-[12px] font-semibold text-slate-400 tracking-widest uppercase">Technical Arsenal</h3>
+            </div>
+
+            <div className="flex flex-wrap gap-2.5">
+              {[
+                "Python", "C", "HTML", "CSS", "MySQL", "Git", "Vercel", "Agile",
+                "Scrum", "Regression", "Classification", "Clustering Algorithms",
+                "Pandas", "Numpy", "Matplotlib", "Seaborn", "Cursor", "Claude Code", "Copilot"
+              ].map((skill, index) => (
+                <div key={index} className="px-4 py-1.5 rounded-full bg-[#18181B] border border-white/5 text-[12px] text-slate-400 hover:text-white cursor-default transition-colors">
+                  {skill}
+                </div>
+              ))}
             </div>
           </div>
+
         </div>
+
       </div>
     </motion.div>
-  );
-}
-
-// -----------------------------------------------------
-
-function MetricCard({ title, value, trend, trendUp, subtitle, icon, iconColor }: any) {
-  return (
-    <div className="col-span-1 flex flex-col p-6 rounded-[16px] bg-[#0E1524] border border-[#1B2335] relative overflow-hidden group transition-colors duration-300 hover:border-[#2A3752]">
-
-      <div className="flex items-center gap-3 mb-4 relative z-10">
-        <div className={`p-1.5 rounded-lg bg-[#141E33] text-slate-400`}>
-          {icon}
-        </div>
-        <span className="text-[13px] text-slate-400 font-medium">{title}</span>
-      </div>
-
-      <div className="text-[32px] font-medium text-white mb-4 tracking-tight relative z-10">{value}</div>
-
-      <div className="flex items-center gap-3 text-[12px] relative z-10">
-        <span className={`px-2 py-0.5 rounded flex items-center gap-1 font-bold ${trendUp ? 'bg-[#1E3A8A]/40 text-[#60A5FA]' : 'bg-red-900/40 text-red-400'}`}>
-          {trendUp ? <ArrowUpRight size={12} strokeWidth={2.5} /> : <ArrowDownRight size={12} strokeWidth={2.5} />}
-          {trend}
-        </span>
-        <span className="text-slate-500 font-medium">{subtitle}</span>
-      </div>
-    </div>
-  );
-}
-
-function SidebarItem({ icon, text, active = false, badge = 0 }: { icon: React.ReactNode, text: string, active?: boolean, badge?: number }) {
-  return (
-    <div className={`flex items-center justify-between px-4 py-3.5 my-0.5 rounded-[12px] cursor-pointer text-[14px] font-medium transition-all duration-300 ${active ? "text-[#60A5FA] bg-[#141C2B] border border-[#1B2335]" : "text-slate-400 hover:text-white hover:bg-[#141C2B]/50 border border-transparent"}`}>
-      <div className="flex items-center gap-4">
-        <span className={active ? "text-[#60A5FA]" : ""}>{icon}</span>
-        {text}
-      </div>
-      {badge > 0 && <span className="bg-[#2563EB] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{badge}</span>}
-    </div>
   );
 }
 
