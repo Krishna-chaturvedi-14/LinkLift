@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
+import BackgroundStars from "@/components/BackgroundStars";
 
 // --- TYPES ---
 type ParsedResume = {
@@ -102,7 +103,8 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#05050A] text-white pt-32 px-6 pb-20">
+    <div className="min-h-screen relative overflow-hidden text-white pt-32 px-6 pb-20">
+      <BackgroundStars />
 
       {/* --- SEAMLESS HEADER --- */}
       <motion.div
