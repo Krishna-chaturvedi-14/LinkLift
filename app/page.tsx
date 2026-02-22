@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { CheckCircle2, LayoutDashboard, MessageSquare, Briefcase, PieChart, ChevronDown, Bell, Search, ArrowUpRight, ArrowDownRight, RefreshCcw, Users, Copy, Code, Sparkles, Share2, Globe, User, AlertTriangle, FileText } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import BackgroundStars from "@/components/BackgroundStars";
 
 export default function Home() {
@@ -31,12 +32,24 @@ export default function Home() {
         </div>
 
         <div>
-          <Link href="/sign-up" className="relative group px-8 py-3 rounded-[24px] bg-gradient-to-r from-violet-600/20 to-indigo-900/20 border border-violet-500/40 text-white text-[14px] font-medium transition-all shadow-[0_0_30px_rgba(124,58,237,0.2)] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] inline-flex items-center justify-center overflow-hidden">
-            <span className="relative z-10 drop-shadow-md">Sign up</span>
-            <div className="absolute inset-0 bg-violet-600 opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-300" />
-            <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-fuchsia-500 opacity-30 group-hover:opacity-50 transition-opacity duration-300" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-transparent via-[#A78BFA] to-transparent opacity-80" />
-          </Link>
+          <SignedOut>
+            <SignUpButton mode="modal" forceRedirectUrl="/dashboard">
+              <button className="relative group px-8 py-3 rounded-[24px] bg-gradient-to-r from-violet-600/20 to-indigo-900/20 border border-violet-500/40 text-white text-[14px] font-medium transition-all shadow-[0_0_30px_rgba(124,58,237,0.2)] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] inline-flex items-center justify-center overflow-hidden">
+                <span className="relative z-10 drop-shadow-md">Sign up</span>
+                <div className="absolute inset-0 bg-violet-600 opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-fuchsia-500 opacity-30 group-hover:opacity-50 transition-opacity duration-300" />
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-transparent via-[#A78BFA] to-transparent opacity-80" />
+              </button>
+            </SignUpButton>
+          </SignedOut>
+          <SignedIn>
+            <Link href="/dashboard" className="relative group px-8 py-3 rounded-[24px] bg-gradient-to-r from-violet-600/20 to-indigo-900/20 border border-violet-500/40 text-white text-[14px] font-medium transition-all shadow-[0_0_30px_rgba(124,58,237,0.2)] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] inline-flex items-center justify-center overflow-hidden">
+              <span className="relative z-10 drop-shadow-md">Dashboard</span>
+              <div className="absolute inset-0 bg-violet-600 opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-fuchsia-500 opacity-30 group-hover:opacity-50 transition-opacity duration-300" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-transparent via-[#A78BFA] to-transparent opacity-80" />
+            </Link>
+          </SignedIn>
         </div>
       </nav>
 
