@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import { ResumeData } from "@/lib/types";
+import BackgroundStars from "@/components/BackgroundStars";
 
 export default function TerminalPortfolio({ data }: { data: ResumeData }) {
     const [mounted, setMounted] = React.useState(false);
@@ -25,29 +26,26 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
     if (!mounted) return <div className="min-h-screen bg-[#030303]" />;
 
     return (
-        <div className="min-h-screen bg-[#030303] text-white selection:bg-indigo-500/30 overflow-x-hidden">
+        <div className="min-h-screen relative overflow-hidden text-white selection:bg-violet-500/30">
             {/* AMBIENT BACKGROUND */}
-            <div className="fixed inset-0 -z-10 bg-[#030303]">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
-                <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[30%] bg-purple-500/10 blur-[120px] rounded-full" />
-            </div>
+            <BackgroundStars />
 
             <main className="max-w-7xl mx-auto px-6 pt-32 pb-32 space-y-64">
                 {/* HERO */}
-                <section className="space-y-12 text-center md:text-left">
+                <section className="space-y-12 text-center md:text-left relative z-10">
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-[10px] font-bold tracking-[0.3em] uppercase">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-violet-600/20 border border-violet-500/30 text-violet-300 text-[10px] font-bold tracking-[0.3em] uppercase">
                             AVAILABLE FOR NEW OPPORTUNITIES
                         </div>
                         <h1 className="text-7xl md:text-9xl font-bold tracking-tighter leading-[0.85] mb-10">
-                            <span className="bg-gradient-to-r from-white via-indigo-400 to-purple-400 bg-clip-text text-transparent uppercase">
+                            <span className="bg-gradient-to-r from-white via-violet-400 to-fuchsia-400 bg-clip-text text-transparent uppercase">
                                 {data.name || "Creative Candidate"}
                             </span>
                         </h1>
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
                             <div className="md:col-span-8 space-y-6">
                                 <p className="text-3xl font-medium text-white italic">
-                                    I build digital value as an <span className="text-indigo-400">{data.role || "Professional"}</span>
+                                    I build digital value as an <span className="text-violet-400">{data.role || "Professional"}</span>
                                 </p>
                                 <p className="text-zinc-500 text-xl leading-relaxed max-w-2xl">{data.bio || "Crafting digital experiences with precision and passion."}</p>
                             </div>
@@ -56,9 +54,9 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                 </section>
 
                 {/* EXPERIENCE */}
-                <section className="space-y-24">
+                <section className="space-y-24 relative z-10">
                     <div className="flex flex-col gap-6">
-                        <span className="text-indigo-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 01 EXPERIENCE</span>
+                        <span className="text-violet-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 01 EXPERIENCE</span>
                         <h2 className="text-6xl md:text-8xl font-bold tracking-tighter text-white">Career Path</h2>
                     </div>
                     <div className="divide-y divide-white/5 border-t border-white/5">
@@ -66,20 +64,20 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                             <motion.div key={i} className="grid grid-cols-1 md:grid-cols-12 gap-12 py-20 group relative">
                                 <div className="md:col-span-3 text-zinc-500 font-mono text-xs uppercase tracking-widest">{exp.duration}</div>
                                 <div className="md:col-span-7 space-y-6">
-                                    <h3 className="text-4xl font-bold text-white group-hover:text-indigo-400 transition-colors italic leading-none">{exp.company}</h3>
+                                    <h3 className="text-4xl font-bold text-white group-hover:text-violet-400 transition-colors italic leading-none">{exp.company}</h3>
                                     <p className="text-xl text-zinc-400 font-medium italic">{exp.role}</p>
                                     <p className="text-zinc-500 leading-relaxed text-lg max-w-2xl">{exp.description}</p>
                                 </div>
-                                <div className="md:col-span-2 hidden md:flex justify-end items-start pt-2"><span className="text-white/5 font-black text-6xl group-hover:text-indigo-500/10 transition-colors">0{i + 1}</span></div>
+                                <div className="md:col-span-2 hidden md:flex justify-end items-start pt-2"><span className="text-white/5 font-black text-6xl group-hover:text-violet-500/10 transition-colors">0{i + 1}</span></div>
                             </motion.div>
                         ))}
                     </div>
                 </section>
 
                 {/* PROJECTS */}
-                <section className="space-y-24">
+                <section className="space-y-24 relative z-10">
                     <div className="flex flex-col gap-6">
-                        <span className="text-purple-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 02 SELECTED WORKS</span>
+                        <span className="text-fuchsia-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 02 SELECTED WORKS</span>
                         <h2 className="text-6xl md:text-8xl font-bold tracking-tighter text-white">Projects</h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -97,8 +95,8 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                                 link: "#"
                             }
                         ]).map((proj, i) => (
-                            <motion.div key={i} whileHover={{ y: -15 }} className="relative group aspect-[4/5] overflow-hidden rounded-[48px] bg-white/[0.02] border border-white/5 p-12 flex flex-col justify-end gap-8 transition-all duration-700">
-                                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 group-hover:via-indigo-500/10 transition-all duration-700" />
+                            <motion.div key={i} whileHover={{ y: -15 }} className="relative group aspect-[4/5] overflow-hidden rounded-[48px] bg-[#0C0C0F]/60 border border-white/5 p-12 flex flex-col justify-end gap-8 transition-all duration-700 backdrop-blur-md">
+                                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 group-hover:via-violet-500/10 transition-all duration-700" />
                                 <div className="relative z-10 space-y-6">
                                     <div className="flex flex-wrap gap-2">{proj.technologies?.map(t => <span key={t} className="px-4 py-1.5 bg-white/10 text-white text-[10px] font-bold uppercase tracking-widest rounded-full">{t}</span>)}</div>
                                     <h3 className="text-5xl font-bold text-white leading-tight">{proj.title}</h3>
@@ -108,12 +106,12 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                                             href={proj.link.startsWith('http') ? proj.link : `https://${proj.link}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center gap-3 text-white font-bold uppercase text-xs tracking-widest border-b border-white/20 pb-2 group-hover:border-indigo-400 transition-all w-fit"
+                                            className="flex items-center gap-3 text-white font-bold uppercase text-xs tracking-widest border-b border-white/20 pb-2 group-hover:border-violet-400 transition-all w-fit"
                                         >
                                             View Project <ArrowRight size={14} />
                                         </a>
                                     ) : (
-                                        <button className="flex items-center gap-3 text-white font-bold uppercase text-xs tracking-widest border-b border-white/20 pb-2 group-hover:border-indigo-400 transition-all">
+                                        <button className="flex items-center gap-3 text-white font-bold uppercase text-xs tracking-widest border-b border-white/20 pb-2 group-hover:border-violet-400 transition-all">
                                             Case Study <ArrowRight size={14} />
                                         </button>
                                     )}
@@ -124,15 +122,15 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                 </section>
 
                 {/* SYSTEM CONTACT */}
-                <section className="space-y-24 pb-48">
+                <section className="space-y-24 pb-48 relative z-10">
                     <div className="flex flex-col gap-6"><span className="text-emerald-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 04 SYSTEM_CONTACT</span><h2 className="text-6xl md:text-8xl font-bold tracking-tighter text-white">Get in Touch</h2></div>
-                    <div className="w-full max-w-2xl mx-auto rounded-3xl bg-black border border-white/10 shadow-2xl p-10 font-mono">
+                    <div className="w-full max-w-2xl mx-auto rounded-[32px] bg-[#0C0C0F]/80 backdrop-blur-md border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] p-10 font-mono">
                         <ContactForm toName={data.name} />
                     </div>
                 </section>
             </main>
 
-            <footer className="border-t border-white/5 py-24 flex flex-col items-center gap-8">
+            <footer className="border-t border-white/5 py-24 flex flex-col items-center gap-8 relative z-10 bg-black/20 backdrop-blur-sm">
                 <div className="flex gap-8">
                     {data.github && (
                         <a href={data.github.startsWith('http') ? data.github : `https://${data.github}`} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors">
