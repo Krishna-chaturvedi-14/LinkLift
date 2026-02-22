@@ -37,8 +37,31 @@ export default function PortfolioPreview() {
   const [copied, setCopied] = useState(false);
   const [isDeploying, setIsDeploying] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [overrides, setOverrides] = useState<any>({});
+
+  const uploadImage = async (file: File) => {
+    if (!user?.id) return null;
+    setIsUploadingImage(true);
+
+    // Generate unique filename to avoid overriding
+    const filePath = `${user.id}/${Date.now()}-img-${file.name}`;
+
+    const { error: storageError } = await supabase.storage
+      .from("resumes")
+      .upload(filePath, file, { cacheControl: "3600", upsert: false });
+
+    setIsUploadingImage(false);
+
+    if (storageError) {
+      alert("Image upload failed");
+      return null;
+    }
+
+    const { data } = supabase.storage.from("resumes").getPublicUrl(filePath);
+    return data.publicUrl;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -168,7 +191,21 @@ export default function PortfolioPreview() {
                   <div className="space-y-4">
                     <input value={gV('name', data.name)} onChange={(e) => updateField('name', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-indigo-500/50 transition-colors" placeholder="Full Name" />
                     <input value={gV('role', data.role)} onChange={(e) => updateField('role', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-indigo-500/50 transition-colors" placeholder="Headline / Role" />
-                    <input value={gV('profileImage', data.profileImage || '')} onChange={(e) => updateField('profileImage', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-indigo-500/50 transition-colors" placeholder="Profile Picture / About Image URL" />
+
+                    <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+                      <span className="text-sm text-zinc-400">Profile Picture</span>
+                      <label className="cursor-pointer bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-colors">
+                        Upload Image
+                        <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const url = await uploadImage(file);
+                            if (url) updateField('profileImage', url);
+                          }
+                        }} />
+                      </label>
+                    </div>
+
                     <div className="grid grid-cols-2 gap-3">
                       <input value={gV('github', data.github)} onChange={(e) => updateField('github', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-xs outline-none focus:border-indigo-500/50 transition-colors" placeholder="GitHub URL" />
                       <input value={gV('linkedin', data.linkedin)} onChange={(e) => updateField('linkedin', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-xs outline-none focus:border-indigo-500/50 transition-colors" placeholder="LinkedIn URL" />
@@ -193,7 +230,25 @@ export default function PortfolioPreview() {
                     <div key={i} className="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-3">
                       <input value={proj.title} onChange={(e) => { const n = [...(gV('projects', data.projects) || [])]; n[i].title = e.target.value; updateField('projects', n); }} className="w-full bg-transparent border-b border-white/10 text-white font-bold text-sm" placeholder="Project Title" />
                       <input value={proj.link} onChange={(e) => { const n = [...(gV('projects', data.projects) || [])]; n[i].link = e.target.value; updateField('projects', n); }} className="w-full bg-transparent border-b border-white/10 text-indigo-400 text-xs" placeholder="Live Link (https://...)" />
-                      <input value={proj.image || ''} onChange={(e) => { const n = [...(gV('projects', data.projects) || [])]; n[i].image = e.target.value; updateField('projects', n); }} className="w-full bg-transparent border-b border-white/10 text-purple-400 text-xs" placeholder="Cover Image URL (https://...)" />
+
+                      <div className="flex items-center justify-between py-1 border-b border-white/10">
+                        <span className="text-xs text-zinc-500">Project Cover Image</span>
+                        <label className="cursor-pointer text-indigo-400 hover:text-indigo-300 text-xs font-medium">
+                          Upload file
+                          <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const url = await uploadImage(file);
+                              if (url) {
+                                const n = [...(gV('projects', data.projects) || [])];
+                                n[i].image = url;
+                                updateField('projects', n);
+                              }
+                            }
+                          }} />
+                        </label>
+                      </div>
+
                       <textarea value={proj.description} onChange={(e) => { const n = [...(gV('projects', data.projects) || [])]; n[i].description = e.target.value; updateField('projects', n); }} rows={2} className="w-full bg-transparent text-xs text-zinc-500 resize-none" placeholder="Project Description" />
                     </div>
                   ))}
@@ -212,9 +267,9 @@ export default function PortfolioPreview() {
               </div>
 
               <div className="sticky bottom-0 bg-[#0a0a0f] pt-6 pb-2 border-t border-white/5 mt-10">
-                <button onClick={handleSave} disabled={isSaving || Object.keys(overrides).length === 0} className="w-full flex items-center justify-center gap-3 py-4 bg-indigo-600 rounded-2xl font-bold text-white text-sm shadow-xl shadow-indigo-500/20 disabled:opacity-20 hover:bg-indigo-500 transition-all hover:scale-[1.02] active:scale-95">
-                  {isSaving ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
-                  Apply Updates
+                <button onClick={handleSave} disabled={isSaving || isUploadingImage || Object.keys(overrides).length === 0} className="w-full flex items-center justify-center gap-3 py-4 bg-indigo-600 rounded-2xl font-bold text-white text-sm shadow-xl shadow-indigo-500/20 disabled:opacity-20 hover:bg-indigo-500 transition-all hover:scale-[1.02] active:scale-95">
+                  {isSaving || isUploadingImage ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
+                  {isUploadingImage ? "Wait for Upload..." : "Apply Updates"}
                 </button>
               </div>
             </motion.aside>
