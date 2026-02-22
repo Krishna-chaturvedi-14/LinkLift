@@ -27,7 +27,7 @@ export default function Home() {
         <div className="hidden lg:flex items-center gap-10 text-[14px] font-medium text-slate-300">
           <Link href="/" className="text-white">Home</Link>
           <Link href="/#features" className="hover:text-white transition-colors">Features</Link>
-          <Link href="/#pricing" className="hover:text-white transition-colors">Pricing</Link>
+
           <Link href="/#blog" className="hover:text-white transition-colors">Blog</Link>
           <Link href="/#contact" className="hover:text-white transition-colors">Contact</Link>
         </div>
@@ -139,35 +139,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Pricing Section */}
-        <div id="pricing" className="w-full max-w-[1200px] mx-auto py-32 px-10 border-t border-white/5">
-          <div className="text-center mb-16">
-            <h2 className="text-[36px] font-bold text-white mb-4">Simple, Transparent Pricing</h2>
-            <p className="text-slate-400 max-w-[600px] mx-auto">Start for free, upgrade when you need more power.</p>
-          </div>
-          <div className="flex justify-center gap-8 flex-wrap">
-            <div className="w-[350px] p-8 rounded-[24px] bg-[#0C0C0F] border border-white/5">
-              <h3 className="text-[20px] font-semibold text-white mb-2">Free Tier</h3>
-              <div className="text-[48px] font-bold text-white mb-6">$0<span className="text-[16px] text-slate-500 font-normal">/mo</span></div>
-              <button className="w-full py-3 rounded-full border border-white/10 hover:bg-white/5 transition-colors mb-8 font-medium">Get Started</button>
-              <ul className="space-y-4 text-slate-400 text-[14px]">
-                <li className="flex gap-3 items-center"><CheckCircle2 size={16} className="text-violet-500" /> 1 Portfolio Link</li>
-                <li className="flex gap-3 items-center"><CheckCircle2 size={16} className="text-violet-500" /> Basic Analytics</li>
-              </ul>
-            </div>
-            <div className="w-[350px] p-8 rounded-[24px] bg-gradient-to-b from-[#18181B] to-[#0C0C0F] border border-violet-500/30 relative overflow-hidden">
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-violet-600 to-fuchsia-500" />
-              <h3 className="text-[20px] font-semibold text-white mb-2">Pro Builder</h3>
-              <div className="text-[48px] font-bold text-white mb-6">$15<span className="text-[16px] text-slate-500 font-normal">/mo</span></div>
-              <button className="w-full py-3 rounded-full bg-violet-600 hover:bg-violet-500 text-white transition-colors mb-8 font-medium shadow-[0_0_20px_rgba(124,58,237,0.3)]">Upgrade to Pro</button>
-              <ul className="space-y-4 text-slate-400 text-[14px]">
-                <li className="flex gap-3 items-center"><CheckCircle2 size={16} className="text-violet-500" /> Unlimited Portfolio Links</li>
-                <li className="flex gap-3 items-center"><CheckCircle2 size={16} className="text-violet-500" /> Advanced AI Analytics</li>
-                <li className="flex gap-3 items-center"><CheckCircle2 size={16} className="text-violet-500" /> Custom Domains</li>
-              </ul>
-            </div>
-          </div>
-        </div>
 
         {/* Blog Section */}
         <div id="blog" className="w-full max-w-[1200px] mx-auto py-32 px-10 border-t border-white/5">
