@@ -118,6 +118,88 @@ export default function Home() {
 
         </section>
 
+        {/* --- ADDED MISSING SECTIONS FOR NAVBAR LINKS to WORK --- */}
+
+        {/* Features Section */}
+        <div id="features" className="w-full max-w-[1200px] mx-auto py-32 px-10 border-t border-white/5 mt-32">
+          <div className="text-center mb-16">
+            <h2 className="text-[36px] font-bold text-white mb-4">Powerful Features</h2>
+            <p className="text-slate-400 max-w-[600px] mx-auto">Everything you need to automate your resume targeting and manage your portfolio deployments.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="p-8 rounded-[24px] bg-[#0C0C0F] border border-white/5 hover:border-violet-500/30 transition-colors">
+                <div className="w-12 h-12 rounded-full bg-violet-600/20 text-violet-400 flex items-center justify-center mb-6">
+                  <Sparkles size={20} />
+                </div>
+                <h3 className="text-[20px] font-semibold text-white mb-3">Feature Area {i}</h3>
+                <p className="text-slate-400 leading-relaxed text-[15px]">Automated insights and matching capabilities that ensure your profile ranks in the top percentile of applicants automatically.</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Pricing Section */}
+        <div id="pricing" className="w-full max-w-[1200px] mx-auto py-32 px-10 border-t border-white/5">
+          <div className="text-center mb-16">
+            <h2 className="text-[36px] font-bold text-white mb-4">Simple, Transparent Pricing</h2>
+            <p className="text-slate-400 max-w-[600px] mx-auto">Start for free, upgrade when you need more power.</p>
+          </div>
+          <div className="flex justify-center gap-8 flex-wrap">
+            <div className="w-[350px] p-8 rounded-[24px] bg-[#0C0C0F] border border-white/5">
+              <h3 className="text-[20px] font-semibold text-white mb-2">Free Tier</h3>
+              <div className="text-[48px] font-bold text-white mb-6">$0<span className="text-[16px] text-slate-500 font-normal">/mo</span></div>
+              <button className="w-full py-3 rounded-full border border-white/10 hover:bg-white/5 transition-colors mb-8 font-medium">Get Started</button>
+              <ul className="space-y-4 text-slate-400 text-[14px]">
+                <li className="flex gap-3 items-center"><CheckCircle2 size={16} className="text-violet-500" /> 1 Portfolio Link</li>
+                <li className="flex gap-3 items-center"><CheckCircle2 size={16} className="text-violet-500" /> Basic Analytics</li>
+              </ul>
+            </div>
+            <div className="w-[350px] p-8 rounded-[24px] bg-gradient-to-b from-[#18181B] to-[#0C0C0F] border border-violet-500/30 relative overflow-hidden">
+              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-violet-600 to-fuchsia-500" />
+              <h3 className="text-[20px] font-semibold text-white mb-2">Pro Builder</h3>
+              <div className="text-[48px] font-bold text-white mb-6">$15<span className="text-[16px] text-slate-500 font-normal">/mo</span></div>
+              <button className="w-full py-3 rounded-full bg-violet-600 hover:bg-violet-500 text-white transition-colors mb-8 font-medium shadow-[0_0_20px_rgba(124,58,237,0.3)]">Upgrade to Pro</button>
+              <ul className="space-y-4 text-slate-400 text-[14px]">
+                <li className="flex gap-3 items-center"><CheckCircle2 size={16} className="text-violet-500" /> Unlimited Portfolio Links</li>
+                <li className="flex gap-3 items-center"><CheckCircle2 size={16} className="text-violet-500" /> Advanced AI Analytics</li>
+                <li className="flex gap-3 items-center"><CheckCircle2 size={16} className="text-violet-500" /> Custom Domains</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Blog Section */}
+        <div id="blog" className="w-full max-w-[1200px] mx-auto py-32 px-10 border-t border-white/5">
+          <div className="text-center mb-16">
+            <h2 className="text-[36px] font-bold text-white mb-4">Latest Insights</h2>
+            <p className="text-slate-400 max-w-[600px] mx-auto">Read our latest thoughts on career growth and tech stacks.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end">
+              <span className="text-violet-400 text-[12px] font-bold uppercase tracking-wider mb-2">Career Format</span>
+              <h3 className="text-[24px] font-semibold text-white mb-2">How to optimize your resume for AI parsers in 2026.</h3>
+              <span className="text-slate-500 text-[14px]">March 12 • 5 min read</span>
+            </div>
+            <div className="h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end">
+              <span className="text-fuchsia-400 text-[12px] font-bold uppercase tracking-wider mb-2">Engineering</span>
+              <h3 className="text-[24px] font-semibold text-white mb-2">The ultimate guide to building a deployable portfolio.</h3>
+              <span className="text-slate-500 text-[14px]">March 08 • 8 min read</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Section */}
+        <div id="contact" className="w-full pb-32 pt-20 border-t border-white/5 flex flex-col items-center justify-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-violet-900/10 blur-[100px] rounded-full w-[600px] h-[300px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+          <h2 className="text-[48px] font-bold text-white mb-6 relative z-10 text-center">Ready to level up?</h2>
+          <p className="text-slate-400 mb-10 relative z-10 text-center max-w-[500px]">Join thousands of developers building their perfect tech identity.</p>
+          <div className="flex gap-4 relative z-10">
+            <button className="px-8 py-3 rounded-full bg-violet-600 text-white font-medium hover:bg-violet-500 transition-colors">Contact Sales</button>
+            <button className="px-8 py-3 rounded-full bg-[#18181B] border border-white/10 text-white font-medium hover:bg-white/5 transition-colors">Support Docs</button>
+          </div>
+        </div>
+
       </main>
     </div>
   );

@@ -39,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className="scroll-smooth">
         {/* ... keep your head tags the same ... */}
         <body className="min-h-screen bg-[#05050A] font-sans text-white antialiased">
           {/* Background Glows stay here */}
