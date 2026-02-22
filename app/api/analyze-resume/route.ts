@@ -80,11 +80,14 @@ export async function POST(req: NextRequest) {
           items: {
             type: "object",
             properties: {
-              area: { type: "string" },
-              issue: { type: "string" },
-              advice: { type: "string" }
+              area: { type: "string", description: "The general area, e.g. 'Bio', 'Skills', 'Experience'" },
+              issue: { type: "string", description: "A brief description of the issue." },
+              advice: { type: "string", description: "The advice on how to fix it." },
+              action_type: { type: "string", description: "Must be one of: 'rewrite_bio', 'add_skills', 'rewrite_experience', 'general'" },
+              original_text: { type: "string", description: "The exact original text from the resume that needs changing (if applicable)." },
+              suggested_text: { type: "string", description: "The exact, copy-paste ready replacement text or new text to add." }
             },
-            required: ["area", "issue", "advice"]
+            required: ["area", "issue", "advice", "action_type", "suggested_text"]
           }
         }
       },
@@ -155,13 +158,13 @@ export async function POST(req: NextRequest) {
           - 75-89: Strong. Good skills but lacks specific metrics or links.
           - 50-74: Growing. Needs more projects or clearer role focus.
           
-          ### INSIGHTS REQUIREMENTS:
+          ### INSIGHTS REQUIREMENTS (CRITICAL FOR ACTIONABLE UI):
           - Provide 3 constructive suggestions STRICTLY about resume content and structure.
-          - FORBIDDEN topics: Master's degrees, PhDs, new certifications, or general career paths.
-          - FOCUS topics: Bullet point strength, quantifiable impact, layout clarity, and skill alignment.
-          - "area": A short category (e.g., "Impact", "Formatting").
-          - "issue": What is missing or weak in the resume's text.
-          - "advice": How to improve that specific section.
+          - You MUST provide exact, copy-paste ready "suggested_text" that the user can directly apply.
+          - "action_type": Must be one of: "rewrite_bio", "add_skills", "rewrite_experience", "general".
+          - "original_text": The exact text from their resume you are improving (if applicable).
+          - "suggested_text": The literal new text (e.g. a rewritten bullet point with metrics, or a comma-separated list of missing technical skills).
+          - FORBIDDEN topics: Master's degrees, PhDs, new certifications.
 
           Resume Text: "${resumeText}"
           
@@ -177,7 +180,7 @@ export async function POST(req: NextRequest) {
             "experience": [{"role": "...", "company": "...", "duration": "...", "description": "..."}],
             "projects": [{"title": "...", "description": "...", "technologies": ["..."], "link": "..."}],
             "score": 85,
-            "suggestions": [{"area": "...", "issue": "...", "advice": "..."}]
+            "suggestions": [{"area": "...", "issue": "...", "advice": "...", "action_type": "...", "original_text": "...", "suggested_text": "..."}]
           }
 
           Reference Examples:
@@ -243,7 +246,7 @@ export async function POST(req: NextRequest) {
           body: JSON.stringify({
             model: "llama-3.3-70b-versatile",
             messages: [
-              { role: "system", content: "Extract resume data into JSON format. Provide accurate ATS scoring and 3 constructive suggestions for improvement." },
+              { role: "system", content: "Extract resume data into JSON format. Provide accurate ATS scoring and 3 constructive suggestions for improvement. ALL suggestions MUST have 'action_type', 'original_text', and actionable 'suggested_text' that the user can directly insert into their resume." },
               { role: "user", content: `Resume Text: ${resumeText.slice(0, 8000)} \n\nSchema: ${JSON.stringify(schema)} ` }
             ],
             response_format: { type: "json_object" },
@@ -317,7 +320,14 @@ export async function POST(req: NextRequest) {
         ],
         score: 75,
         suggestions: [
-          { area: "Projects", issue: "Extraction Limit", advice: "Your resume parsing was limited by API traffic. Feel free to manually add your best projects using the 'Edit Content' sidebar!" }
+          {
+            area: "Bio",
+            issue: "Too generic",
+            advice: "Add specific metrics.",
+            action_type: "rewrite_bio",
+            original_text: "Experienced developer focused on building scalable, user-centric digital solutions with modern technologies.",
+            suggested_text: "Results-driven Software Engineer with 3+ years experience building highly scalable Node.js/React applications, improving system performance by 30% for over 50k active users."
+          }
         ]
       };
     }

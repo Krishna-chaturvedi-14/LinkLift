@@ -14,6 +14,8 @@ import ThreeDPortfolio from "@/components/templates/ThreeDPortfolio";
 import SeraPortfolio from "@/components/templates/SeraPortfolio";
 import AntoinePortfolio from "@/components/templates/AntoinePortfolio";
 import FigmaPortfolio from "@/components/templates/FigmaPortfolio";
+import MidnightPortfolio from "@/components/templates/MidnightPortfolio";
+import MinimalistPortfolio from "@/components/templates/MinimalistPortfolio";
 
 export const TEMPLATES: Record<string, Template> = {
     "default": {
@@ -51,6 +53,18 @@ export const TEMPLATES: Record<string, Template> = {
         name: "Figma Community Port",
         component: FigmaPortfolio,
         thumbnail: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
+    },
+    midnight: {
+        id: "midnight",
+        name: "Midnight Glow",
+        component: MidnightPortfolio,
+        thumbnail: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&q=80", // Using placeholder image for now
+    },
+    minimalist: {
+        id: "minimalist",
+        name: "Minimalist Mono",
+        component: MinimalistPortfolio,
+        thumbnail: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80", // Using placeholder minimalist image
     },
 };
 
