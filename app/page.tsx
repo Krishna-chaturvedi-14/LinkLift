@@ -132,62 +132,64 @@ function EnergyGlow({ offsetTop }: { offsetTop: string }) {
   return (
     <div className={`absolute top-[${offsetTop}] w-[1600px] flex items-start justify-center pointer-events-none z-0`} style={{ top: offsetTop }}>
 
-      {/* Massive deep blue radial background glow covering the screen laterally */}
+      {/* 1. Deep Core Ambient Glow (The large purple/blue atmospheric spread) */}
       <div className="absolute top-[-250px] w-[1400px] h-[500px] bg-[#2563EB]/40 rounded-[100%] blur-[160px]" />
-
-      {/* Secondary brighter cyan aura */}
       <div className="absolute top-[-150px] w-[900px] h-[300px] bg-[#06B6D4]/30 rounded-[100%] blur-[100px]" />
 
-      {/* Intense Core Neon Arc blooming precisely from the dashboard border line */}
-      <motion.div
-        animate={{ opacity: [0.8, 1, 0.8], scale: [0.98, 1.02, 0.98] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[-180px] w-[500px] h-[200px] bg-gradient-to-t from-white via-[#60A5FA] to-transparent rounded-t-[500px] blur-[50px] mix-blend-screen"
-      />
-
-      {/* Pure White Hotspot exactly at the center edge */}
-      <div className="absolute top-[-60px] w-[250px] h-[70px] bg-white rounded-t-full blur-[25px] mix-blend-screen opacity-90" />
-
-      {/* Horizontal Neon Light Streak traversing the entire width of the glow */}
-      <div className="absolute top-[-5px] w-[1200px] h-[4px] bg-[#60A5FA] blur-[6px] opacity-80" />
-      <div className="absolute top-[-3px] w-[700px] h-[2px] bg-white blur-[2px] opacity-100" />
-
-      {/* Dotted Tech Pattern Arc fanning outwards */}
+      {/* 2. Dotted Tech Pattern Arc fanning outwards (placing it behind the solid core) */}
       <div className="absolute top-[-400px] w-[1200px] h-[450px]" style={{ perspective: '1000px' }}>
         <div
-          className="w-full h-full opacity-25"
+          className="w-full h-full opacity-[0.35]"
           style={{
             backgroundImage: 'radial-gradient(#60A5FA 1.5px, transparent 1.5px)',
             backgroundSize: '24px 24px',
-            WebkitMaskImage: 'radial-gradient(ellipse 100% 100% at bottom center, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 65%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 100% 100% at bottom center, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 65%)',
             transform: 'rotateX(40deg)', // Adds depth to the dot matrix
             transformOrigin: 'bottom center'
           }}
         />
       </div>
 
-      {/* Concentric Halo Rings with Intersecting Nodes */}
+      {/* 3. The Solid, Intense Inner Semi-Circle Halo (This is the critical missing piece) */}
+      <motion.div
+        animate={{ opacity: [0.95, 1, 0.95], scale: [0.99, 1.01, 0.99] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-0 flex justify-center w-full"
+      >
+        {/* Outer Halo of the solid ring */}
+        <div className="absolute bottom-0 w-[550px] h-[275px] bg-[#60A5FA]/80 rounded-t-full blur-[30px] mix-blend-screen" />
+
+        {/* The Solid Bright White/Cyan Ring Shape itself */}
+        <div className="absolute bottom-0 w-[450px] h-[225px] rounded-t-full border-[35px] border-white drop-shadow-[0_0_40px_rgba(255,255,255,0.8)] border-b-0 shadow-[0_0_80px_rgba(96,165,250,1),inset_0_0_50px_rgba(96,165,250,0.8)]" />
+
+        {/* Intense white blowout at the very base to merge it with the horizon line */}
+        <div className="absolute bottom-[-20px] w-[700px] h-[100px] bg-white rounded-[100%] blur-[40px] mix-blend-screen opacity-100" />
+      </motion.div>
+
+      {/* 4. Concentric Outer Nodes & Rings */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 flex justify-center pointer-events-none mix-blend-screen">
-
-        {/* Inner Ring */}
-        <div className="absolute bottom-0 border-[1.5px] border-[#60A5FA]/30 border-b-0 rounded-t-full w-[650px] h-[325px]" />
-
         {/* Middle Ring */}
-        <div className="absolute bottom-0 border-[1.5px] border-[#60A5FA]/20 border-b-0 rounded-t-full w-[950px] h-[475px]">
+        <div className="absolute bottom-0 border border-[#60A5FA]/30 border-b-0 rounded-t-full w-[850px] h-[425px]">
           {/* Left Node */}
-          <div className="absolute w-3 h-3 rounded-full bg-[#060B18] border border-[#60A5FA] top-[100px] left-[110px] shadow-[0_0_10px_rgba(96,165,250,0.8)]" />
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#60A5FA] top-[100px] left-[110px] shadow-[0_0_12px_rgba(96,165,250,1)]" />
           {/* Right Node */}
-          <div className="absolute w-3 h-3 rounded-full bg-[#060B18] border border-[#60A5FA] top-[100px] right-[110px] shadow-[0_0_10px_rgba(96,165,250,0.8)]" />
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#60A5FA] top-[100px] right-[110px] shadow-[0_0_12px_rgba(96,165,250,1)]" />
         </div>
 
         {/* Outer Ring */}
-        <div className="absolute bottom-0 border-[1.5px] border-[#60A5FA]/10 border-b-0 rounded-t-full w-[1250px] h-[625px]">
+        <div className="absolute bottom-0 border border-[#60A5FA]/15 border-b-0 rounded-t-full w-[1150px] h-[575px]">
           {/* Left Node */}
-          <div className="absolute w-3 h-3 rounded-full bg-[#060B18] border border-[#60A5FA]/60 top-[180px] left-[130px] shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#60A5FA]/80 top-[180px] left-[130px] shadow-[0_0_8px_rgba(96,165,250,0.8)]" />
           {/* Right Node */}
-          <div className="absolute w-3 h-3 rounded-full bg-[#060B18] border border-[#60A5FA]/60 top-[180px] right-[130px] shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#60A5FA]/80 top-[180px] right-[130px] shadow-[0_0_8px_rgba(96,165,250,0.8)]" />
         </div>
+      </div>
 
+      {/* 5. Horizontal Neon Horizon Streak */}
+      <div className="absolute bottom-0 w-full flex justify-center">
+        <div className="absolute bottom-0 w-[1400px] h-[6px] bg-[#2563EB]/60 blur-[10px]" />
+        <div className="absolute bottom-0 w-[900px] h-[3px] bg-[#60A5FA] blur-[4px] opacity-90" />
+        <div className="absolute bottom-0 w-[500px] h-[2px] bg-white blur-[1px] opacity-100 drop-shadow-[0_0_15px_rgba(255,255,255,1)]" />
       </div>
 
     </div>
