@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle2, LayoutDashboard, MessageSquare, Briefcase, PieChart, ChevronDown, Bell, Search, ArrowUpRight, ArrowDownRight, RefreshCcw, Users, Copy, Code, Sparkles, Share2, Globe, User, AlertTriangle } from "lucide-react";
+import { CheckCircle2, LayoutDashboard, MessageSquare, Briefcase, PieChart, ChevronDown, Bell, Search, ArrowUpRight, ArrowDownRight, RefreshCcw, Users, Copy, Code, Sparkles, Share2, Globe, User, AlertTriangle, FileText } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import BackgroundStars from "@/components/BackgroundStars";
@@ -125,13 +125,29 @@ export default function Home() {
             <p className="text-slate-400 max-w-[600px] mx-auto">Everything you need to automate your resume targeting and manage your portfolio deployments.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="p-8 rounded-[24px] bg-[#0C0C0F] border border-white/5 hover:border-violet-500/30 transition-colors">
+            {[
+              {
+                icon: <FileText size={20} />,
+                title: "AI Resume Parsing",
+                description: "Upload your existing PDF resume and let our intelligent engine extract your experience, skills, and projects instantly."
+              },
+              {
+                icon: <Globe size={20} />,
+                title: "Instant Portfolio Generation",
+                description: "Automatically transform your parsed resume into a beautiful, fully deployed personal website in seconds."
+              },
+              {
+                icon: <AlertTriangle size={20} />,
+                title: "Expert Career Insights",
+                description: "Receive actionable AI feedback on your resume to optimize for ATS parsers and increase your callback rate."
+              }
+            ].map((feature, i) => (
+              <div key={i} className="p-8 rounded-[24px] bg-[#0C0C0F] border border-white/5 hover:border-violet-500/30 transition-all duration-300 hover:-translate-y-1">
                 <div className="w-12 h-12 rounded-full bg-violet-600/20 text-violet-400 flex items-center justify-center mb-6">
-                  <Sparkles size={20} />
+                  {feature.icon}
                 </div>
-                <h3 className="text-[20px] font-semibold text-white mb-3">Feature Area {i}</h3>
-                <p className="text-slate-400 leading-relaxed text-[15px]">Automated insights and matching capabilities that ensure your profile ranks in the top percentile of applicants automatically.</p>
+                <h3 className="text-[20px] font-semibold text-white mb-3">{feature.title}</h3>
+                <p className="text-slate-400 leading-relaxed text-[15px]">{feature.description}</p>
               </div>
             ))}
           </div>
