@@ -17,9 +17,6 @@ export default function ContactForm({ toEmail, toName }: ContactFormProps) {
         setStatus("loading");
 
         try {
-            // Add a small artificial delay to show the loading state for UX
-            await new Promise((resolve) => setTimeout(resolve, 800));
-
             // Construct mailto link
             const targetEmail = toEmail || "contact@example.com";
             const subject = encodeURIComponent(`New Message from ${formData.name}`);
@@ -27,7 +24,7 @@ export default function ContactForm({ toEmail, toName }: ContactFormProps) {
                 `${formData.message}\n\n---\nSender Details:\nName: ${formData.name}\nEmail: ${formData.email}`
             );
 
-            // Trigger default mail client
+            // Trigger default mail client synchronously to avoid browser popup blockers
             window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
 
             setStatus("success");
