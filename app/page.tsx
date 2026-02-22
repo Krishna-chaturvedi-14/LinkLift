@@ -18,7 +18,7 @@ export default function Home() {
       {/* Navigation */}
       <nav className="relative z-50 flex items-center justify-between px-10 py-8 max-w-[1400px] mx-auto">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#2563EB] to-[#1E3A8A] flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-600 to-indigo-900 flex items-center justify-center shadow-[0_0_20px_rgba(124,58,237,0.4)]">
             <span className="font-bold text-white text-md">S</span>
           </div>
           <span className="font-semibold text-lg tracking-wide hidden md:block">Stackd</span>
@@ -33,11 +33,11 @@ export default function Home() {
         </div>
 
         <div>
-          <Link href="/sign-up" className="relative group px-8 py-3 rounded-[24px] bg-gradient-to-r from-[#2563EB]/20 to-[#1E3A8A]/20 border border-[#2563EB]/40 text-white text-[14px] font-medium transition-all shadow-[0_0_30px_rgba(37,99,235,0.2)] hover:shadow-[0_0_40px_rgba(37,99,235,0.4)] inline-flex items-center justify-center overflow-hidden">
+          <Link href="/sign-up" className="relative group px-8 py-3 rounded-[24px] bg-gradient-to-r from-violet-600/20 to-indigo-900/20 border border-violet-500/40 text-white text-[14px] font-medium transition-all shadow-[0_0_30px_rgba(124,58,237,0.2)] hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] inline-flex items-center justify-center overflow-hidden">
             <span className="relative z-10 drop-shadow-md">Sign up</span>
-            <div className="absolute inset-0 bg-[#2563EB] opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-300" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#2563EB] to-[#06B6D4] opacity-30 group-hover:opacity-50 transition-opacity duration-300" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-transparent via-[#60A5FA] to-transparent opacity-80" />
+            <div className="absolute inset-0 bg-violet-600 opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-fuchsia-500 opacity-30 group-hover:opacity-50 transition-opacity duration-300" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-transparent via-[#A78BFA] to-transparent opacity-80" />
           </Link>
         </div>
       </nav>
@@ -128,16 +128,16 @@ function EnergyGlow({ offsetTop }: { offsetTop: string }) {
   return (
     <div className={`absolute top-[${offsetTop}] w-[1600px] flex items-start justify-center pointer-events-none z-0`} style={{ top: offsetTop }}>
 
-      {/* 1. Deep Core Ambient Glow (The large purple/blue atmospheric spread) */}
-      <div className="absolute top-[-250px] w-[1400px] h-[500px] bg-[#2563EB]/40 rounded-[100%] blur-[160px]" />
-      <div className="absolute top-[-150px] w-[900px] h-[300px] bg-[#06B6D4]/30 rounded-[100%] blur-[100px]" />
+      {/* 1. Deep Core Ambient Glow (The large purple atmospheric spread) */}
+      <div className="absolute top-[-250px] w-[1400px] h-[500px] bg-[#7C3AED]/40 rounded-[100%] blur-[160px]" />
+      <div className="absolute top-[-150px] w-[900px] h-[300px] bg-[#A78BFA]/20 rounded-[100%] blur-[100px]" />
 
       {/* 2. Dotted Tech Pattern Arc fanning outwards (placing it behind the solid core) */}
       <div className="absolute top-[-400px] w-[1200px] h-[450px]" style={{ perspective: '1000px' }}>
         <div
           className="w-full h-full opacity-[0.35]"
           style={{
-            backgroundImage: 'radial-gradient(#60A5FA 1.5px, transparent 1.5px)',
+            backgroundImage: 'radial-gradient(#A78BFA 1.5px, transparent 1.5px)',
             backgroundSize: '24px 24px',
             WebkitMaskImage: 'radial-gradient(ellipse 100% 100% at bottom center, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 65%)',
             transform: 'rotateX(40deg)', // Adds depth to the dot matrix
@@ -153,10 +153,10 @@ function EnergyGlow({ offsetTop }: { offsetTop: string }) {
         className="absolute bottom-0 flex justify-center w-full"
       >
         {/* Outer Halo of the solid ring */}
-        <div className="absolute bottom-0 w-[550px] h-[275px] bg-[#60A5FA]/80 rounded-t-full blur-[30px] mix-blend-screen" />
+        <div className="absolute bottom-0 w-[550px] h-[275px] bg-[#8B5CF6]/80 rounded-t-full blur-[30px] mix-blend-screen" />
 
-        {/* The Solid Bright White/Cyan Ring Shape itself */}
-        <div className="absolute bottom-0 w-[450px] h-[225px] rounded-t-full border-[35px] border-white drop-shadow-[0_0_40px_rgba(255,255,255,0.8)] border-b-0 shadow-[0_0_80px_rgba(96,165,250,1),inset_0_0_50px_rgba(96,165,250,0.8)]" />
+        {/* The Solid Bright White/Purple Ring Shape itself */}
+        <div className="absolute bottom-0 w-[450px] h-[225px] rounded-t-full border-[35px] border-white drop-shadow-[0_0_40px_rgba(255,255,255,0.8)] border-b-0 shadow-[0_0_80px_rgba(139,92,246,1),inset_0_0_50px_rgba(139,92,246,0.8)]" />
 
         {/* Intense white blowout at the very base to merge it with the horizon line */}
         <div className="absolute bottom-[-20px] w-[700px] h-[100px] bg-white rounded-[100%] blur-[40px] mix-blend-screen opacity-100" />
@@ -165,26 +165,26 @@ function EnergyGlow({ offsetTop }: { offsetTop: string }) {
       {/* 4. Concentric Outer Nodes & Rings */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 flex justify-center pointer-events-none mix-blend-screen">
         {/* Middle Ring */}
-        <div className="absolute bottom-0 border border-[#60A5FA]/30 border-b-0 rounded-t-full w-[850px] h-[425px]">
+        <div className="absolute bottom-0 border border-[#8B5CF6]/40 border-b-0 rounded-t-full w-[850px] h-[425px]">
           {/* Left Node */}
-          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#60A5FA] top-[100px] left-[110px] shadow-[0_0_12px_rgba(96,165,250,1)]" />
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#A78BFA] top-[100px] left-[110px] shadow-[0_0_12px_rgba(167,139,250,1)]" />
           {/* Right Node */}
-          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#60A5FA] top-[100px] right-[110px] shadow-[0_0_12px_rgba(96,165,250,1)]" />
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#A78BFA] top-[100px] right-[110px] shadow-[0_0_12px_rgba(167,139,250,1)]" />
         </div>
 
         {/* Outer Ring */}
-        <div className="absolute bottom-0 border border-[#60A5FA]/15 border-b-0 rounded-t-full w-[1150px] h-[575px]">
+        <div className="absolute bottom-0 border border-[#8B5CF6]/20 border-b-0 rounded-t-full w-[1150px] h-[575px]">
           {/* Left Node */}
-          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#60A5FA]/80 top-[180px] left-[130px] shadow-[0_0_8px_rgba(96,165,250,0.8)]" />
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#A78BFA]/80 top-[180px] left-[130px] shadow-[0_0_8px_rgba(167,139,250,0.8)]" />
           {/* Right Node */}
-          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#60A5FA]/80 top-[180px] right-[130px] shadow-[0_0_8px_rgba(96,165,250,0.8)]" />
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#A78BFA]/80 top-[180px] right-[130px] shadow-[0_0_8px_rgba(167,139,250,0.8)]" />
         </div>
       </div>
 
       {/* 5. Horizontal Neon Horizon Streak */}
       <div className="absolute bottom-0 w-full flex justify-center">
-        <div className="absolute bottom-0 w-[1400px] h-[6px] bg-[#2563EB]/60 blur-[10px]" />
-        <div className="absolute bottom-0 w-[900px] h-[3px] bg-[#60A5FA] blur-[4px] opacity-90" />
+        <div className="absolute bottom-0 w-[1400px] h-[6px] bg-[#7C3AED]/60 blur-[10px]" />
+        <div className="absolute bottom-0 w-[900px] h-[3px] bg-[#A78BFA] blur-[4px] opacity-90" />
         <div className="absolute bottom-0 w-[500px] h-[2px] bg-white blur-[1px] opacity-100 drop-shadow-[0_0_15px_rgba(255,255,255,1)]" />
       </div>
 
@@ -234,7 +234,7 @@ function DashboardMockup({ topOffset }: { topOffset: string }) {
         <div className="flex justify-between items-start mb-10">
           <div>
             <h1 className="text-[42px] font-bold text-white leading-tight mb-2 tracking-tight">Resume<br />Intelligence</h1>
-            <p className="text-[15px] text-slate-400">Krishna Chaturvedi <span className="text-slate-600 mx-1">•</span> <span className="text-blue-500">Machine Learning Intern</span></p>
+            <p className="text-[15px] text-slate-400">Krishna Chaturvedi <span className="text-slate-600 mx-1">•</span> <span className="text-violet-500">Machine Learning Intern</span></p>
           </div>
 
           <div className="flex flex-col items-end gap-3">
