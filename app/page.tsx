@@ -42,33 +42,6 @@ export default function Home() {
 
       <main className="relative z-10 w-full flex flex-col items-center pt-16">
 
-        {/* Social Proof Cluster */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex flex-col items-center gap-2 mb-8"
-        >
-          <div className="flex items-center gap-3">
-            <div className="flex -space-x-3">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-9 h-9 rounded-full border-[3px] border-[#060B18] overflow-hidden bg-slate-800 shadow-md">
-                  <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 15}`} alt="User" className="w-full h-full object-cover opacity-90" />
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col">
-              <div className="flex gap-1 mb-0.5 mt-1">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <svg key={s} className="w-3.5 h-3.5 text-white/90 fill-current drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <span className="text-[11px] text-slate-400 font-medium tracking-wide">10K+ Profiles Built</span>
-            </div>
-          </div>
-        </motion.div>
 
         {/* Headline */}
         <motion.h1
@@ -198,55 +171,64 @@ function EnergyGlow({ offsetTop }: { offsetTop: string }) {
   return (
     <div className={`absolute top-[${offsetTop}] w-[1600px] flex items-start justify-center pointer-events-none z-0`} style={{ top: offsetTop }}>
 
-      {/* 1. Deep Core Ambient Glow (The large purple/fuchsia atmospheric spread) */}
-      <div className="absolute top-[-250px] w-[1200px] h-[500px] bg-fuchsia-600/30 rounded-[100%] blur-[120px]" />
-      <div className="absolute top-[-150px] w-[800px] h-[300px] bg-violet-500/40 rounded-[100%] blur-[100px]" />
+      {/* 1. Deep Core Ambient Glow (The large purple atmospheric spread) */}
+      <div className="absolute top-[-250px] w-[1400px] h-[500px] bg-[#7C3AED]/40 rounded-[100%] blur-[160px]" />
+      <div className="absolute top-[-150px] w-[900px] h-[300px] bg-[#A78BFA]/20 rounded-[100%] blur-[100px]" />
 
       {/* 2. Dotted Tech Pattern Arc fanning outwards (placing it behind the solid core) */}
-      <div className="absolute top-[-350px] w-[1200px] h-[450px]" style={{ perspective: '1000px' }}>
+      <div className="absolute top-[-400px] w-[1200px] h-[450px]" style={{ perspective: '1000px' }}>
         <div
-          className="w-full h-full opacity-[0.4]"
+          className="w-full h-full opacity-[0.35]"
           style={{
-            backgroundImage: 'radial-gradient(rgba(192,132,252,0.8) 1.5px, transparent 1.5px)',
+            backgroundImage: 'radial-gradient(#A78BFA 1.5px, transparent 1.5px)',
             backgroundSize: '24px 24px',
-            WebkitMaskImage: 'radial-gradient(ellipse 100% 100% at bottom center, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 60%)',
-            transform: 'rotateX(45deg)', // Adds depth to the dot matrix
+            WebkitMaskImage: 'radial-gradient(ellipse 100% 100% at bottom center, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 65%)',
+            transform: 'rotateX(40deg)', // Adds depth to the dot matrix
             transformOrigin: 'bottom center'
           }}
         />
       </div>
 
-      {/* 3. The Solid, Intense Inner Semi-Circle Halo */}
-      <div className="absolute bottom-0 flex justify-center w-full">
-        {/* Intense Fuchsia Outer Aura */}
-        <div className="absolute bottom-[-50px] w-[700px] h-[350px] bg-fuchsia-500/80 rounded-[100%] blur-[60px] mix-blend-screen" />
-        <div className="absolute bottom-[-20px] w-[500px] h-[250px] bg-white/40 rounded-[100%] blur-[40px] mix-blend-screen" />
+      {/* 3. The Solid, Intense Inner Semi-Circle Halo (This is the critical missing piece) */}
+      <motion.div
+        animate={{ opacity: [0.95, 1, 0.95], scale: [0.99, 1.01, 0.99] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-0 flex justify-center w-full"
+      >
+        {/* Outer Halo of the solid ring */}
+        <div className="absolute bottom-0 w-[550px] h-[275px] bg-[#8B5CF6]/80 rounded-t-full blur-[30px] mix-blend-screen" />
 
-        {/* The Solid Bright White Arch */}
-        <div className="absolute bottom-0 w-[500px] h-[250px] rounded-t-[250px] border-[25px] border-white shadow-[0_0_80px_rgba(217,70,239,0.8),inset_0_0_40px_rgba(217,70,239,0.6)] drop-shadow-[0_0_30px_rgba(255,255,255,1)] border-b-0" />
-      </div>
+        {/* The Solid Bright White/Purple Ring Shape itself */}
+        <div className="absolute bottom-0 w-[450px] h-[225px] rounded-t-full border-[35px] border-white drop-shadow-[0_0_40px_rgba(255,255,255,0.8)] border-b-0 shadow-[0_0_80px_rgba(139,92,246,1),inset_0_0_50px_rgba(139,92,246,0.8)]" />
+
+        {/* Intense white blowout at the very base to merge it with the horizon line */}
+        <div className="absolute bottom-[-20px] w-[700px] h-[100px] bg-white rounded-[100%] blur-[40px] mix-blend-screen opacity-100" />
+      </motion.div>
 
       {/* 4. Concentric Outer Nodes & Rings */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 flex justify-center pointer-events-none mix-blend-screen">
-        {/* Inner Tracking Ring */}
-        <div className="absolute bottom-0 border-[0.5px] border-fuchsia-400/30 border-b-0 rounded-t-full w-[750px] h-[375px]">
-          <div className="absolute w-2 h-2 rounded-full border border-fuchsia-400 bg-transparent top-[60px] left-[130px]" />
-          <div className="absolute w-2 h-2 rounded-full border border-fuchsia-400 bg-transparent top-[60px] right-[130px]" />
+        {/* Middle Ring */}
+        <div className="absolute bottom-0 border border-[#8B5CF6]/40 border-b-0 rounded-t-full w-[850px] h-[425px]">
+          {/* Left Node */}
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#A78BFA] top-[100px] left-[110px] shadow-[0_0_12px_rgba(167,139,250,1)]" />
+          {/* Right Node */}
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#A78BFA] top-[100px] right-[110px] shadow-[0_0_12px_rgba(167,139,250,1)]" />
         </div>
 
-        {/* Outer Tracking Ring */}
-        <div className="absolute bottom-0 border-[0.5px] border-violet-400/20 border-b-0 rounded-t-full w-[1050px] h-[525px]">
-          <div className="absolute w-2 h-2 rounded-full border border-violet-400 bg-transparent top-[130px] left-[160px]" />
-          <div className="absolute w-2 h-2 rounded-full border border-violet-400 bg-transparent top-[130px] right-[160px]" />
+        {/* Outer Ring */}
+        <div className="absolute bottom-0 border border-[#8B5CF6]/20 border-b-0 rounded-t-full w-[1150px] h-[575px]">
+          {/* Left Node */}
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#A78BFA]/80 top-[180px] left-[130px] shadow-[0_0_8px_rgba(167,139,250,0.8)]" />
+          {/* Right Node */}
+          <div className="absolute w-2.5 h-2.5 rounded-full bg-[#060B18] border border-[#A78BFA]/80 top-[180px] right-[130px] shadow-[0_0_8px_rgba(167,139,250,0.8)]" />
         </div>
       </div>
 
       {/* 5. Horizontal Neon Horizon Streak */}
       <div className="absolute bottom-0 w-full flex justify-center">
-        <div className="absolute bottom-0 w-[1600px] h-[100px] bg-violet-600/30 blur-[40px] rounded-[100%]" />
-        <div className="absolute bottom-0 w-[1200px] h-[8px] bg-fuchsia-500/70 blur-[8px]" />
-        <div className="absolute bottom-0 w-[800px] h-[3px] bg-violet-300 blur-[2px] opacity-100" />
-        <div className="absolute bottom-0 w-[500px] h-[2px] bg-white shadow-[0_0_20px_rgba(255,255,255,1)]" />
+        <div className="absolute bottom-0 w-[1400px] h-[6px] bg-[#7C3AED]/60 blur-[10px]" />
+        <div className="absolute bottom-0 w-[900px] h-[3px] bg-[#A78BFA] blur-[4px] opacity-90" />
+        <div className="absolute bottom-0 w-[500px] h-[2px] bg-white blur-[1px] opacity-100 drop-shadow-[0_0_15px_rgba(255,255,255,1)]" />
       </div>
 
     </div>
