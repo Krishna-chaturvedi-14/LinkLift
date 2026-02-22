@@ -25,11 +25,11 @@ export default function Home() {
         </div>
 
         <div className="hidden lg:flex items-center gap-10 text-[14px] font-medium text-slate-300">
-          <a href="#" className="text-white">Home</a>
-          <a href="#features" className="hover:text-white transition-colors">Features</a>
-          <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
-          <a href="#blog" className="hover:text-white transition-colors">Blog</a>
-          <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+          <Link href="/" className="text-white">Home</Link>
+          <Link href="/#features" className="hover:text-white transition-colors">Features</Link>
+          <Link href="/#pricing" className="hover:text-white transition-colors">Pricing</Link>
+          <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
+          <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
         </div>
 
         <div>
