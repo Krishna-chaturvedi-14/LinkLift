@@ -108,16 +108,13 @@ export default function Home() {
         </motion.div>
 
         {/* Cinematic Dashboard Composition */}
-        <section className="relative mt-20 w-full flex justify-center perspective-[2500px] h-[580px] overflow-hidden">
+        <section className="relative mt-20 w-full flex justify-center perspective-[2500px] h-[580px]">
 
-          {/* Intense Dribbble Neon Arc Glow exactly at the dashboard top horizon */}
+          {/* Intense Dribbble Neon Arc Glow extending upwards without clipping */}
           <EnergyGlow offsetTop="100px" />
 
-          {/* Floating UI Dashboard Panel clipping gracefully off screen */}
+          {/* Floating UI Dashboard Panel */}
           <DashboardMockup topOffset="100px" />
-
-          {/* Vignette Overlay for cinematic depth */}
-          <div className="absolute top-0 w-full h-full pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_30%,#060B18_100%)] z-40 relative" />
 
         </section>
 
@@ -438,7 +435,7 @@ function BackgroundStars() {
       />
 
       {/* Floating Animated Stars */}
-      <div className="absolute inset-0 w-full h-[600px] overflow-hidden">
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
         {stars.map((star) => (
           <motion.div
             key={star.id}
