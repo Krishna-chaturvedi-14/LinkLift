@@ -17,6 +17,14 @@ export default async function PublicPortfolio({ params }: { params: Promise<{ sl
   }
 
   const { slug } = await params;
+
+  // 🟢 STEP 2: IGNORE SYSTEM ROUTES
+  // Prevent Next.js from treating auth/app routes as user portfolio slugs
+  const reservedRoutes = ['portfolio', 'upload', 'dashboard', 'sign-in', 'sign-up', 'api', '_next', 'favicon.ico'];
+  if (reservedRoutes.includes(slug.toLowerCase())) {
+    return notFound();
+  }
+
   console.log(`🔍 Fetching resume for slug: ${slug}`);
 
   let resume = null;
