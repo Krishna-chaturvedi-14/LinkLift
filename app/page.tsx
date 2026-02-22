@@ -100,9 +100,10 @@ export default function Home() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="relative z-30"
         >
-          <Link href="/upload" className="group relative inline-flex items-center gap-2 px-10 py-4 rounded-full bg-white text-[#060B18] border border-white hover:bg-transparent hover:text-white font-semibold text-[15px] transition-all duration-300 hover:-translate-y-1 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-            Start free Trial
-            <div className="absolute inset-0 rounded-full bg-white/10 blur-xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[-1]" />
+          <Link href="/upload" className="group relative inline-flex items-center gap-2 px-10 py-4 rounded-full bg-violet-600/20 backdrop-blur-md border border-violet-500/30 text-white font-semibold text-[15px] transition-all duration-500 hover:-translate-y-1 hover:bg-violet-600/40 hover:border-violet-400/50 hover:shadow-[0_0_40px_rgba(139,92,246,0.5)] shadow-[0_0_20px_rgba(139,92,246,0.2),inset_0_1px_1px_rgba(255,255,255,0.1)] overflow-hidden">
+            <span className="relative z-10 drop-shadow-sm tracking-wide">Start free Trial</span>
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-violet-600/0 via-white/10 to-violet-600/0 opacity-0 group-hover:opacity-100 group-hover:translate-x-full transition-all duration-1000 ease-in-out transform -translate-x-full z-0" />
+            <div className="absolute inset-0 rounded-full bg-violet-500/20 blur-xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[-1]" />
           </Link>
         </motion.div>
 
