@@ -200,62 +200,60 @@ function DashboardMockup({ topOffset }: { topOffset: string }) {
       initial={{ opacity: 0, y: 50, rotateX: 2 }}
       animate={{ opacity: 1, y: 0, rotateX: 0 }}
       transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-      className={`absolute z-20 w-[1060px] h-[650px] rounded-[28px] overflow-hidden flex flex-col pointer-events-auto`}
+      className={`absolute z-20 w-[1060px] h-[650px] rounded-[16px] overflow-hidden flex flex-col pointer-events-auto`}
       style={{
         top: topOffset,
-        // Match the deep dark glassy material of Dribbble
-        background: 'linear-gradient(171deg, rgba(8,12,25,0.95), rgba(4,7,17,0.98))',
-        backdropFilter: 'blur(30px)',
-        // Complex box shadows for depth and the top highlight neon reflection
-        boxShadow: "0 -2px 6px rgba(96,165,250,0.3), 0 50px 100px rgba(0,0,0,0.9), inset 0 2px 2px rgba(255,255,255,0.08), inset 0 0 40px rgba(37,99,235,0.05)"
+        // Match the flat, ultra-dark matte aesthetic of the new reference
+        background: '#080C14',
+        boxShadow: "0 50px 100px rgba(0,0,0,0.9), inset 0 1px 1px rgba(255,255,255,0.05)"
       }}
     >
       <div className="flex h-full w-full">
         {/* LEFT SIDEBAR */}
-        <div className="w-[230px] border-r border-[#2563EB]/10 flex flex-col pt-7 pb-6 bg-[#040711]/60">
+        <div className="w-[230px] flex flex-col pt-7 pb-6 bg-[#0B101C] border-r border-[#1B2335]">
 
           {/* App Logo */}
-          <div className="flex items-center gap-3 px-7 mb-10 text-white">
-            <div className="w-8 h-8 rounded-full bg-[#1E3A8A] border border-[#2563EB]/40 flex items-center justify-center shadow-[0_0_15px_rgba(37,99,235,0.5)]">
+          <div className="flex items-center gap-3 px-8 mb-10">
+            <div className="w-8 h-8 rounded-full bg-[#1A2645] flex items-center justify-center">
               <span className="font-bold text-white text-[14px]">S</span>
             </div>
-            <span className="font-semibold text-white tracking-wide text-[16px]">Stackd</span>
+            <span className="font-semibold text-white tracking-tight text-[16px]">Stackd</span>
           </div>
 
           {/* Sub Navigation */}
-          <div className="flex flex-col gap-1.5 px-4 mb-8">
-            <SidebarItem icon={<LayoutDashboard size={15} />} text="Dashboard" active />
-            <SidebarItem icon={<MessageSquare size={15} />} text="Messages" badge={2} />
-            <SidebarItem icon={<Briefcase size={15} />} text="Portfolio" />
-            <SidebarItem icon={<Users size={15} />} text="Connections" />
-            <SidebarItem icon={<PieChart size={15} />} text="Analytics" />
-            <SidebarItem icon={<ArrowUpRight size={15} />} text="Transactions" />
+          <div className="flex flex-col gap-1 px-4 mb-8">
+            <SidebarItem icon={<LayoutDashboard size={16} />} text="Dashboard" active />
+            <SidebarItem icon={<MessageSquare size={16} />} text="Messages" badge={2} />
+            <SidebarItem icon={<Briefcase size={16} />} text="Portfolio" />
+            <SidebarItem icon={<Users size={16} />} text="Connections" />
+            <SidebarItem icon={<PieChart size={16} />} text="Analytics" />
+            <SidebarItem icon={<ArrowUpRight size={16} />} text="Transactions" />
           </div>
 
         </div>
 
         {/* MAIN PANEL */}
-        <div className="flex-1 flex flex-col h-full overflow-hidden bg-gradient-to-br from-transparent to-[#2563EB]/[0.02]">
+        <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#080C14]">
 
           {/* Header Row */}
-          <div className="flex items-center justify-between px-10 py-6 border-b border-white/[0.03]">
+          <div className="flex items-center justify-between px-10 py-8 border-b border-[#1B2335]">
 
             {/* Search */}
-            <div className="flex items-center gap-3 px-4 py-2.5 rounded-full bg-[#060B18] border border-white/5 w-[280px]">
-              <Search size={14} className="text-slate-500" />
-              <input type="text" placeholder="Search..." className="bg-transparent text-[13px] text-white outline-none w-full placeholder:text-slate-600" disabled />
+            <div className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-[#0E1524] border border-[#1B2335]/50 w-[320px]">
+              <Search size={15} className="text-slate-500" />
+              <input type="text" placeholder="Search..." className="bg-transparent text-[14px] text-white outline-none w-full placeholder:text-slate-500" disabled />
             </div>
 
             {/* Right Avatar & Toolbar */}
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1.5">
-                <div className="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-white transition-colors cursor-pointer"><Bell size={16} /></div>
-                <div className="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-white transition-colors cursor-pointer"><RefreshCcw size={15} /></div>
+            <div className="flex items-center gap-5">
+              <div className="flex items-center gap-4">
+                <div className="text-slate-400 hover:text-white transition-colors cursor-pointer"><Bell size={18} /></div>
+                <div className="text-slate-400 hover:text-white transition-colors cursor-pointer"><RefreshCcw size={16} /></div>
               </div>
 
-              <div className="flex items-center gap-3 bg-[#060B18] border border-white/5 rounded-full pr-4 pl-1 py-1">
-                <img src="https://i.pravatar.cc/100?img=1" alt="Avatar" className="w-8 h-8 rounded-full border border-white/10" />
-                <span className="text-[13px] font-medium text-white">Josika</span>
+              <div className="flex items-center gap-3 pr-2 pl-2 border-l border-[#1B2335] h-8">
+                <img src="https://i.pravatar.cc/100?img=1" alt="Avatar" className="w-8 h-8 rounded-full ml-2 border border-slate-700" />
+                <span className="text-[14px] font-medium text-white">Josika</span>
               </div>
             </div>
           </div>
@@ -264,8 +262,8 @@ function DashboardMockup({ topOffset }: { topOffset: string }) {
           <div className="flex-1 p-10 overflow-y-auto w-full">
 
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-semibold text-white tracking-tight">Dashboard</h2>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#2563EB]/20 bg-[#2563EB]/5 text-[12px] font-medium text-white cursor-pointer hover:bg-[#2563EB]/10 transition-colors">
+              <h2 className="text-[28px] font-semibold text-white tracking-tight">Dashboard</h2>
+              <div className="flex items-center gap-2 px-5 py-2 rounded-full border border-[#1B2335] bg-[#0E1524] text-[13px] font-medium text-slate-300 cursor-pointer hover:bg-[#151D2E] transition-colors">
                 <span>This month</span>
                 <ChevronDown size={14} className="text-slate-400" />
               </div>
@@ -275,39 +273,41 @@ function DashboardMockup({ topOffset }: { topOffset: string }) {
             <div className="grid grid-cols-4 gap-4 mb-8">
               <MetricCard
                 iconColor="text-[#60A5FA]"
-                icon={<PieChart size={14} className="text-inherit" />}
+                icon={<PieChart size={16} className="text-inherit" />}
                 title="ATS Score"
                 value="87/100"
                 trend="15%" trendUp={true} subtitle="Scan Match"
               />
               <MetricCard
                 iconColor="text-[#2563EB]"
-                icon={<Code size={14} className="text-inherit" />}
+                icon={<Code size={16} className="text-inherit" />}
                 title="Keywords"
                 value="92%"
                 trend="2%" trendUp={false} subtitle="Missing Terms"
               />
               <MetricCard
-                iconColor="text-emerald-400"
-                icon={<Copy size={14} className="text-inherit" />}
+                iconColor="text-[#10B981]"
+                icon={<Copy size={16} className="text-inherit" />}
                 title="Views"
                 value="1,240"
                 trend="24%" trendUp={true} subtitle="Traffic Surge"
               />
-              <div className="col-span-1 flex flex-col p-6 rounded-[20px] bg-[#060B18] border border-[#1E3A8A]/30 flex-1 relative overflow-hidden group">
-                <div className="flex items-center gap-2.5 mb-2 relative z-10 text-[#60A5FA]">
-                  <Briefcase size={14} />
-                  <span className="text-[12px] text-slate-400 font-medium">Deployed Rank</span>
-                </div>
-                <div className="text-[28px] font-medium text-white mb-2 relative z-10 tracking-tight">Top 5%</div>
-                <div className="flex items-center gap-5 pt-3 relative z-10 border-t border-white/5 mt-auto">
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-[9px] text-slate-500 uppercase tracking-widest font-semibold">Links</span>
-                    <strong className="text-white text-[12px]">2 Active</strong>
+              <div className="col-span-1 flex flex-col p-6 pb-5 rounded-[16px] bg-[#0E1524] border border-[#1B2335] flex-1 relative overflow-hidden group hover:border-[#2A3752] transition-colors">
+                <div className="flex items-center gap-3 mb-4 relative z-10 text-[#60A5FA]">
+                  <div className="p-1.5 rounded-lg bg-[#141E33] text-slate-400">
+                    <Briefcase size={16} />
                   </div>
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-[9px] text-slate-500 uppercase tracking-widest font-semibold">Leads</span>
-                    <strong className="text-white text-[12px]">14 Found</strong>
+                  <span className="text-[13px] text-slate-400 font-medium">Deployed Rank</span>
+                </div>
+                <div className="text-[32px] font-medium text-white mb-4 relative z-10 tracking-tight">Top 5%</div>
+                <div className="flex items-center justify-between pt-4 relative z-10 border-t border-[#1B2335] mt-auto">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Links</span>
+                    <strong className="text-white text-[13px]">2 Active</strong>
+                  </div>
+                  <div className="flex flex-col gap-1 text-right">
+                    <span className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Leads</span>
+                    <strong className="text-white text-[13px]">14 Found</strong>
                   </div>
                 </div>
               </div>
@@ -317,42 +317,42 @@ function DashboardMockup({ topOffset }: { topOffset: string }) {
             <div className="grid grid-cols-3 gap-6">
 
               {/* Graph Summary */}
-              <div className="col-span-2 rounded-[20px] border border-[#1E3A8A]/20 bg-[#060B18] p-7 relative overflow-hidden h-[240px]">
+              <div className="col-span-2 rounded-[16px] border border-[#1B2335] bg-[#0A101A] p-7 relative overflow-hidden h-[240px]">
                 <div className="flex justify-between items-center mb-6 relative z-10">
-                  <h3 className="font-semibold text-[15px] text-white">Revenue Summary</h3>
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#2563EB]/10 bg-white/5 text-[11px] font-medium text-slate-400">
-                    6 Month <ChevronDown size={12} className="opacity-70" />
+                  <h3 className="font-semibold text-[16px] text-white">Revenue Summary</h3>
+                  <div className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#1B2335] bg-[#141C2B] text-[12px] font-medium text-slate-300">
+                    6 Month <ChevronDown size={14} className="opacity-70" />
                   </div>
                 </div>
 
-                <div className="absolute bottom-6 left-7 text-[10px] font-mono text-slate-600">100K</div>
-                <div className="absolute bottom-[40%] left-7 text-[10px] font-mono text-slate-600 border-b border-dashed border-white/5 w-[85%]" />
+                <div className="absolute bottom-6 left-7 text-[11px] font-medium text-slate-600">100K</div>
+                <div className="absolute bottom-[40%] left-7 text-[11px] font-medium text-slate-600 border-b border-dashed border-[#1B2335] w-[85%]" />
 
-                <svg className="absolute bottom-0 left-0 w-full h-[140px] opacity-90" preserveAspectRatio="none" viewBox="0 0 100 100">
+                <svg className="absolute bottom-0 left-0 w-full h-[140px] opacity-100" preserveAspectRatio="none" viewBox="0 0 100 100">
                   <path d="M0,100 L0,70 Q20,50 40,65 T80,40 T100,20 L100,100 Z" fill="url(#gradientChart)" />
-                  <path d="M0,70 Q20,50 40,65 T80,40 T100,20" fill="none" stroke="#2563EB" strokeWidth="2.5" />
+                  <path d="M0,70 Q20,50 40,65 T80,40 T100,20" fill="none" stroke="#2563EB" strokeWidth="2" />
                   <defs>
                     <linearGradient id="gradientChart" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#2563EB" stopOpacity="0.4" />
-                      <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
+                      <stop offset="0%" stopColor="#1E3A8A" stopOpacity="0.4" />
+                      <stop offset="100%" stopColor="#1E3A8A" stopOpacity="0" />
                     </linearGradient>
                   </defs>
                 </svg>
               </div>
 
               {/* Right Lists */}
-              <div className="col-span-1 rounded-[20px] border border-[#1E3A8A]/20 bg-[#060B18] p-7 pb-4">
-                <h3 className="font-semibold text-[15px] text-white mb-6">New Messages</h3>
+              <div className="col-span-1 rounded-[16px] border border-[#1B2335] bg-[#0A101A] p-7 pb-4">
+                <h3 className="font-semibold text-[16px] text-white mb-6">New Messages</h3>
                 <div className="flex items-center justify-between mb-5">
-                  <div className="text-[12px] font-medium text-slate-400 bg-white/5 px-3 py-1.5 rounded-full">Tenant</div>
-                  <div className="flex items-center gap-2 text-[12px] text-white font-medium">New Request <div className="w-5 h-5 rounded-full bg-[#2563EB] text-[10px] flex items-center justify-center font-bold">2</div></div>
+                  <div className="text-[12px] font-medium text-slate-400 bg-[#141C2B] px-3 py-1.5 rounded-full">Tenant</div>
+                  <div className="flex items-center gap-2 text-[13px] text-slate-300 font-medium">New Request <div className="w-5 h-5 rounded-full bg-[#1A2645] text-white text-[10px] flex items-center justify-center font-bold">2</div></div>
                 </div>
-                <div className="h-px w-full bg-[#2563EB]/10 my-4" />
-                <div className="flex items-center gap-3">
-                  <img src="https://i.pravatar.cc/100?img=33" className="w-9 h-9 rounded-full border border-white/10" />
+                <div className="h-px w-full bg-[#1B2335] my-5" />
+                <div className="flex items-center gap-4">
+                  <img src="https://i.pravatar.cc/100?img=33" className="w-10 h-10 rounded-full border border-slate-700" />
                   <div>
-                    <div className="text-[13px] text-white font-medium">Alex Morgan</div>
-                    <div className="text-[11px] text-[#60A5FA]">Contact Request</div>
+                    <div className="text-[14px] text-white font-medium">Alex Morgan</div>
+                    <div className="text-[12px] text-slate-400">Contact Request</div>
                   </div>
                 </div>
               </div>
@@ -369,26 +369,23 @@ function DashboardMockup({ topOffset }: { topOffset: string }) {
 
 function MetricCard({ title, value, trend, trendUp, subtitle, icon, iconColor }: any) {
   return (
-    <div className="col-span-1 flex flex-col p-6 rounded-[20px] bg-[#060B18] border border-[#1E3A8A]/30 relative overflow-hidden group transition-all duration-300 hover:border-[#2563EB]/50">
+    <div className="col-span-1 flex flex-col p-6 rounded-[16px] bg-[#0E1524] border border-[#1B2335] relative overflow-hidden group transition-colors duration-300 hover:border-[#2A3752]">
 
-      {/* Dynamic Hover Glow */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#2563EB]/0 to-transparent group-hover:from-[#2563EB]/10 transition-colors duration-500" />
-
-      <div className="flex items-center gap-2.5 mb-2 relative z-10">
-        <div className={`p-1.5 rounded-lg bg-white/5 ${iconColor}`}>
+      <div className="flex items-center gap-3 mb-4 relative z-10">
+        <div className={`p-1.5 rounded-lg bg-[#141E33] text-slate-400`}>
           {icon}
         </div>
-        <span className="text-[12px] text-slate-400 font-medium">{title}</span>
+        <span className="text-[13px] text-slate-400 font-medium">{title}</span>
       </div>
 
-      <div className="text-[28px] font-medium text-white mb-3 tracking-tight relative z-10">{value}</div>
+      <div className="text-[32px] font-medium text-white mb-4 tracking-tight relative z-10">{value}</div>
 
-      <div className="flex items-center gap-2 text-[11px] relative z-10">
-        <span className={`px-2 py-0.5 rounded-full flex items-center gap-0.5 font-bold ${trendUp ? 'bg-[#2563EB]/10 text-[#60A5FA]' : 'bg-red-500/10 text-red-500'}`}>
-          {trendUp ? <ArrowUpRight size={10} strokeWidth={3} /> : <ArrowDownRight size={10} strokeWidth={3} />}
+      <div className="flex items-center gap-3 text-[12px] relative z-10">
+        <span className={`px-2 py-0.5 rounded flex items-center gap-1 font-bold ${trendUp ? 'bg-[#1E3A8A]/40 text-[#60A5FA]' : 'bg-red-900/40 text-red-400'}`}>
+          {trendUp ? <ArrowUpRight size={12} strokeWidth={2.5} /> : <ArrowDownRight size={12} strokeWidth={2.5} />}
           {trend}
         </span>
-        <span className="text-slate-500 text-[10px] font-medium">{subtitle}</span>
+        <span className="text-slate-500 font-medium">{subtitle}</span>
       </div>
     </div>
   );
@@ -396,12 +393,12 @@ function MetricCard({ title, value, trend, trendUp, subtitle, icon, iconColor }:
 
 function SidebarItem({ icon, text, active = false, badge = 0 }: { icon: React.ReactNode, text: string, active?: boolean, badge?: number }) {
   return (
-    <div className={`flex items-center justify-between px-4 py-3 rounded-[12px] cursor-pointer text-[13px] font-medium transition-all duration-300 ${active ? "text-[#60A5FA] bg-[#2563EB]/10 border border-[#2563EB]/10" : "text-slate-500 hover:text-white hover:bg-white/5 border border-transparent"}`}>
-      <div className="flex items-center gap-3">
+    <div className={`flex items-center justify-between px-4 py-3.5 my-0.5 rounded-[12px] cursor-pointer text-[14px] font-medium transition-all duration-300 ${active ? "text-[#60A5FA] bg-[#141C2B] border border-[#1B2335]" : "text-slate-400 hover:text-white hover:bg-[#141C2B]/50 border border-transparent"}`}>
+      <div className="flex items-center gap-4">
         <span className={active ? "text-[#60A5FA]" : ""}>{icon}</span>
         {text}
       </div>
-      {badge > 0 && <span className="bg-[#2563EB] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md">{badge}</span>}
+      {badge > 0 && <span className="bg-[#2563EB] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{badge}</span>}
     </div>
   );
 }
