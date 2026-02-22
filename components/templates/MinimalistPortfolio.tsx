@@ -183,7 +183,7 @@ export default function MinimalistPortfolio({ data }: { data: any }) {
                     </div>
 
                     <p className="text-lg text-zinc-500 mb-20 leading-relaxed font-medium">
-                        Nulla id volutpat mauris. Integer fringilla dui nec lacus porttitor tristique. <br /> Pellentesque habitant morbi tristique.
+                        Have a project in mind or want to discuss opportunities? <br /> I'm currently open to new roles and collaborations.
                     </p>
 
                     <div className="max-w-xl mx-auto text-left">
