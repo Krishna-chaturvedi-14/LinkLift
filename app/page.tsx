@@ -100,7 +100,7 @@ export default function Home() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="relative z-30"
         >
-          <Link href="/upload" className="group relative inline-flex items-center gap-2 px-10 py-4 rounded-full bg-transparent border border-white/20 text-black font-semibold text-[15px] transition-all duration-300 hover:-translate-y-1 hover:bg-white/5 shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+          <Link href="/upload" className="group relative inline-flex items-center gap-2 px-10 py-4 rounded-full bg-white text-[#060B18] border border-white hover:bg-transparent hover:text-white font-semibold text-[15px] transition-all duration-300 hover:-translate-y-1 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
             Start free Trial
             <div className="absolute inset-0 rounded-full bg-white/10 blur-xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[-1]" />
           </Link>
