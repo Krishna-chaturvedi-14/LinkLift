@@ -194,9 +194,11 @@ export default function Home() {
           <div className="absolute inset-0 bg-violet-900/10 blur-[100px] rounded-full w-[600px] h-[300px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
           <h2 className="text-[48px] font-bold text-white mb-6 relative z-10 text-center">Ready to level up?</h2>
           <p className="text-slate-400 mb-10 relative z-10 text-center max-w-[500px]">Join thousands of developers building their perfect tech identity.</p>
-          <div className="flex gap-4 relative z-10">
-            <a href="mailto:hello@stackd.com" className="px-8 py-3 rounded-full bg-violet-600 text-white font-medium hover:bg-violet-500 transition-colors text-[15px]">Contact Us</a>
-            <Link href="/#blog" className="px-8 py-3 rounded-full bg-[#18181B] border border-white/10 text-white font-medium hover:bg-white/5 transition-colors text-[15px]">Resume & Portfolio Guide</Link>
+          <div className="flex justify-center relative z-10">
+            <a href="mailto:krishna14chaturvedi@gmail.com" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-violet-600/20 backdrop-blur-md border border-violet-500/30 text-white font-medium hover:bg-violet-600/40 hover:border-violet-400/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] transition-all duration-300 text-[16px]">
+              <MessageSquare size={18} className="text-violet-300" />
+              krishna14chaturvedi@gmail.com
+            </a>
           </div>
         </div>
 
