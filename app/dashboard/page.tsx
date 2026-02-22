@@ -13,7 +13,9 @@ import {
   Rocket,
   Plus,
   User,
-  Share2
+  Share2,
+  FileDown,
+  Check
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
@@ -24,9 +26,18 @@ type ParsedResume = {
   name?: string;
   role?: string;
   email?: string;
+  bio?: string;
   score?: number;
   skills?: string[];
-  suggestions?: Array<{ area: string; issue: string; advice: string }>;
+  experience?: Array<{ role: string; company: string; duration: string; description: string; }>;
+  suggestions?: Array<{
+    area: string;
+    issue: string;
+    advice: string;
+    action_type?: string;
+    original_text?: string;
+    suggested_text?: string;
+  }>;
 };
 
 type ResumeRecord = {
@@ -55,6 +66,7 @@ export default function DashboardPage() {
   const { user, isLoaded: userLoaded } = useUser(); // 🟢 Added isLoaded for better sync
   const [resume, setResume] = useState<ResumeRecord | null>(null);
   const [loading, setLoading] = useState(true);
+  const [applying, setApplying] = useState<number | null>(null);
 
   useEffect(() => {
     async function fetchLatestResume() {
@@ -78,6 +90,58 @@ export default function DashboardPage() {
       fetchLatestResume();
     }
   }, [user?.id, userLoaded]);
+
+  const applySuggestion = async (index: number, suggestion: any) => {
+    if (!resume || !resume.parsed_json || !suggestion.action_type || !suggestion.suggested_text) return;
+    setApplying(index);
+
+    const updatedParsed = { ...resume.parsed_json };
+
+    try {
+      if (suggestion.action_type === 'rewrite_bio') {
+        updatedParsed.bio = suggestion.suggested_text;
+      } else if (suggestion.action_type === 'add_skills') {
+        const newSkills = suggestion.suggested_text.split(',').map((s: string) => s.trim());
+        updatedParsed.skills = [...(updatedParsed.skills || []), ...newSkills];
+      } else if (suggestion.action_type === 'rewrite_experience') {
+        if (updatedParsed.experience && updatedParsed.experience.length > 0) {
+          let replaced = false;
+          for (let exp of updatedParsed.experience) {
+            if (suggestion.original_text && exp.description.includes(suggestion.original_text)) {
+              exp.description = exp.description.replace(suggestion.original_text, suggestion.suggested_text);
+              replaced = true;
+              break;
+            }
+          }
+          if (!replaced) {
+            // fallback prepends it to the newest experience
+            updatedParsed.experience[0].description = suggestion.suggested_text + " " + updatedParsed.experience[0].description;
+          }
+        }
+      }
+
+      // Remove the applied suggestion from the array
+      const newSuggestions = [...(updatedParsed.suggestions || [])];
+      newSuggestions.splice(index, 1);
+      updatedParsed.suggestions = newSuggestions;
+
+      // Update DB
+      const { error } = await supabase
+        .from("resumes")
+        .update({ parsed_json: updatedParsed })
+        .eq("id", resume.id);
+
+      if (error) throw error;
+
+      // Update local state smoothly
+      setResume({ ...resume, parsed_json: updatedParsed });
+
+    } catch (error) {
+      console.error("Failed to apply suggestion", error);
+    } finally {
+      setApplying(null);
+    }
+  };
 
   if (loading || !userLoaded) return (
     <div className="flex min-h-screen items-center justify-center bg-[#05050A]">
@@ -145,8 +209,14 @@ export default function DashboardPage() {
                 Update Resume
               </button>
             </Link>
+            <Link href="/dashboard/resume">
+              <button className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all text-sm font-medium backdrop-blur-md text-emerald-400 hover:text-emerald-300">
+                <FileDown size={18} />
+                Download ATS Resume
+              </button>
+            </Link>
             <Link href="/portfolio/preview">
-              <button className="flex items-center gap-2 px-6 py-3 bg-violet-600 rounded-full hover:bg-violet-500 transition-all text-sm font-bold shadow-lg shadow-violet-500/20">
+              <button className="flex items-center gap-2 px-6 py-3 bg-violet-600 rounded-full hover:bg-violet-500 transition-all text-sm font-bold shadow-[0_0_15px_rgba(124,58,237,0.3)]">
                 <Globe size={18} />
                 Manage Portfolio
               </button>
@@ -215,11 +285,34 @@ export default function DashboardPage() {
                               <Lightbulb size={18} className="text-emerald-500 shrink-0 mt-1" />
                               {s.advice}
                             </div>
+
+                            {/* ACTIONABLE UI - ONE CLICK APPLY */}
+                            {s.action_type && s.suggested_text && (
+                              <div className="mt-4 pt-4 border-t border-white/5 space-y-3">
+                                <div className="bg-[#0A0A10] p-4 rounded-xl border border-white/5 text-emerald-400/90 text-sm font-mono whitespace-pre-wrap">
+                                  <span className="text-zinc-500 text-xs uppercase tracking-widest block mb-1">Suggested Injection:</span>
+                                  {s.suggested_text}
+                                </div>
+                                <button
+                                  onClick={() => applySuggestion(i, s)}
+                                  disabled={applying === i}
+                                  className="flex items-center gap-2 px-5 py-2.5 bg-violet-600/10 text-violet-400 hover:bg-violet-600 hover:text-white rounded-lg transition-colors text-sm font-bold border border-violet-500/20 hover:border-violet-500 shadow-sm"
+                                >
+                                  {applying === i ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
+                                  {applying === i ? "Applying..." : "Apply to Resume"}
+                                </button>
+                              </div>
+                            )}
+
                           </div>
                         </div>
                       ))
                     ) : (
-                      <p className="text-zinc-600">No career feedback available. Upload or re-analyze to see AI suggestions.</p>
+                      <div className="flex flex-col items-center justify-center p-8 border border-white/5 rounded-2xl bg-[#0A0A0E] text-center">
+                        <Check className="text-emerald-500 mb-4 h-12 w-12" />
+                        <h4 className="text-xl font-bold text-white mb-2">Resume is Fully Optimized</h4>
+                        <p className="text-zinc-400">You've successfully addressed all AI feedback. Your content looks stellar.</p>
+                      </div>
                     )}
                   </div>
                 </motion.section>
