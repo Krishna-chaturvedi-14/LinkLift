@@ -159,20 +159,21 @@ export default function UploadPage() {
 
   return (
     <div className="relative mx-auto max-w-2xl px-6 py-24">
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-500/10 blur-[150px]" />
+      <div className="absolute inset-0 -z-10 overflow-hidden flex items-center justify-center">
+        <div className="absolute h-[600px] w-[600px] rounded-full bg-violet-600/10 blur-[150px]" />
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-lg md:p-12"
+        className="rounded-[24px] border border-white/5 bg-[#09090B] p-8 shadow-2xl md:p-12 relative overflow-hidden"
       >
-        <h1 className="mb-2 text-2xl font-bold text-white md:text-3xl">
+        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-violet-600/0 via-violet-500/50 to-violet-600/0" />
+        <h1 className="mb-2 text-2xl font-bold text-white md:text-3xl tracking-tight">
           Generate Portfolio
         </h1>
-        <p className="mb-8 text-zinc-400">
+        <p className="mb-8 text-slate-400">
           Upload your PDF. Our AI will extract your skills and build your live site instantly.
         </p>
 
@@ -180,7 +181,7 @@ export default function UploadPage() {
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onClick={() => !isLoading && inputRef.current?.click()}
-          className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/20 bg-white/5 py-16 transition-all hover:border-white/30 hover:bg-white/10 ${isLoading ? "pointer-events-none opacity-70" : ""}`}
+          className={`flex cursor-pointer flex-col items-center justify-center rounded-[16px] border border-dashed border-white/10 bg-[#0C0C0F] py-16 transition-all hover:border-violet-500/30 hover:bg-white/5 ${isLoading ? "pointer-events-none opacity-70" : ""}`}
         >
           <input
             ref={inputRef}
@@ -191,7 +192,7 @@ export default function UploadPage() {
           />
           {file ? (
             <div className="flex flex-col items-center gap-2 text-center">
-              <FileText className="h-12 w-12 text-indigo-400" />
+              <FileText className="h-12 w-12 text-violet-400 mb-2" />
               <p className="font-medium text-white max-w-[200px] truncate">{file.name}</p>
               <button
                 onClick={(e) => {
@@ -199,15 +200,15 @@ export default function UploadPage() {
                   handleUpload();
                 }}
                 disabled={isLoading}
-                className="mt-6 rounded-full bg-indigo-600 px-8 py-3 font-bold text-white hover:bg-indigo-500 transition-all disabled:opacity-50"
+                className="mt-6 rounded-full bg-violet-600 px-8 py-3 font-semibold text-white hover:bg-violet-500 transition-all disabled:opacity-50 shadow-[0_0_20px_rgba(124,58,237,0.3)]"
               >
                 {isUploading ? "Uploading..." : isAnalyzing ? "Analyzing..." : "Analyze Now"}
               </button>
             </div>
           ) : (
             <>
-              <Upload className="mb-4 h-12 w-12 text-zinc-500" />
-              <p className="text-white">Click or drag PDF here</p>
+              <Upload className="mb-4 h-12 w-12 text-slate-600 group-hover:text-violet-500 transition-colors" />
+              <p className="text-slate-300 font-medium">Click or drag PDF here</p>
             </>
           )}
         </div>

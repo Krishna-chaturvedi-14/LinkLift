@@ -80,7 +80,7 @@ export default function DashboardPage() {
 
   if (loading || !userLoaded) return (
     <div className="flex min-h-screen items-center justify-center bg-[#05050A]">
-      <Loader2 className="h-12 w-12 animate-spin text-indigo-500" />
+      <Loader2 className="h-12 w-12 animate-spin text-violet-500" />
     </div>
   );
 
@@ -95,7 +95,7 @@ export default function DashboardPage() {
   if (!resume || !resume.parsed_json) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#05050A] gap-6">
       <h2 className="text-2xl font-bold">No Analysis Found</h2>
-      <Link href="/upload" className="px-8 py-4 bg-indigo-600 rounded-full font-bold hover:bg-indigo-500 transition-all">
+      <Link href="/upload" className="px-8 py-4 bg-violet-600 rounded-full font-bold hover:bg-violet-500 transition-all shadow-[0_0_20px_rgba(124,58,237,0.3)]">
         Upload Resume to Start
       </Link>
     </div>
@@ -116,7 +116,7 @@ export default function DashboardPage() {
           </h1>
           <p className="text-zinc-400 mt-2 text-lg">
             {/* 🟢 Now uses displayName logic */}
-            {displayName} • <span className="text-indigo-400">{displayRole}</span>
+            {displayName} • <span className="text-violet-400">{displayRole}</span>
           </p>
         </div>
 
@@ -129,7 +129,7 @@ export default function DashboardPage() {
                   navigator.clipboard.writeText(`https://stackd.krishnachaturvedi.in/${userSlug}`);
                   alert("Link copied to clipboard!");
                 }}
-                className="p-2 bg-indigo-600 rounded-full text-white hover:bg-indigo-500 transition-colors"
+                className="p-2 bg-violet-600 rounded-full text-white hover:bg-violet-500 transition-colors"
                 title="Copy Link"
               >
                 <Share2 size={14} />
@@ -143,7 +143,7 @@ export default function DashboardPage() {
             </button>
           </Link>
           <Link href="/portfolio/preview">
-            <button className="flex items-center gap-2 px-6 py-3 bg-indigo-600 rounded-full hover:bg-indigo-500 transition-all text-sm font-bold shadow-lg shadow-indigo-500/20">
+            <button className="flex items-center gap-2 px-6 py-3 bg-violet-600 rounded-full hover:bg-violet-500 transition-all text-sm font-bold shadow-lg shadow-violet-500/20">
               <Globe size={18} />
               Manage Portfolio
             </button>
@@ -175,7 +175,7 @@ export default function DashboardPage() {
                       transition={{ duration: 1.5, ease: "easeOut" }}
                     />
                     <defs>
-                      <linearGradient id="dashGradient"><stop offset="0%" stopColor="#6366f1" /><stop offset="100%" stopColor="#a855f7" /></linearGradient>
+                      <linearGradient id="dashGradient"><stop offset="0%" stopColor="#7C3AED" /><stop offset="100%" stopColor="#D946EF" /></linearGradient>
                     </defs>
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -194,14 +194,14 @@ export default function DashboardPage() {
 
               <motion.section variants={itemVariants} className="space-y-12">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-400"><User size={20} /></div>
+                  <div className="p-2 bg-violet-500/10 rounded-lg text-violet-400"><User size={20} /></div>
                   <h2 className="text-2xl font-bold">Expert AI Insights</h2>
                 </div>
 
                 <div className="space-y-10">
                   {parsed.suggestions && parsed.suggestions.length > 0 ? (
                     parsed.suggestions.map((s, i) => (
-                      <div key={i} className="group relative border-l border-white/10 pl-8 py-2 hover:border-indigo-500 transition-colors">
+                      <div key={i} className="group relative border-l border-white/10 pl-8 py-2 hover:border-violet-500 transition-colors">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2 block">{s.area}</span>
                         <div className="space-y-4">
                           <div className="flex gap-3 text-zinc-300 italic text-lg leading-relaxed">
