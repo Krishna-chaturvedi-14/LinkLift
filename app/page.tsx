@@ -176,12 +176,12 @@ export default function Home() {
             <p className="text-slate-400 max-w-[600px] mx-auto">Read our latest thoughts on career growth and tech stacks.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Link href="#" className="group h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end cursor-pointer hover:-translate-y-1 hover:border-violet-500/30 transition-all duration-300">
+            <Link href="/blog/resume-optimization" className="group h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end cursor-pointer hover:-translate-y-1 hover:border-violet-500/30 transition-all duration-300">
               <span className="text-violet-400 text-[12px] font-bold uppercase tracking-wider mb-2">Career Format</span>
               <h3 className="text-[24px] font-semibold text-white mb-2 group-hover:text-violet-400 transition-colors">How to optimize your resume for AI parsers in 2026.</h3>
               <span className="text-slate-500 text-[14px]">March 12 • 5 min read</span>
             </Link>
-            <Link href="#" className="group h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end cursor-pointer hover:-translate-y-1 hover:border-fuchsia-500/30 transition-all duration-300">
+            <Link href="/blog/deployable-portfolio" className="group h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end cursor-pointer hover:-translate-y-1 hover:border-fuchsia-500/30 transition-all duration-300">
               <span className="text-fuchsia-400 text-[12px] font-bold uppercase tracking-wider mb-2">Engineering</span>
               <h3 className="text-[24px] font-semibold text-white mb-2 group-hover:text-fuchsia-400 transition-colors">The ultimate guide to building a deployable portfolio.</h3>
               <span className="text-slate-500 text-[14px]">March 08 • 8 min read</span>
