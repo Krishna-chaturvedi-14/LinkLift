@@ -14,11 +14,9 @@ export default function ContactForm({ toEmail, toName }: ContactFormProps) {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
 
-    const handleSend = () => {
-        const subject = encodeURIComponent(`New Message from ${name || "a visitor"}`);
-        const body = encodeURIComponent(`${message}\n\n---\nSender Details:\nName: ${name}\nEmail: ${email}`);
-        window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
-    };
+    const subject = encodeURIComponent(`New Message from ${name || "a visitor"}`);
+    const body = encodeURIComponent(`${message}\n\n---\nSender Details:\nName: ${name}\nEmail: ${email}`);
+    const mailtoLink = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
 
     return (
         <div className="space-y-4 w-full text-left">
@@ -47,13 +45,13 @@ export default function ContactForm({ toEmail, toName }: ContactFormProps) {
                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-violet-500/50 transition-colors resize-none"
             />
 
-            <button
-                onClick={handleSend}
+            <a
+                href={mailtoLink}
                 className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-bold text-white text-sm transition-all shadow-[0_0_20px_rgba(124,58,237,0.2)] bg-violet-600 hover:bg-violet-500 shadow-violet-500/20 border border-violet-500/30 hover:border-violet-400/50 active:scale-[0.98]"
             >
                 <Send size={18} />
-                Open Email Client
-            </button>
+                Send Message
+            </a>
             <p className="text-center text-zinc-500 text-xs mt-2">
                 This will open your default email app.
             </p>
