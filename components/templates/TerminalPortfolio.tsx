@@ -125,7 +125,7 @@ export default function TerminalPortfolio({ data }: { data: ResumeData }) {
                 <section className="space-y-24 pb-48 relative z-10">
                     <div className="flex flex-col gap-6"><span className="text-emerald-500 font-mono text-xs tracking-[0.5em] uppercase font-black">/ 04 SYSTEM_CONTACT</span><h2 className="text-6xl md:text-8xl font-bold tracking-tighter text-white">Get in Touch</h2></div>
                     <div className="w-full max-w-2xl mx-auto rounded-[32px] bg-[#0C0C0F]/80 backdrop-blur-md border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] p-10 font-mono">
-                        <ContactForm toName={data.name} />
+                        <ContactForm toName={data.name} toEmail={data.email} />
                     </div>
                 </section>
             </main>

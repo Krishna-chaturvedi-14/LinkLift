@@ -12,7 +12,7 @@ export const AntoineContact = ({ data }: { data: ResumeData }) => {
                     Available for freelance work
                 </p>
                 <div className="max-w-xl mx-auto mb-20 animate-in fade-in slide-in-from-bottom-5 duration-1000">
-                    <ContactForm toName={data.name} />
+                    <ContactForm toName={data.name} toEmail={data.email} />
                 </div>
                 <div className="mt-24 flex flex-col md:flex-row justify-between items-center border-t border-current pt-12 gap-8">
                     <p className="text-2xl font-serif">© 2025 {data.name || "Candidate"}</p>

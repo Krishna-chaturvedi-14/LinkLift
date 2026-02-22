@@ -250,7 +250,7 @@ export default function ThreeDPortfolio({ data }: { data: ResumeData }) {
                     <h3 className='text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px]'>Contact.</h3>
 
                     <div className='mt-12'>
-                        <ContactForm toName={data.name} />
+                        <ContactForm toName={data.name} toEmail={data.email} />
                     </div>
                     <p className="mt-8 text-zinc-500 text-sm italic">
                         Direct: {data.email}

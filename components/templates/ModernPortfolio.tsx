@@ -232,7 +232,7 @@ export default function ModernPortfolio({ data }: { data: ResumeData }) {
                             I'm currently available for freelance work or full-time opportunities.
                         </p>
                         <div className="max-w-xl mx-auto py-10">
-                            <ContactForm toName={data.name} />
+                            <ContactForm toName={data.name} toEmail={data.email} />
                         </div>
                         <div className="pt-12 text-sm text-slate-400">
                             © {new Date().getFullYear()} {data.name || "Candidate"}. All rights reserved.

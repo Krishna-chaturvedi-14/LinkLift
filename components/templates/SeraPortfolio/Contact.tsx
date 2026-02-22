@@ -60,7 +60,7 @@ export default function Contact({ data }: { data: ResumeData }) {
                             <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur opacity-25" />
                             <div className="relative bg-[#091121] p-8 rounded-3xl border border-white/10 shadow-2xl">
                                 <div className="space-y-6">
-                                    <ContactForm toName={data.name} />
+                                    <ContactForm toName={data.name} toEmail={data.email} />
                                 </div>
                             </div>
                         </div>
