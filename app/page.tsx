@@ -166,9 +166,29 @@ function EnergyGlow({ offsetTop }: { offsetTop: string }) {
         />
       </div>
 
-      {/* Thin digital rings echoing the curve */}
-      <div className="absolute top-[-350px] w-[800px] h-[360px] rounded-t-full border border-[#60A5FA]/40 border-dashed opacity-40 mix-blend-screen" />
-      <div className="absolute top-[-450px] w-[1100px] h-[460px] rounded-t-full border border-[#2563EB]/20 opacity-30 mix-blend-screen" />
+      {/* Concentric Halo Rings with Intersecting Nodes */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 flex justify-center pointer-events-none mix-blend-screen">
+
+        {/* Inner Ring */}
+        <div className="absolute bottom-0 border-[1.5px] border-[#60A5FA]/30 border-b-0 rounded-t-full w-[650px] h-[325px]" />
+
+        {/* Middle Ring */}
+        <div className="absolute bottom-0 border-[1.5px] border-[#60A5FA]/20 border-b-0 rounded-t-full w-[950px] h-[475px]">
+          {/* Left Node */}
+          <div className="absolute w-3 h-3 rounded-full bg-[#060B18] border border-[#60A5FA] top-[100px] left-[110px] shadow-[0_0_10px_rgba(96,165,250,0.8)]" />
+          {/* Right Node */}
+          <div className="absolute w-3 h-3 rounded-full bg-[#060B18] border border-[#60A5FA] top-[100px] right-[110px] shadow-[0_0_10px_rgba(96,165,250,0.8)]" />
+        </div>
+
+        {/* Outer Ring */}
+        <div className="absolute bottom-0 border-[1.5px] border-[#60A5FA]/10 border-b-0 rounded-t-full w-[1250px] h-[625px]">
+          {/* Left Node */}
+          <div className="absolute w-3 h-3 rounded-full bg-[#060B18] border border-[#60A5FA]/60 top-[180px] left-[130px] shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
+          {/* Right Node */}
+          <div className="absolute w-3 h-3 rounded-full bg-[#060B18] border border-[#60A5FA]/60 top-[180px] right-[130px] shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
+        </div>
+
+      </div>
 
     </div>
   );
