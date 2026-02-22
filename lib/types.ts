@@ -11,6 +11,7 @@ export interface Project {
     description: string;
     technologies: string[];
     link?: string;
+    image?: string;
 }
 
 export interface ResumeData {
@@ -20,6 +21,7 @@ export interface ResumeData {
     bio: string;
     github?: string;
     linkedin?: string;
+    profileImage?: string;
     skills: string[];
     experience: Experience[];
     projects: Project[];

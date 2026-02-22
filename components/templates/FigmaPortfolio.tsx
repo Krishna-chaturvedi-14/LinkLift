@@ -10,7 +10,7 @@ export default function FigmaPortfolio({ data }: { data: ResumeData }) {
             <Header name={data.name} />
             <Banner data={data} />
             <ExperienceSection experience={data.experience} />
-            <AboutSection bio={data.bio} skills={data.skills} />
+            <AboutSection bio={data.bio} skills={data.skills} profileImage={data.profileImage} />
             <ProjectsSection projects={data.projects} />
             <Footer data={data} />
         </div>
@@ -176,7 +176,7 @@ function ExperienceSection({ experience }: { experience: ResumeData['experience'
     );
 }
 
-function AboutSection({ bio, skills }: { bio?: string; skills?: string[] }) {
+function AboutSection({ bio, skills, profileImage }: { bio?: string; skills?: string[]; profileImage?: string }) {
     return (
         <section id="about" className="py-24 px-6 relative z-10 border-y border-white/5 bg-white/[0.01]">
             <div className="container mx-auto max-w-6xl">
@@ -202,10 +202,14 @@ function AboutSection({ bio, skills }: { bio?: string; skills?: string[] }) {
                     <div className="flex-1 w-full lg:w-auto flex justify-center lg:justify-end border-t lg:border-t-0 border-white/5 pt-10 lg:pt-0">
                         <div className="w-full max-w-md aspect-square rounded-[2rem] bg-gradient-to-br from-purple-600/20 to-indigo-600/20 border border-white/10 flex items-center justify-center p-8 relative overflow-hidden group">
                             <div className="absolute inset-0 bg-[#110720]/40 backdrop-blur-xl z-0" />
-                            <div className="relative z-10 w-full h-full border border-dashed border-white/20 rounded-xl flex items-center justify-center flex-col gap-4 text-slate-400 group-hover:border-purple-400/50 transition-colors">
-                                <Code size={48} className="opacity-50" />
-                                <span className="font-mono text-sm">[ Profile Visualization ]</span>
-                            </div>
+                            {profileImage ? (
+                                <img src={profileImage} alt="Profile" className="w-full h-full object-cover rounded-[1.5rem] relative z-10" />
+                            ) : (
+                                <div className="relative z-10 w-full h-full border border-dashed border-white/20 rounded-xl flex items-center justify-center flex-col gap-4 text-slate-400 group-hover:border-purple-400/50 transition-colors">
+                                    <Code size={48} className="opacity-50" />
+                                    <span className="font-mono text-sm">[ Profile Visualization ]</span>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -265,10 +269,14 @@ function ProjectsSection({ projects }: { projects: ResumeData['projects'] }) {
 
                                     <div className={`${isEven ? "lg:col-start-1 lg:row-start-1" : ""}`}>
                                         <div className="w-full aspect-[4/3] rounded-2xl bg-gradient-to-br from-[#1A0F33] to-[#0A0514] border border-white/5 shadow-2xl overflow-hidden flex items-center justify-center p-8 group-hover:border-purple-500/30 transition-colors">
-                                            <div className="w-full h-full border border-dashed border-white/10 rounded-xl flex items-center justify-center flex-col gap-4 text-slate-500 bg-[#110720]/50 backdrop-blur-sm">
-                                                <FolderGit2 size={48} className="opacity-40" />
-                                                <span className="font-mono text-sm max-w-[200px] text-center truncate">{project.title}</span>
-                                            </div>
+                                            {project.image ? (
+                                                <img src={project.image} alt={project.title} className="w-full h-full object-cover rounded-xl relative z-10 shadow-lg" />
+                                            ) : (
+                                                <div className="w-full h-full border border-dashed border-white/10 rounded-xl flex items-center justify-center flex-col gap-4 text-slate-500 bg-[#110720]/50 backdrop-blur-sm">
+                                                    <FolderGit2 size={48} className="opacity-40" />
+                                                    <span className="font-mono text-sm max-w-[200px] text-center truncate">{project.title}</span>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
