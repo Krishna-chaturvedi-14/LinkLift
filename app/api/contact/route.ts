@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
     try {
-        const { name, email, message, toEmail, toName } = await req.json();
+        const body = await req.json();
+        const { name, email, message, toEmail, toName } = body;
 
         console.log("📬 Processing Contact Form Submission via Web3Forms...");
+        console.log("Received Body:", { name, email, messageLength: message?.length, toEmail, toName });
 
         const WEB3FORMS_ACCESS_KEY = process.env.WEB3FORMS_ACCESS_KEY;
 
@@ -33,16 +37,17 @@ export async function POST(req: NextRequest) {
         });
 
         const data = await res.json();
+        console.log("Web3Forms Response:", data);
 
         if (data.success) {
             return NextResponse.json({ success: true, message: "Message sent successfully!" });
         } else {
             console.error("❌ Web3Forms API Error:", data.message);
-            return NextResponse.json({ success: false, error: "Failed to send message via Web3Forms" }, { status: 500 });
+            return NextResponse.json({ success: false, error: `Web3Forms Error: ${data.message}` }, { status: 500 });
         }
 
     } catch (error: any) {
-        console.error("❌ Contact Form Error:", error.message);
-        return NextResponse.json({ success: false, error: "An unexpected error occurred." }, { status: 500 });
+        console.error("❌ Contact Form Catch Block Error:", error);
+        return NextResponse.json({ success: false, error: "An unexpected server error occurred." }, { status: 500 });
     }
 }
