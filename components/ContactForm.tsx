@@ -19,23 +19,34 @@ export default function ContactForm({ toEmail, toName }: ContactFormProps) {
         setStatus("loading");
 
         try {
-            const res = await fetch("/api/contact", {
+            // Web3Forms blocks backend Server routes on free plans, so we submit directly from the client.
+            const res = await fetch("https://api.web3forms.com/submit", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, message, toEmail, toName }),
+                headers: { "Content-Type": "application/json", Accept: "application/json" },
+                body: JSON.stringify({
+                    access_key: "077637d9-6ad9-4ea5-abe5-379ae8f69591",
+                    subject: `New Portfolio Message from ${name || "a Visitor"}`,
+                    from_name: name || "Portfolio Visitor",
+                    email: email,
+                    message: `You have received a new message via your portfolio contact form.\n\nSender: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+                }),
             });
 
-            if (res.ok) {
+            const data = await res.json();
+
+            if (data.success) {
                 setStatus("success");
                 setName("");
                 setEmail("");
                 setMessage("");
                 setTimeout(() => setStatus("idle"), 5000);
             } else {
+                console.error("Web3Forms API Error:", data.message);
                 setStatus("error");
                 setTimeout(() => setStatus("idle"), 3000);
             }
         } catch (err) {
+            console.error("Contact Form Catch Error:", err);
             setStatus("error");
             setTimeout(() => setStatus("idle"), 3000);
         }
@@ -75,8 +86,8 @@ export default function ContactForm({ toEmail, toName }: ContactFormProps) {
                 type="submit"
                 disabled={status === "loading" || status === "success"}
                 className={`w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-bold text-white text-sm transition-all shadow-[0_0_20px_rgba(124,58,237,0.2)] active:scale-[0.98] ${status === "success"
-                        ? "bg-emerald-600 shadow-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
-                        : "bg-violet-600 hover:bg-violet-500 shadow-violet-500/20 border border-violet-500/30 hover:border-violet-400/50"
+                    ? "bg-emerald-600 shadow-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                    : "bg-violet-600 hover:bg-violet-500 shadow-violet-500/20 border border-violet-500/30 hover:border-violet-400/50"
                     } disabled:opacity-50`}
             >
                 {status === "loading" && <Loader2 className="animate-spin" size={18} />}
