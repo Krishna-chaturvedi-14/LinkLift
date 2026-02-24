@@ -8,7 +8,8 @@ export const metadata: Metadata = {
 };
 
 // We use the first example data as our dummy data
-const DUMMY_DATA = RESUME_EXAMPLES[0].output as any;
+import { ResumeData } from '@/lib/types';
+const DUMMY_DATA = RESUME_EXAMPLES[0].output as unknown as ResumeData;
 
 // We add a few extras to make it look nicer
 const ENHANCED_DATA = {
