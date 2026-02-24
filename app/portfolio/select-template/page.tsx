@@ -113,16 +113,20 @@ export default function SelectTemplatePage() {
                                     }
                             `}
                             >
-                                {/* Real Thumbnail from lib/templates */}
-                                <div className="aspect-video w-full bg-zinc-900 flex items-center justify-center relative">
-                                    <img
-                                        src={template.thumbnail}
-                                        alt={template.name}
-                                        className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500"
-                                    />
+                                {/* Live Iframe Preview */}
+                                <div className="aspect-video w-full bg-zinc-900 flex items-center justify-center relative overflow-hidden group/preview">
+                                    <div className="absolute top-0 left-0 w-[400%] h-[800%] origin-top-left scale-[0.25] pointer-events-none">
+                                        <iframe
+                                            src={`/template-preview/${template.id}`}
+                                            className="w-full h-full border-none transition-transform duration-[12000ms] ease-linear group-hover/preview:-translate-y-[30%]"
+                                        />
+                                    </div>
+
+                                    {/* Overlay blocker so users don't accidentally interact with anything passing through */}
+                                    <div className="absolute inset-0 bg-transparent z-10"></div>
 
                                     {isSelected && (
-                                        <div className="absolute inset-0 flex items-center justify-center bg-indigo-500/20 backdrop-blur-[2px]">
+                                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-indigo-500/20 backdrop-blur-[2px]">
                                             <div className="bg-indigo-500 text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 shadow-2xl scale-110">
                                                 <Check size={14} /> Active
                                             </div>
@@ -130,7 +134,7 @@ export default function SelectTemplatePage() {
                                     )}
 
                                     {/* Preview Button on Hover */}
-                                    <div className="absolute inset-0 flex items-center justify-center translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
+                                    <div className="absolute inset-0 z-20 flex items-center justify-center translate-y-4 opacity-0 group-hover/preview:translate-y-0 group-hover/preview:opacity-100 transition-all duration-300 pointer-events-none">
                                         {!isSelected && (
                                             <div className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-2 rounded-full text-xs font-bold shadow-2xl uppercase tracking-widest">
                                                 Select Template
