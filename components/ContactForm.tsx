@@ -6,9 +6,10 @@ import { Send, Loader2, Check, AlertTriangle } from "lucide-react";
 interface ContactFormProps {
     toEmail?: string;
     toName: string;
+    theme?: "dark" | "light";
 }
 
-export default function ContactForm({ toEmail, toName }: ContactFormProps) {
+export default function ContactForm({ toEmail, toName, theme = "dark" }: ContactFormProps) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
@@ -49,6 +50,10 @@ export default function ContactForm({ toEmail, toName }: ContactFormProps) {
         }
     };
 
+    const inputClasses = theme === "dark"
+        ? "w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-violet-500/50 transition-colors"
+        : "w-full bg-slate-100 border border-slate-200 rounded-2xl p-4 text-slate-800 text-sm outline-none focus:border-rose-500/50 focus:bg-white transition-colors placeholder:text-slate-400";
+
     return (
         <form onSubmit={handleSubmit} className="space-y-4 w-full text-left relative">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -58,7 +63,7 @@ export default function ContactForm({ toEmail, toName }: ContactFormProps) {
                     placeholder="Your Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-violet-500/50 transition-colors"
+                    className={inputClasses}
                 />
                 <input
                     type="email"
@@ -66,7 +71,7 @@ export default function ContactForm({ toEmail, toName }: ContactFormProps) {
                     placeholder="Your Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-violet-500/50 transition-colors"
+                    className={inputClasses}
                 />
             </div>
 
@@ -76,7 +81,7 @@ export default function ContactForm({ toEmail, toName }: ContactFormProps) {
                 rows={4}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-violet-500/50 transition-colors resize-none"
+                className={`${inputClasses} resize-none`}
             />
 
             <button
