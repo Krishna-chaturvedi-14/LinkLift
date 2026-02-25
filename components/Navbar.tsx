@@ -29,7 +29,7 @@ export function Navbar() {
               alt="stackd"
               width={100}
               height={32}
-              className="h-8 w-auto invert"
+              className="h-8 w-auto mix-blend-screen"
               priority
             />
           </Link>

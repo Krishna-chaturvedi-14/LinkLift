@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { CheckCircle2, LayoutDashboard, MessageSquare, Briefcase, PieChart, ChevronDown, Bell, Search, ArrowUpRight, ArrowDownRight, RefreshCcw, Users, Copy, Code, Sparkles, Share2, Globe, User, AlertTriangle, FileText } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -17,10 +18,14 @@ export default function Home() {
       {/* Navigation */}
       <nav className="relative z-50 flex items-center justify-between px-10 py-8 max-w-[1400px] mx-auto">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-600 to-indigo-900 flex items-center justify-center shadow-[0_0_20px_rgba(124,58,237,0.4)]">
-            <span className="font-bold text-white text-md">S</span>
-          </div>
-          <span className="font-semibold text-lg tracking-wide hidden md:block">Stackd</span>
+          <Image
+            src="/logo.png"
+            alt="stackd"
+            width={100}
+            height={32}
+            className="h-8 w-auto mix-blend-screen"
+            priority
+          />
         </div>
 
         <div className="hidden lg:flex items-center gap-10 text-[14px] font-medium text-slate-300">
@@ -267,10 +272,13 @@ function DashboardMockup({ topOffset }: { topOffset: string }) {
       <div className="flex items-center justify-between px-8 py-4 border-b border-white/5 bg-[#09090B]">
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded bg-[#18181B] flex items-center justify-center border border-white/10">
-              <span className="font-bold text-white text-[14px]">S</span>
-            </div>
-            <span className="font-semibold text-white tracking-tight text-[15px]">stackd</span>
+            <Image
+              src="/logo.png"
+              alt="stackd"
+              width={80}
+              height={24}
+              className="h-6 w-auto mix-blend-screen"
+            />
           </div>
           <div className="flex items-center gap-6 text-[14px] font-medium text-slate-400">
             <span className="hover:text-white cursor-pointer flex items-center gap-2"><span className="text-slate-500">+</span> Analyze New</span>
