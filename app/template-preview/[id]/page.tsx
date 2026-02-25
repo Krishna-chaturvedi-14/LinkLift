@@ -39,8 +39,9 @@ const ENHANCED_DATA = {
     ]
 };
 
-export default async function TemplatePreviewPage({ params }: { params: { id: string } }) {
-    const TemplateComponent = TEMPLATES[params.id]?.component;
+export default async function TemplatePreviewPage({ params }: { params: Promise<{ id: string }> }) {
+    const resolvedParams = await params;
+    const TemplateComponent = TEMPLATES[resolvedParams.id]?.component;
 
     if (!TemplateComponent) {
         return (
