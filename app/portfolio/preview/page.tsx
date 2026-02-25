@@ -62,22 +62,22 @@ export default function PortfolioPreview() {
   useEffect(() => {
     const fetchData = async () => {
       if (!user?.id) return;
-      // 🟢 Updated query to include 'slug' column
-      const { data: resumes } = await supabase
-        .from("resumes")
-        .select("id, parsed_json, file_url, slug, template_id")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
-        .limit(1);
-
-      if (resumes && resumes.length > 0) {
-        setData(resumes[0].parsed_json);
-        setFileUrl(resumes[0].file_url);
-        setResumeId(resumes[0].id);
-        setUserSlug(resumes[0].slug); // 🟢 Store slug locally
-        if (resumes[0].template_id) setCurrentTemplateId(resumes[0].template_id);
+      try {
+        const res = await fetch("/api/user-resume");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const { data } = await res.json();
+        if (data) {
+          setData(data.parsed_json);
+          setFileUrl(data.file_url);
+          setResumeId(data.id);
+          setUserSlug(data.slug);
+          if (data.template_id) setCurrentTemplateId(data.template_id);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchData();
   }, [user?.id]);
@@ -89,9 +89,20 @@ export default function PortfolioPreview() {
     if (!resumeId) return;
     setIsSaving(true);
     const updatedData = { ...data, ...overrides };
-    const { error } = await supabase.from("resumes").update({ parsed_json: updatedData }).eq("id", resumeId);
-    if (!error) { setData(updatedData); setOverrides({}); alert("Synced to Database!"); }
-    setIsSaving(false);
+    try {
+      const res = await fetch("/api/user-resume", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: resumeId, parsed_json: updatedData })
+      });
+      if (!res.ok) throw new Error("Failed to save");
+      setData(updatedData); setOverrides({}); alert("Synced to Database!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to save preference");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleDeploy = async () => {

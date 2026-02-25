@@ -21,21 +21,22 @@ export default function SelectTemplatePage() {
         const fetchUserPreferences = async () => {
             if (!user?.id) return;
 
-            const { data } = await supabase
-                .from("resumes")
-                .select("id, template_id")
-                .eq("user_id", user.id)
-                .order("created_at", { ascending: false })
-                .limit(1)
-                .single();
+            try {
+                const res = await fetch("/api/user-resume");
+                if (!res.ok) throw new Error("Failed to fetch");
+                const { data } = await res.json();
 
-            if (data) {
-                setResumeId(data.id);
-                if (data.template_id) {
-                    setCurrentTemplateId(data.template_id);
+                if (data) {
+                    setResumeId(data.id);
+                    if (data.template_id) {
+                        setCurrentTemplateId(data.template_id);
+                    }
                 }
+            } catch (err) {
+                console.error("Error fetching preferences:", err);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
 
         fetchUserPreferences();
@@ -45,19 +46,24 @@ export default function SelectTemplatePage() {
         if (!resumeId) return;
         setSaving(templateId);
 
-        const { error } = await supabase
-            .from("resumes")
-            .update({ template_id: templateId })
-            .eq("id", resumeId);
+        try {
+            const res = await fetch("/api/user-resume", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: resumeId, template_id: templateId })
+            });
 
-        if (error) {
-            alert("Failed to save preference");
-        } else {
+            if (!res.ok) throw new Error("Failed to save");
+
             setCurrentTemplateId(templateId);
             // 🟢 Redirect to preview after selection
             router.push("/portfolio/preview");
+        } catch (error) {
+            console.error(error);
+            alert("Failed to save preference");
+        } finally {
+            setSaving(null);
         }
-        setSaving(null);
     };
 
     if (loading) return <div className="min-h-screen bg-black flex items-center justify-center"><Loader2 className="animate-spin text-indigo-500" size={48} /></div>;
