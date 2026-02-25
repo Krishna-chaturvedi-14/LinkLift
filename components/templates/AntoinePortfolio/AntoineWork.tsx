@@ -35,7 +35,7 @@ export const AntoineWork = ({ data }: { data: ResumeData }) => {
                             href={project.link || "#"}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group flex flex-col md:flex-row md:items-center justify-between py-12 border-b border-current hover:bg-current hover:text-white transition-colors duration-300 px-4"
+                            className="group flex flex-col md:flex-row md:items-center justify-between py-12 border-b border-current hover:bg-[#160000] hover:text-white transition-colors duration-300 px-4"
                         >
                             <div className="flex items-center gap-12">
                                 <span className="font-mono text-sm opacity-50">{(i + 1).toString().padStart(2, "0")}</span>
