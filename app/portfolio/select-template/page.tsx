@@ -2,16 +2,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Loader2, Check, ArrowLeft, Layout, ArrowRight } from "lucide-react";
 import { TEMPLATES, Template, DEFAULT_TEMPLATE_ID } from "@/lib/templates";
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from "@/lib/supabase";
 
 export default function SelectTemplatePage() {
     const { user } = useUser();
