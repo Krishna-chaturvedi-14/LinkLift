@@ -79,7 +79,7 @@ export default function Home() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-center text-[16px] md:text-[18px] text-slate-400 max-w-[650px] mx-auto leading-relaxed mb-10"
         >
-          Automate resume targeting, manage keyword optimization, and deploy premium portfolios in one intuitive dashboard
+          Learn how to turn your resume into a deployable portfolio. Automate keyword optimization and manage deployments from one intuitive dashboard.
         </motion.p>
 
         {/* CTA */}

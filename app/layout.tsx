@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://stackd.com"),
   title: "stackd - Turn Your Resume Into a Deployable Portfolio",
   description:
-    "Automate resume targeting, manage keyword optimization, and deploy premium portfolios in one intuitive dashboard.",
+    "Learn how to turn your resume into a deployable portfolio. Automate keyword optimization and manage deployments from one intuitive dashboard.",
   keywords: ["portfolio", "developer", "resume", "AI portfolio", "deployable portfolio"],
   openGraph: {
     title: "stackd - Turn Your Resume Into a Deployable Portfolio",
-    description: "Automate resume targeting, manage keyword optimization, and deploy premium portfolios in one intuitive dashboard.",
+    description: "Learn how to turn your resume into a deployable portfolio. Automate keyword optimization and manage deployments from one intuitive dashboard.",
     url: "https://stackd.com",
     siteName: "stackd",
     images: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "stackd - Turn Your Resume Into a Deployable Portfolio",
-    description: "Automate resume targeting, manage keyword optimization, and deploy premium portfolios in one intuitive dashboard.",
+    description: "Learn how to turn your resume into a deployable portfolio. Automate keyword optimization and manage deployments from one intuitive dashboard.",
     images: ["/logo.png"],
   },
 };
