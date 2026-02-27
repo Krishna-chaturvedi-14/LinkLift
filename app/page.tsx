@@ -297,7 +297,7 @@ function DashboardMockup({ topOffset }: { topOffset: string }) {
         {/* Header Section */}
         <div className="flex justify-between items-start mb-10">
           <div>
-            <h1 className="text-[42px] font-bold text-white leading-tight mb-2 tracking-tight">Resume<br />Intelligence</h1>
+            <h2 className="text-[42px] font-bold text-white leading-tight mb-2 tracking-tight">Resume<br />Intelligence</h2>
             <p className="text-[15px] text-slate-400">Krishna Chaturvedi <span className="text-slate-600 mx-1">•</span> <span className="text-violet-500">Machine Learning Intern</span></p>
           </div>
 

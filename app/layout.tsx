@@ -5,13 +5,13 @@ import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://stackd.com"),
-  title: "stackd - Your Tech Stack, Perfectly Stacked",
+  title: "stackd - Turn Your Resume Into a Deployable Portfolio",
   description:
-    "Smarter, Faster, with AI. Build your professional tech identity and generate a stunning portfolio in minutes.",
-  keywords: ["tech stack", "portfolio", "developer", "resume", "AI portfolio"],
+    "Automate resume targeting, manage keyword optimization, and deploy premium portfolios in one intuitive dashboard.",
+  keywords: ["portfolio", "developer", "resume", "AI portfolio", "deployable portfolio"],
   openGraph: {
-    title: "stackd - Your Tech Stack, Perfectly Stacked",
-    description: "Build your professional tech identity and generate a stunning portfolio in minutes.",
+    title: "stackd - Turn Your Resume Into a Deployable Portfolio",
+    description: "Automate resume targeting, manage keyword optimization, and deploy premium portfolios in one intuitive dashboard.",
     url: "https://stackd.com",
     siteName: "stackd",
     images: [
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "stackd - Your Tech Stack, Perfectly Stacked",
-    description: "Build your professional tech identity and generate a stunning portfolio in minutes.",
+    title: "stackd - Turn Your Resume Into a Deployable Portfolio",
+    description: "Automate resume targeting, manage keyword optimization, and deploy premium portfolios in one intuitive dashboard.",
     images: ["/logo.png"],
   },
 };
