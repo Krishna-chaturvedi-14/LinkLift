@@ -5,6 +5,7 @@ import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Plus } from "lucide-react"; // Added for the new upload link
+import { SampleResumesMenu } from "@/components/SampleResumesMenu";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -35,6 +36,7 @@ export function Navbar() {
           </Link>
 
           <div className="hidden items-center gap-6 md:flex">
+            <SampleResumesMenu />
             {/* 🟢 NEW: Analyze New Resume link to prevent getting stuck */}
             <Link
               href="/upload"

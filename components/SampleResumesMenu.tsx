@@ -9,64 +9,64 @@ const categories = [
     {
         title: "Accounting",
         desc: "Browse Accounting Resume Samples",
-        icon: <Calculator className="w-5 h-5 text-blue-500" />,
-        bg: "bg-blue-500/10",
+        icon: <Calculator className="w-5 h-5 text-[#3B82F6]" />,
+        bg: "bg-[#161F33]",
         href: "/#",
     },
     {
         title: "Healthcare",
         desc: "Browse Healthcare Resume Samples",
-        icon: <Stethoscope className="w-5 h-5 text-sky-500" />,
-        bg: "bg-sky-500/10",
+        icon: <Stethoscope className="w-5 h-5 text-[#06B6D4]" />,
+        bg: "bg-[#0D242B]",
         href: "/#",
     },
     {
         title: "Career Break",
         desc: "Browse Career Break Resume Samples",
-        icon: <Briefcase className="w-5 h-5 text-indigo-500" />,
-        bg: "bg-indigo-500/10",
+        icon: <Briefcase className="w-5 h-5 text-[#818CF8]" />,
+        bg: "bg-[#1B1936]",
         href: "/#",
     },
     {
         title: "Research",
         desc: "Browse Research Resume Samples",
-        icon: <Microscope className="w-5 h-5 text-rose-500" />,
-        bg: "bg-rose-500/10",
+        icon: <Microscope className="w-5 h-5 text-[#F43F5E]" />,
+        bg: "bg-[#2E1521]",
         href: "/#",
     },
     {
         title: "Engineering",
         desc: "Browse Engineering Resume Samples",
-        icon: <HardHat className="w-5 h-5 text-emerald-500" />,
-        bg: "bg-emerald-500/10",
+        icon: <HardHat className="w-5 h-5 text-[#10B981]" />,
+        bg: "bg-[#0F281E]",
         href: "/#",
     },
     {
         title: "Data Science",
         desc: "Browse Data Science Resume Samples",
-        icon: <Database className="w-5 h-5 text-fuchsia-500" />,
-        bg: "bg-fuchsia-500/10",
+        icon: <Database className="w-5 h-5 text-[#D946EF]" />,
+        bg: "bg-[#2C1533]",
         href: "/#",
     },
     {
         title: "Teaching",
         desc: "Browse Teaching Resume Samples",
-        icon: <BookOpen className="w-5 h-5 text-amber-500" />,
-        bg: "bg-amber-500/10",
+        icon: <BookOpen className="w-5 h-5 text-[#F59E0B]" />,
+        bg: "bg-[#2C2311]",
         href: "/#",
     },
     {
         title: "Sales",
         desc: "Browse Sales Resume Samples",
-        icon: <LineChart className="w-5 h-5 text-orange-500" />,
-        bg: "bg-orange-500/10",
+        icon: <LineChart className="w-5 h-5 text-[#F97316]" />,
+        bg: "bg-[#2C1E11]",
         href: "/#",
     },
     {
         title: "Technology",
         desc: "Browse Technology Resume Samples",
-        icon: <Cpu className="w-5 h-5 text-teal-500" />,
-        bg: "bg-teal-500/10",
+        icon: <Cpu className="w-5 h-5 text-[#14B8A6]" />,
+        bg: "bg-[#0D2825]",
         href: "/#",
     },
 ];
@@ -99,7 +99,7 @@ export function SampleResumesMenu() {
                         transition={{ duration: 0.2, ease: "easeOut" }}
                         className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[1000px] z-[100]"
                     >
-                        <div className="bg-[#0C0C0F] border border-white/10 rounded-2xl shadow-2xl p-6 flex flex-col md:flex-row gap-8 overflow-hidden relative">
+                        <div className="bg-[#0F0F12] border border-white/10 rounded-2xl shadow-2xl p-6 flex flex-col md:flex-row gap-8 overflow-hidden relative">
 
                             {/* Left Side: Categories Grid */}
                             <div className="flex-1">
@@ -133,7 +133,7 @@ export function SampleResumesMenu() {
 
                             {/* Right Side: Preview Card */}
                             <div className="w-[300px] shrink-0">
-                                <div className="h-full rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 p-6 flex flex-col relative overflow-hidden group cursor-pointer transition-transform hover:-translate-y-1 shadow-lg">
+                                <div className="h-full rounded-2xl bg-[#7C3AED] p-6 flex flex-col relative overflow-hidden group cursor-pointer transition-transform hover:-translate-y-1 shadow-lg">
                                     {/* Decorative faint glow */}
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10" />
 
