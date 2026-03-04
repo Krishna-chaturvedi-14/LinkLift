@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import BackgroundStars from "@/components/BackgroundStars";
+import { SampleResumesMenu } from "@/components/SampleResumesMenu";
 
 export default function Home() {
   return (
@@ -31,6 +32,9 @@ export default function Home() {
         <div className="hidden lg:flex items-center gap-10 text-[14px] font-medium text-slate-300">
           <Link href="/" className="text-white">Home</Link>
           <Link href="/#features" className="hover:text-white transition-colors">Features</Link>
+
+          {/* New Sample Resumes Mega-Menu */}
+          <SampleResumesMenu />
 
           <Link href="/#blog" className="hover:text-white transition-colors">Blog</Link>
           <Link href="/#contact" className="hover:text-white transition-colors">Contact</Link>
