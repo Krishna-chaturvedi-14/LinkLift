@@ -21,7 +21,7 @@ export default function Home() {
         <div className="flex items-center gap-3">
           <Image
             src="/logo.png"
-            alt="stackd"
+            alt="stackd - full stack developer portfolio builder"
             width={100}
             height={32}
             className="h-8 w-auto mix-blend-screen"
@@ -72,8 +72,8 @@ export default function Home() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="text-center text-[52px] md:text-[68px] lg:text-[76px] font-semibold tracking-tight leading-[1.1] mb-6 max-w-[900px] text-white"
         >
-          Turn Your <span className="font-serif italic font-light text-slate-300 px-1">Resume</span> Into a <br className="hidden md:block" />
-          <span className="font-serif italic font-light text-slate-300 px-1">Deployable</span> Portfolio!
+          Build the Ultimate <span className="font-serif italic font-light text-slate-300 px-1">Full Stack Developer</span> <br className="hidden md:block" />
+          <span className="font-serif italic font-light text-slate-300 px-1">Portfolio</span> Website!
         </motion.h1>
 
         {/* Subhead */}
@@ -81,9 +81,9 @@ export default function Home() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-center text-[16px] md:text-[18px] text-slate-400 max-w-[650px] mx-auto leading-relaxed mb-10"
+          className="text-center text-[16px] md:text-[18px] text-slate-400 max-w-[750px] mx-auto leading-relaxed mb-10"
         >
-          Learn how to turn your resume into a deployable portfolio. Automate keyword optimization and manage deployments from one intuitive dashboard.
+          Learn how to build a developer portfolio website seamlessly. Automate keyword optimization and showcase your MERN stack or React software developer projects from one intuitive dashboard.
         </motion.p>
 
         {/* CTA */}
@@ -116,25 +116,25 @@ export default function Home() {
         {/* Features Section */}
         <div id="features" className="w-full max-w-[1200px] mx-auto py-32 px-10 border-t border-white/5 mt-32">
           <div className="text-center mb-16">
-            <h2 className="text-[36px] font-bold text-white mb-4">Powerful Features</h2>
-            <p className="text-slate-400 max-w-[600px] mx-auto">Everything you need to automate your resume targeting and manage your portfolio deployments.</p>
+            <h2 className="text-[36px] font-bold text-white mb-4">Modern Portfolio Website Design Features</h2>
+            <p className="text-slate-400 max-w-[600px] mx-auto">Everything a software developer India needs to automate resume targeting and deploy scalable web applications.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
                 icon: <FileText size={20} />,
                 title: "AI Resume Parsing",
-                description: "Upload your existing PDF resume and let our intelligent engine extract your experience, skills, and projects instantly."
+                description: "Upload your frontend developer or backend developer resume and let our engine instantly extract your database management and API development skills."
               },
               {
                 icon: <Globe size={20} />,
                 title: "Instant Portfolio Generation",
-                description: "Automatically transform your parsed resume into a beautiful, fully deployed personal website in seconds."
+                description: "Automatically transform your parsed resume into a modern portfolio website design with responsive web design built right in."
               },
               {
                 icon: <AlertTriangle size={20} />,
                 title: "Expert Career Insights",
-                description: "Receive actionable AI feedback on your resume to optimize for ATS parsers and increase your callback rate."
+                description: "Receive actionable AI feedback to highlight your JavaScript developer and Node.js developer expertise, optimizing for ATS parsers."
               }
             ].map((feature, i) => (
               <div key={i} className="p-8 rounded-[24px] bg-[#0C0C0F] border border-white/5 hover:border-violet-500/30 transition-all duration-300 hover:-translate-y-1">
@@ -152,28 +152,75 @@ export default function Home() {
         {/* Blog Section */}
         <div id="blog" className="w-full max-w-[1200px] mx-auto py-32 px-10 border-t border-white/5">
           <div className="text-center mb-16">
-            <h2 className="text-[36px] font-bold text-white mb-4">Latest Insights</h2>
-            <p className="text-slate-400 max-w-[600px] mx-auto">Read our latest thoughts on career growth and tech stacks.</p>
+            <h2 className="text-[36px] font-bold text-white mb-4">Portfolio Ideas For Full Stack Developer</h2>
+            <p className="text-slate-400 max-w-[600px] mx-auto">Read our latest thoughts on career growth, web development services, and tech stacks for a professional web developer.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Link href="/blog/resume-optimization" className="group h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end cursor-pointer hover:-translate-y-1 hover:border-violet-500/30 transition-all duration-300">
-              <span className="text-violet-400 text-[12px] font-bold uppercase tracking-wider mb-2">Career Format</span>
-              <h3 className="text-[24px] font-semibold text-white mb-2 group-hover:text-violet-400 transition-colors">How to optimize your resume for AI parsers in 2026.</h3>
-              <span className="text-slate-500 text-[14px]">March 12 • 5 min read</span>
-            </Link>
-            <Link href="/blog/deployable-portfolio" className="group h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end cursor-pointer hover:-translate-y-1 hover:border-fuchsia-500/30 transition-all duration-300">
-              <span className="text-fuchsia-400 text-[12px] font-bold uppercase tracking-wider mb-2">Engineering</span>
-              <h3 className="text-[24px] font-semibold text-white mb-2 group-hover:text-fuchsia-400 transition-colors">The ultimate guide to building a deployable portfolio.</h3>
-              <span className="text-slate-500 text-[14px]">March 08 • 8 min read</span>
-            </Link>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                href: "/blog/how-to-build-full-stack-developer-portfolio",
+                category: "Career Format",
+                title: "How to Build a Full Stack Developer Portfolio That Gets You Hired",
+                meta: "March 21 • 5 min read",
+                color: "violet"
+              },
+              {
+                href: "/blog/top-portfolio-projects-for-web-developers",
+                category: "Projects",
+                title: "Top Portfolio Projects for Web Developers That Get You Hired",
+                meta: "March 21 • 6 min read",
+                color: "fuchsia"
+              },
+              {
+                href: "/blog/full-stack-vs-web-developer",
+                category: "Career Path",
+                title: "Full Stack Developer vs Web Developer: What Should You Choose",
+                meta: "March 21 • 4 min read",
+                color: "violet"
+              },
+              {
+                href: "/blog/web-developer-resume-portfolio",
+                category: "Portfolios",
+                title: "How to Create a Web Developer Resume Portfolio That Converts",
+                meta: "March 21 • 5 min read",
+                color: "fuchsia"
+              },
+              {
+                href: "/blog/why-freelancers-need-portfolio-website",
+                category: "Freelancing",
+                title: "Why Every Freelancer Needs a Portfolio Website",
+                meta: "March 21 • 4 min read",
+                color: "violet"
+              },
+              {
+                href: "/blog/resume-optimization",
+                category: "Career Format",
+                title: "How to build a developer portfolio and optimize for AI parsers.",
+                meta: "March 12 • 5 min read",
+                color: "fuchsia"
+              },
+              {
+                href: "/blog/deployable-portfolio",
+                category: "Engineering",
+                title: "The ultimate guide to the best developer portfolio projects.",
+                meta: "March 08 • 8 min read",
+                color: "violet"
+              }
+            ].map((blog, i) => (
+              <Link key={i} href={blog.href} className={`group h-[300px] rounded-[24px] bg-[#0C0C0F] border border-white/5 p-8 flex flex-col justify-end cursor-pointer hover:-translate-y-1 transition-all duration-300 ${blog.color === "violet" ? "hover:border-violet-500/30" : "hover:border-fuchsia-500/30"}`}>
+                <span className={`text-[12px] font-bold uppercase tracking-wider mb-2 ${blog.color === "violet" ? "text-violet-400" : "text-fuchsia-400"}`}>{blog.category}</span>
+                <h3 className={`text-[20px] font-semibold text-white mb-2 transition-colors ${blog.color === "violet" ? "group-hover:text-violet-400" : "group-hover:text-fuchsia-400"}`}>{blog.title}</h3>
+                <span className="text-slate-500 text-[14px]">{blog.meta}</span>
+              </Link>
+            ))}
           </div>
         </div>
 
         {/* Contact Section */}
         <div id="contact" className="w-full pb-32 pt-20 border-t border-white/5 flex flex-col items-center justify-center relative overflow-hidden">
           <div className="absolute inset-0 bg-violet-900/10 blur-[100px] rounded-full w-[600px] h-[300px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-          <h2 className="text-[48px] font-bold text-white mb-6 relative z-10 text-center">Ready to level up?</h2>
-          <p className="text-slate-400 mb-10 relative z-10 text-center max-w-[500px]">Join thousands of developers building their perfect tech identity.</p>
+          <h2 className="text-[48px] font-bold text-white mb-6 relative z-10 text-center">Hire Web Developer India</h2>
+          <p className="text-slate-400 mb-10 relative z-10 text-center max-w-[600px]">Need comprehensive web development services? Connect with a freelance web developer India for scalable web applications.</p>
           <div className="flex justify-center relative z-10">
             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=krishna14chaturvedi@gmail.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-violet-600/20 backdrop-blur-md border border-violet-500/30 text-white font-medium hover:bg-violet-600/40 hover:border-violet-400/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] transition-all duration-300 text-[16px]">
               <MessageSquare size={18} className="text-violet-300" />
@@ -278,7 +325,7 @@ function DashboardMockup({ topOffset }: { topOffset: string }) {
           <div className="flex items-center gap-2">
             <Image
               src="/logo.png"
-              alt="stackd"
+              alt="stackd - software developer portfolio generator"
               width={80}
               height={24}
               className="h-6 w-auto mix-blend-screen"

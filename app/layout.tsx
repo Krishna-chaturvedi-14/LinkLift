@@ -5,13 +5,22 @@ import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://stackd.com"),
-  title: "stackd - Turn Your Resume Into a Deployable Portfolio",
+  title: "Full Stack Developer India | Web Developer Portfolio | stackd",
   description:
-    "Learn how to turn your resume into a deployable portfolio. Automate keyword optimization and manage deployments from one intuitive dashboard.",
-  keywords: ["portfolio", "developer", "resume", "AI portfolio", "deployable portfolio"],
+    "Hire a professional Full Stack Developer in India. Expert in React, Node.js, and MERN stack. View the best developer portfolio, scalable web applications, and API development.",
+  keywords: [
+    "full stack developer",
+    "web developer India",
+    "software developer India",
+    "MERN stack developer",
+    "freelance web developer",
+    "developer portfolio website",
+    "React developer",
+    "Node.js developer"
+  ],
   openGraph: {
-    title: "stackd - Turn Your Resume Into a Deployable Portfolio",
-    description: "Learn how to turn your resume into a deployable portfolio. Automate keyword optimization and manage deployments from one intuitive dashboard.",
+    title: "Full Stack Developer India | Web Developer Portfolio | stackd",
+    description: "Hire a professional Full Stack Developer in India. Expert in React, Node.js, and MERN stack.",
     url: "https://stackd.com",
     siteName: "stackd",
     images: [
@@ -26,8 +35,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "stackd - Turn Your Resume Into a Deployable Portfolio",
-    description: "Learn how to turn your resume into a deployable portfolio. Automate keyword optimization and manage deployments from one intuitive dashboard.",
+    title: "Full Stack Developer India | Web Developer Portfolio | stackd",
+    description: "Hire a professional Full Stack Developer in India. Expert in React, Node.js, and MERN stack.",
     images: ["/logo.png"],
   },
 };

@@ -203,7 +203,7 @@ function AboutSection({ bio, skills, profileImage }: { bio?: string; skills?: st
                         <div className="w-full max-w-md aspect-square rounded-[2rem] bg-gradient-to-br from-purple-600/20 to-indigo-600/20 border border-white/10 flex items-center justify-center p-8 relative overflow-hidden group">
                             <div className="absolute inset-0 bg-[#110720]/40 backdrop-blur-xl z-0" />
                             {profileImage ? (
-                                <img src={profileImage} alt="Profile" className="w-full h-full object-cover rounded-[1.5rem] relative z-10" />
+                                <img src={profileImage} alt="Full Stack Developer Profile" className="w-full h-full object-cover rounded-[1.5rem] relative z-10" />
                             ) : (
                                 <div className="relative z-10 w-full h-full border border-dashed border-white/20 rounded-xl flex items-center justify-center flex-col gap-4 text-slate-400 group-hover:border-purple-400/50 transition-colors">
                                     <Code size={48} className="opacity-50" />
@@ -270,7 +270,7 @@ function ProjectsSection({ projects }: { projects: ResumeData['projects'] }) {
                                     <div className={`${isEven ? "lg:col-start-1 lg:row-start-1" : ""}`}>
                                         <div className="w-full aspect-[4/3] rounded-2xl bg-gradient-to-br from-[#1A0F33] to-[#0A0514] border border-white/5 shadow-2xl overflow-hidden flex items-center justify-center p-8 group-hover:border-purple-500/30 transition-colors">
                                             {project.image ? (
-                                                <img src={project.image} alt={project.title} className="w-full h-full object-cover rounded-xl relative z-10 shadow-lg" />
+                                                <img src={project.image} alt={`Scalable web application: ${project.title}`} className="w-full h-full object-cover rounded-xl relative z-10 shadow-lg" />
                                             ) : (
                                                 <div className="w-full h-full border border-dashed border-white/10 rounded-xl flex items-center justify-center flex-col gap-4 text-slate-500 bg-[#110720]/50 backdrop-blur-sm">
                                                     <FolderGit2 size={48} className="opacity-40" />
