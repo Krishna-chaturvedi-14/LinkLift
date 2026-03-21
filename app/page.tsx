@@ -219,8 +219,8 @@ export default function Home() {
         {/* Contact Section */}
         <div id="contact" className="w-full pb-32 pt-20 border-t border-white/5 flex flex-col items-center justify-center relative overflow-hidden">
           <div className="absolute inset-0 bg-violet-900/10 blur-[100px] rounded-full w-[600px] h-[300px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-          <h2 className="text-[48px] font-bold text-white mb-6 relative z-10 text-center">Hire Web Developer India</h2>
-          <p className="text-slate-400 mb-10 relative z-10 text-center max-w-[600px]">Need comprehensive web development services? Connect with a freelance web developer India for scalable web applications.</p>
+          <h2 className="text-[48px] font-bold text-white mb-6 relative z-10 text-center">Ready to level up?</h2>
+          <p className="text-slate-400 mb-10 relative z-10 text-center max-w-[500px]">Join thousands of developers building their perfect tech identity.</p>
           <div className="flex flex-col items-center gap-6 relative z-10">
             <div className="flex flex-wrap items-center justify-center gap-4">
               <a href="https://mail.google.com/mail/?view=cm&fs=1&to=krishna14chaturvedi@gmail.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-violet-600/20 backdrop-blur-md border border-violet-500/30 text-white font-medium hover:bg-violet-600/40 hover:border-violet-400/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] transition-all duration-300 text-[16px]">
