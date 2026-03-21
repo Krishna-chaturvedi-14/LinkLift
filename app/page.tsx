@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { CheckCircle2, LayoutDashboard, MessageSquare, Briefcase, PieChart, ChevronDown, Bell, Search, ArrowUpRight, ArrowDownRight, RefreshCcw, Users, Copy, Code, Sparkles, Share2, Globe, User, AlertTriangle, FileText } from "lucide-react";
+import { CheckCircle2, LayoutDashboard, MessageSquare, Briefcase, PieChart, ChevronDown, Bell, Search, ArrowUpRight, ArrowDownRight, RefreshCcw, Users, Copy, Code, Sparkles, Share2, Globe, User, AlertTriangle, FileText, Linkedin, Github, Instagram } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
@@ -72,8 +72,8 @@ export default function Home() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="text-center text-[52px] md:text-[68px] lg:text-[76px] font-semibold tracking-tight leading-[1.1] mb-6 max-w-[900px] text-white"
         >
-          Build the Ultimate <span className="font-serif italic font-light text-slate-300 px-1">Full Stack Developer</span> <br className="hidden md:block" />
-          <span className="font-serif italic font-light text-slate-300 px-1">Portfolio</span> Website!
+          Turn Your <span className="font-serif italic font-light text-slate-300 px-1">Resume</span> into a <br className="hidden md:block" />
+          Professional <span className="font-serif italic font-light text-slate-300 px-1">Portfolio Website</span>
         </motion.h1>
 
         {/* Subhead */}
@@ -83,7 +83,7 @@ export default function Home() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-center text-[16px] md:text-[18px] text-slate-400 max-w-[750px] mx-auto leading-relaxed mb-10"
         >
-          Learn how to build a developer portfolio website seamlessly. Automate keyword optimization and showcase your MERN stack or React software developer projects from one intuitive dashboard.
+          Create a developer portfolio website from your resume in minutes. Ideal for full stack developers, web developers, and freelancers looking to showcase their work online.
         </motion.p>
 
         {/* CTA */}
@@ -221,11 +221,30 @@ export default function Home() {
           <div className="absolute inset-0 bg-violet-900/10 blur-[100px] rounded-full w-[600px] h-[300px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
           <h2 className="text-[48px] font-bold text-white mb-6 relative z-10 text-center">Hire Web Developer India</h2>
           <p className="text-slate-400 mb-10 relative z-10 text-center max-w-[600px]">Need comprehensive web development services? Connect with a freelance web developer India for scalable web applications.</p>
-          <div className="flex justify-center relative z-10">
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=krishna14chaturvedi@gmail.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-violet-600/20 backdrop-blur-md border border-violet-500/30 text-white font-medium hover:bg-violet-600/40 hover:border-violet-400/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] transition-all duration-300 text-[16px]">
-              <MessageSquare size={18} className="text-violet-300" />
-              krishna14chaturvedi@gmail.com
-            </a>
+          <div className="flex flex-col items-center gap-6 relative z-10">
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=krishna14chaturvedi@gmail.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-violet-600/20 backdrop-blur-md border border-violet-500/30 text-white font-medium hover:bg-violet-600/40 hover:border-violet-400/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] transition-all duration-300 text-[16px]">
+                <MessageSquare size={18} className="text-violet-300" />
+                krishna14chaturvedi@gmail.com
+              </a>
+              
+              <a href="https://krishnachaturvedi.in" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-fuchsia-600/20 backdrop-blur-md border border-fuchsia-500/30 text-white font-medium hover:bg-fuchsia-600/40 hover:border-fuchsia-400/50 hover:shadow-[0_0_30px_rgba(217,70,239,0.3)] transition-all duration-300 text-[16px]">
+                <Globe size={18} className="text-fuchsia-300" />
+                Portfolio Website
+              </a>
+            </div>
+
+            <div className="flex items-center gap-4 mt-4">
+              <a href="https://www.linkedin.com/in/krishna-chaturvedi-2387792a3/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#18181B] border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:border-violet-500/30 hover:-translate-y-1 transition-all duration-300">
+                <Linkedin size={20} />
+              </a>
+              <a href="https://github.com/Krishna-chaturvedi-14" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#18181B] border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:border-violet-500/30 hover:-translate-y-1 transition-all duration-300">
+                <Github size={20} />
+              </a>
+              <a href="http://instagram.com/krishhnaa.14_/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#18181B] border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:border-violet-500/30 hover:-translate-y-1 transition-all duration-300">
+                <Instagram size={20} />
+              </a>
+            </div>
           </div>
         </div>
 
