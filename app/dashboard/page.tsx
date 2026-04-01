@@ -72,18 +72,16 @@ export default function DashboardPage() {
     async function fetchLatestResume() {
       if (!user?.id) return;
 
-      const { data, error } = await supabase
-        .from("resumes")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (error) console.error("Supabase error:", error.message);
-
-      setResume(data);
-      setLoading(false);
+      try {
+        const res = await fetch("/api/user-resume");
+        if (!res.ok) throw new Error("Failed to fetch resume");
+        const { data } = await res.json();
+        setResume(data);
+      } catch (err: any) {
+        console.error("Fetch error:", err.message);
+      } finally {
+        setLoading(false);
+      }
     }
 
     if (userLoaded) {
@@ -126,12 +124,13 @@ export default function DashboardPage() {
       updatedParsed.suggestions = newSuggestions;
 
       // Update DB
-      const { error } = await supabase
-        .from("resumes")
-        .update({ parsed_json: updatedParsed })
-        .eq("id", resume.id);
+      const res = await fetch("/api/user-resume", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: resume.id, parsed_json: updatedParsed })
+      });
 
-      if (error) throw error;
+      if (!res.ok) throw new Error("Failed to update resume");
 
       // Update local state smoothly
       setResume({ ...resume, parsed_json: updatedParsed });

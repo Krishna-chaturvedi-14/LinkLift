@@ -41,22 +41,27 @@ export default function PortfolioPreview() {
     if (!user?.id) return null;
     setIsUploadingImage(true);
 
-    // Generate unique filename to avoid overriding
-    const filePath = `${user.id}/${Date.now()}-img-${file.name}`;
-
-    const { error: storageError } = await supabase.storage
-      .from("resumes")
-      .upload(filePath, file, { cacheControl: "3600", upsert: false });
-
-    setIsUploadingImage(false);
-
-    if (storageError) {
-      alert("Image upload failed");
-      return null;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("isImage", "true");
+    
+    try {
+        const res = await fetch("/api/upload-resume", {
+            method: "POST",
+            body: formData,
+        });
+        const data = await res.json();
+        if (!res.ok || !data.fileUrl) {
+            alert("Image upload failed");
+            return null;
+        }
+        return data.fileUrl;
+    } catch (err) {
+        alert("Image upload failed");
+        return null;
+    } finally {
+        setIsUploadingImage(false);
     }
-
-    const { data } = supabase.storage.from("resumes").getPublicUrl(filePath);
-    return data.publicUrl;
   };
 
   useEffect(() => {

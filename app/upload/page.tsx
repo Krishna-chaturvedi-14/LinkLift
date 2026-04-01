@@ -53,41 +53,24 @@ export default function UploadPage() {
     const filePath = `${user.id}/${Date.now()}-${file.name}`;
 
     try {
-      // 1. Upload to Supabase Storage
-      const { error: storageError } = await supabase.storage
-        .from("resumes")
-        .upload(filePath, file, {
-          cacheControl: "3600",
-          upsert: false,
-        });
+      // 1. Upload to Server API Endpoint
+      const formData = new FormData();
+      formData.append("file", file);
 
-      if (storageError) throw storageError;
+      const uploadResponse = await fetch("/api/upload-resume", {
+        method: "POST",
+        body: formData,
+      });
 
-      const { data: urlData } = supabase.storage
-        .from("resumes")
-        .getPublicUrl(filePath);
+      const uploadData = await uploadResponse.json();
 
-      const fileUrl = urlData.publicUrl;
+      if (!uploadResponse.ok) {
+        throw new Error(uploadData.error || "Failed to upload and save resume.");
+      }
 
-      // 🟢 Create a temporary slug so the initial insert succeeds
-      const tempSlug = `user-${Math.floor(100000 + Math.random() * 900000)}`;
-
-      const { data: insertedResume, error: dbError } = await supabase
-        .from("resumes")
-        .insert({
-          user_id: user.id,
-          file_path: filePath,
-          file_url: fileUrl,
-          parsed_json: null,
-          slug: tempSlug,
-        })
-        .select("id")
-        .single();
-
-      if (dbError) throw dbError;
-
-      const resumeId = insertedResume?.id;
-      if (!resumeId) throw new Error("Failed to get resume ID");
+      const { resumeId, fileUrl } = uploadData;
+      
+      if (!resumeId) throw new Error("Failed to get resume ID from server");
 
       setMessage({ type: "success", text: "Resume uploaded! Analyzing with AI..." });
       setFile(null);
@@ -114,15 +97,15 @@ export default function UploadPage() {
       const finalSlug = `${slugify(finalName)}-${Math.floor(1000 + Math.random() * 9000)}`;
 
       // 🟢 3. Final Database Sync: Update both the JSON data AND the final unique slug
-      const { error: updateError } = await supabase
-        .from("resumes")
-        .update({
-          parsed_json: aiParsedData,
-          slug: finalSlug
-        })
-        .eq("id", resumeId);
+      const updateResponse = await fetch("/api/user-resume", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: resumeId, parsed_json: aiParsedData, slug: finalSlug })
+      });
 
-      if (updateError) throw updateError;
+      if (!updateResponse.ok) {
+        throw new Error("Failed to sync analysis to database");
+      }
 
       // 🟢 4. THE DELAY FIX: Wait 2.5 seconds for the database and Vercel to sync before redirecting
       setMessage({ type: "success", text: "Analysis complete! Generating your portfolio..." });

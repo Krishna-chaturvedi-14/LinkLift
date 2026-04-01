@@ -41,7 +41,7 @@ export async function POST(req: Request) {
         }
 
         const body = await req.json();
-        const { id, template_id, parsed_json } = body;
+        const { id, template_id, parsed_json, slug } = body;
 
         if (!id) {
             return NextResponse.json({ error: "Resume ID required to update" }, { status: 400 });
@@ -51,6 +51,7 @@ export async function POST(req: Request) {
         const updatePayload: any = {};
         if (template_id !== undefined) updatePayload.template_id = template_id;
         if (parsed_json !== undefined) updatePayload.parsed_json = parsed_json;
+        if (slug !== undefined) updatePayload.slug = slug;
 
         const { data, error } = await supabase
             .from("resumes")
